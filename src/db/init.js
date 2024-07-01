@@ -25,13 +25,13 @@ class db extends Dexie {
             await this.open();
             console.log("Database initialized");
         } catch (error) {
-            console.error("Failed to initialize database:", error);
+            throw new Error("Failed to initialize database");
         }
     }
 
-    deleteDB() {
-        this.delete();
-        this.open();
+    async deleteDB() {
+        await this.delete();
+        await this.open();
     }
 }
 

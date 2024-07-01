@@ -51,6 +51,7 @@
  * @property {function(): void} closeSidePannel - Closes the side panel by setting `isSidePanelVisible` to false.
  * @property {function(string): void} openSidePannel - Opens the side panel and sets the selected panel.
  * @property {function(): void} resetDB - Function to reset the database
+ * @property {function(): void} changeName - Function to add new name
  */
 
 /**
@@ -92,8 +93,10 @@
 /**
  * Represents the participants data
  *
- * @typedef {object} Participants
+ * @typedef {object} ParticipantsStore
  * @property {string[]} participants - list of participants
+ * @property {boolean} _isInit - flag to ensure init is being called only once
+ * @property {function():void} init - initialization function
  */
 
 /**

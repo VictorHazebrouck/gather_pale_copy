@@ -33,7 +33,7 @@ class PlayerOther extends Player {
     _registerRemoteActions = () => {
         /** If the broadcasted move is from the player himself, move his sprite accordingly */
         socket.on("newPlayerMove", (data) => {
-            /** @type  {MoveInstructions}*/
+            /** @type  {MoveInstructions} */
             const { userId, direction, x, y } = data;
 
             if (this.playerInformation.userId !== userId) {
@@ -42,9 +42,16 @@ class PlayerOther extends Player {
 
             this.moveDirection = direction;
 
-            /** Ensures proper sync between clients */
-            this.position.x = x;
-            this.position.y = y;
+            /**
+             * Ensures proper sync between clients
+             *
+             * @todo find proper fix for this,
+             *      - currently: `this.position.x || this.position.y is not defined`
+             */
+            if (this.position && this.position.x && this.position.y) {
+                this.position.x = x;
+                this.position.y = y;
+            }
         });
 
         /** If the broadcasted move is from the player himself, destroy his instance */

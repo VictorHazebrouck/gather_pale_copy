@@ -70,6 +70,7 @@ export default {
         if (this._isInit || !SocketManager.socket) {
             return;
         }
+        this._isInit = true;
 
         /** Get rooms from idb */
         this.rooms = await getRoomsDb();
@@ -111,9 +112,6 @@ export default {
 
             this.goToRoom(this.rooms.length - 1);
         });
-
-        /** Indicate Initialization as complete */
-        this._isInit = true;
     },
     _isInit: false,
 };

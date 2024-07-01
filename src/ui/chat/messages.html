@@ -4,8 +4,7 @@
             <li class="message" :class="msg.sender === $store.user.userId && 'own'">
                 <span>
                     <h5
-                        x-text="msg.sender !== $store.user.userId ? rooms[selectedRoom]?.userName : ''"
-                    ></h5>
+                        x-text="msg.sender !== $store.user.userId ? rooms[selectedRoom]?.userName : ''"></h5>
                     <h6 x-text="msg.time"></h6>
                 </span>
                 <p x-text="msg.value"></p>
@@ -21,8 +20,7 @@
         type="text"
         placeholder="New message..."
         x-model="input"
-        @keydown.enter="sendMessage(input)"
-    />
+        @keydown.enter="sendMessage(input)" />
 </div>
 
 <style>

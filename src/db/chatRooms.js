@@ -1,6 +1,7 @@
 import DB from "./init";
 
 const ChatCollection = DB.chat_rooms;
+const UsersCollection = DB.users;
 
 /**
  * Function to create a new room in idb
@@ -19,8 +20,18 @@ async function newRoomDb(room) {
  * @returns {Promise<Room[]>} - returns all rooms from idb
  */
 async function getRoomsDb() {
-    const data = await ChatCollection.toArray();
-    return data;
+    const chatData = await ChatCollection.toArray();
+
+    for (let room of chatData) {
+        const user = await UsersCollection.get(room.userId);
+
+        if (user) {
+            room.userName = user.userName;
+            await ChatCollection.put(room);
+        }
+    }
+
+    return chatData;
 }
 
 /**

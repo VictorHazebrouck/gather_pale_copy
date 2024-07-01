@@ -15,16 +15,14 @@
     <div
         id="component-lobbies"
         x-show="selectedRoom === -1"
-        x-html="Component('chat/lobbies')"
-    ></div>
+        x-html="Component('chat/lobbies')"></div>
     <!-- #endregion -->
 
     <!-- #region CHAT MESSAGES-->
     <div
         id="component-messages"
         x-show="selectedRoom !== -1"
-        x-html="Component('chat/messages')"
-    ></div>
+        x-html="Component('chat/messages')"></div>
     <!-- #endregion -->
 </div>
 <style>

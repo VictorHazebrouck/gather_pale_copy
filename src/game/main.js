@@ -19,7 +19,7 @@ async function init() {
     if (!gamecontainer) {
         throw new Error("COULDN'T FIND GAME CONTAINER");
     }
-    
+
     //init the Application instance
     const app = new Application();
     await app.init({ resizeTo: gamecontainer });
@@ -37,9 +37,9 @@ async function init() {
 
     //init self player and attach the camera to it
     const player = new PlayerSelf();
-    player.registerMovementInput()
+    player.registerMovementInput();
     //player.registerMovementInput("KeyW","KeyS","KeyA","KeyD")
-    
+
     game.addChild(player);
     game.attachCameraToObject(player);
 

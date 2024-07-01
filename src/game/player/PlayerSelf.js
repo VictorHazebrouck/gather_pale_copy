@@ -18,7 +18,7 @@ class PlayerSelf extends Player {
 
         this.position.x = Alpine.store("user").lastPositionX;
         this.position.y = Alpine.store("user").lastPositionY;
-        
+
         this.zIndex = 10;
         Ticker.shared.add(this._playerMovement);
     }

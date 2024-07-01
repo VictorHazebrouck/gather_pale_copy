@@ -1,5 +1,6 @@
 import DB from "../db/init";
 import Alpine from "alpinejs";
+import SocketManager from "../sockets/socketManager";
 
 /** @type {UtilsStore} */
 export default {
@@ -28,5 +29,16 @@ export default {
     resetDB() {
         DB.deleteDB();
         Alpine.store("chat").rooms = [];
+    },
+    changeName(newName = "") {
+        if (!newName) {
+            return;
+        }
+
+        SocketManager.socket?.emit("nameChanged", newName);
+        Alpine.store("user").userName = newName;
+        
+        //@ts-ignore
+        this.$data.input = "";
     },
 };

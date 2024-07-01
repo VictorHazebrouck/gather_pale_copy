@@ -4,7 +4,7 @@
         <template x-if="visible">
             <div
                 class="popover"
-                x-data="{input: '', id: '', ismounted: false}"
+                x-data="{input: '', ismounted: false}"
                 x-init="setTimeout(()=> {ismounted = true}, 1000)"
                 @click.outside="ismounted ? visible = false : ''"
             >
@@ -14,7 +14,7 @@
                     type="text"
                     x-model="input"
                     placeholder="change name"
-                    @keydown.enter="$store.user.userName = input; input = ''"
+                    @keydown.enter="changeName(input)"
                 />
             </div>
         </template>

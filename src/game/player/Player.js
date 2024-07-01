@@ -6,7 +6,7 @@ const spriteSheet = new Spritesheet(rawSpritesheet, spriteData);
 await spriteSheet.parse();
 
 class Player extends AnimatedSprite {
-    /** @param {PlayerData } playerData - data required to initialize player */
+    /** @param {PlayerData} playerData - data required to initialize player */
     constructor({ userId, userName }) {
         super(spriteSheet.animations["idle"]);
 

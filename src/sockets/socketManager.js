@@ -44,7 +44,6 @@ class SocketManager {
         if (this.socket) {
             return;
         }
-
         /** Allows for passing in data to the 'connect' & each subsequent event via query */
         this.socket = io("http://localhost:3015", { query: userData });
     }
