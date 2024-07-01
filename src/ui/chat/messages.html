@@ -1,0 +1,101 @@
+<div class="messages-list">
+    <ol class="ol">
+        <template x-for="msg in rooms[selectedRoom]?.messages">
+            <li class="message" :class="msg.sender === $store.user.userId && 'own'">
+                <span>
+                    <h5
+                        x-text="msg.sender !== $store.user.userId ? rooms[selectedRoom]?.userName : ''"
+                    ></h5>
+                    <h6 x-text="msg.time"></h6>
+                </span>
+                <p x-text="msg.value"></p>
+            </li>
+        </template>
+    </ol>
+</div>
+<div class="input" x-data="{input: ''}">
+    <button>
+        <i class="fa-solid fa-face-grin-squint-tears"></i>
+    </button>
+    <input
+        type="text"
+        placeholder="New message..."
+        x-model="input"
+        @keydown.enter="sendMessage(input)"
+    />
+</div>
+
+<style>
+    #component-messages {
+        justify-content: space-between;
+        .messages-list {
+            height: 77.5vh;
+            width: 100%;
+            overflow-y: scroll;
+            display: flex;
+            flex-direction: column-reverse;
+
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            ::-webkit-scrollbar {
+                display: none;
+            }
+
+            .ol {
+                display: flex;
+                flex-direction: column;
+
+                .message {
+                    margin-top: var(--pad-small);
+                    align-self: flex-start;
+                    display: flex;
+                    flex-direction: column;
+
+                    span {
+                        display: flex;
+                        align-items: first baseline;
+                        margin-bottom: 3px;
+                        h5 {
+                            color: white;
+                            margin-right: var(--pad-normal);
+                        }
+                    }
+                    p {
+                        border-radius: var(--rad-big);
+                        background-color: var(--bg-color-dark-2);
+                        padding: var(--pad-small);
+                        width: fit-content;
+                    }
+
+                    &.own {
+                        span {
+                            justify-content: flex-end;
+                        }
+                        p {
+                            background-color: #4358d8;
+                            color: white;
+                            align-self: flex-end;
+                        }
+                        align-self: flex-end;
+                    }
+                }
+            }
+        }
+
+        .input {
+            height: 8vh;
+            min-height: 8vh;
+            display: flex;
+            align-items: center;
+
+            button {
+                margin: 0;
+            }
+
+            input {
+                flex-grow: 1;
+                margin-left: var(--pad-small);
+            }
+        }
+    }
+</style>

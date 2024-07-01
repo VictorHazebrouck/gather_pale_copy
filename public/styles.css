@@ -1,0 +1,66 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+canvas {
+    display: block;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    font-family: sans-serif;
+    background-color: transparent;
+    color: inherit;
+    list-style: none;
+}
+
+i {
+    font-size: 18px;
+}
+
+input {
+    width: 100%;
+    height: 4.5vh;
+    padding: var(--pad-normal);
+
+    background-color: var(--bg-color-dark-1);
+    border-radius: var(--rad-normal);
+    outline: var(--border-big);
+
+    &:hover {
+        outline-color: #fff;
+    }
+}
+
+button {
+    height: 5vh;
+    width: 5vh;
+    min-width: 5vh;
+    min-height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--rad-normal);
+    position: relative;
+    margin: var(--pad-small);
+}
+
+button:hover {
+    cursor: pointer;
+
+    &:not(.selected) {
+        background-color: var(--bg-color-dark-1-hover);
+        color: var(--txt-color-dark-1-hover);
+    }
+}
+
+span {
+    display: inline-flex;
+}

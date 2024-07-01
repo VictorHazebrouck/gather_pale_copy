@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/vars.css" />
+        <link rel="stylesheet" href="/styles.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        />
+        <title>Document</title>
+    </head>
+    <body x-data="$store.utils">
+        <div id="container-main">
+            <div id="container-content">
+                <div id="container-game">
+                    <div x-init="outterSwapComponent('user-card/user-card')"></div>
+                </div>
+                <div id="container-right-pannel" x-show="isSidePannelVisible">
+                    <div
+                        id="container-chat"
+                        x-show="sidePannerSelected === 'chat'"
+                        x-html="Component('chat/chat')"
+                    ></div>
+                    <div
+                        id="container-participants"
+                        x-show="sidePannerSelected === 'people'"
+                        x-html="Component('participants/participants')"
+                    ></div>
+                </div>
+            </div>
+            <div id="container-footer" x-html="Component('footer/footer')"></div>
+        </div>
+    </body>
+    <script type="module" src="/index.js"></script>
+</html>
+<style>
+    #container-main {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        #container-content {
+            height: 92.5vh;
+            display: flex;
+
+            #container-right-pannel {
+                height: 100%;
+                width: 20vw;
+                border-left: 1px solid rgb(61, 61, 61);
+
+                #container-chat,
+                #container-participants {
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+
+            #container-game {
+                height: 100%;
+                width: 100%;
+                position: relative;
+            }
+        }
+
+        #container-footer {
+            height: 7.5vh;
+        }
+    }
+</style>

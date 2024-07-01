@@ -1,0 +1,26 @@
+:root {
+    /*Dark stuff*/
+    --bg-color-dark-1: #202540;
+    --bg-color-dark-2: #333a64;
+    --txt-color-dark-1: #fff;
+    --txt-color-dark-2: #bebec7;
+    --bg-color-dark-1-hover: #545c8f;
+    --txt-color-dark-1-hover: #fff;
+    --border: 1px solid rgb(61, 61, 61);
+    --border-big: 2px solid #8691b3;
+
+    /*Light stuff*/
+    --bg-color-light-1: #fff;
+    --txt-color-light-1: #3d3c40;
+    --bg-color-light-1-hover: #f7f7f8;
+    --txt-color-light-1-hover: #bebec7;
+
+    /*Border radius stuff*/
+    --rad-small: 4px;
+    --rad-normal: 8px;
+    --rad-big: 20px;
+
+    /*Margin-padding-stuff*/
+    --pad-small: 10px;
+    --pad-normal: 12px;
+}

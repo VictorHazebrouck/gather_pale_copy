@@ -1,0 +1,79 @@
+<nav>
+    <button x-data="{visible: false}">
+        <i class="fa-solid fa-user-gear" @click="visible = !visible"></i>
+        <template x-if="visible">
+            <div
+                class="popover"
+                x-data="{input: '', id: '', ismounted: false}"
+                x-init="setTimeout(()=> {ismounted = true}, 1000)"
+                @click.outside="ismounted ? visible = false : ''"
+            >
+                <h1 x-text="$store.user.userName">hello from user settings</h1>
+                <button @click="$store.user.resetDB">resetDB</button>
+                <input
+                    type="text"
+                    x-model="input"
+                    placeholder="change name"
+                    @keydown.enter="$store.user.userName = input; input = ''"
+                />
+            </div>
+        </template>
+    </button>
+    <button>
+        <i class="fa-solid fa-microphone"></i>
+    </button>
+    <button>
+        <i class="fa-solid fa-video"></i>
+    </button>
+    <button>
+        <i class="fa-solid fa-display"></i>
+    </button>
+    <span style="margin-left: auto">
+        <button @click="openSidePannel('chat')">
+            <i class="fa-solid fa-comments"></i>
+        </button>
+        <button @click="openSidePannel('people');" style="width: 8vh; padding-inline: 5px">
+            <i class="fa-solid fa-user-group"></i>
+            <h3 x-text="$store.participants.length"></h3>
+        </button>
+    </span>
+</nav>
+
+<style>
+    nav {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        background-color: var(--bg-color-dark-1);
+        color: var(--txt-color-dark-1);
+        border-top: 1px solid rgb(61, 61, 61);
+        padding-inline: 5vw;
+
+        .selected {
+            color: white;
+        }
+
+        .popover {
+            position: absolute;
+            bottom: 5.5vh;
+            width: 18vw;
+            left: 0;
+            border-radius: 10px;
+            padding: var(--pad-normal);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            box-shadow:
+                rgba(0, 0, 0, 0.25) 0px 54px 55px,
+                rgba(0, 0, 0, 0.12) 0px -12px 30px,
+                rgba(0, 0, 0, 0.12) 0px 4px 6px,
+                rgba(0, 0, 0, 0.17) 0px 12px 13px,
+                rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
+            background-color: var(--bg-color-dark-1);
+            color: var(--txt-color-dark-1);
+            border: 1px solid rgb(61, 61, 61);
+        }
+    }
+</style>

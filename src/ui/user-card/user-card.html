@@ -1,0 +1,20 @@
+<div
+    id="user-card"
+    x-data="$store.playerCard"
+    :style="`top: ${y}px; left: ${x}px`"
+    x-show="isCardVisible"
+    @click.outside="hideCard"
+    @keydown.window="hideCard"
+>
+    <p x-text="userName">blablabla</p>
+    <p x-text="userId">blablabla</p>
+    <button @click="sendMessage">newChat</button>
+</div>
+<style>
+    #user-card {
+        background-color: red;
+        height: 200px;
+        width: 200px;
+        position: absolute;
+    }
+</style>

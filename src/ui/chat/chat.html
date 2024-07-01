@@ -1,0 +1,61 @@
+<div id="component-chat" x-data="$store.chat">
+    <!-- #region NAVIGATION -->
+    <div class="navigation">
+        <button @click="backToRoomSelection()" x-show="selectedRoom !== -1">
+            <i class="fa-solid fa-caret-left"></i>
+        </button>
+        <h3 x-text="rooms[selectedRoom]?.userName || 'Chat'"></h3>
+        <button @click="closeSidePannel()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <!-- #endregion -->
+
+    <!-- #region CHAT ROOM SELECTION -->
+    <div
+        id="component-lobbies"
+        x-show="selectedRoom === -1"
+        x-html="Component('chat/lobbies')"
+    ></div>
+    <!-- #endregion -->
+
+    <!-- #region CHAT MESSAGES-->
+    <div
+        id="component-messages"
+        x-show="selectedRoom !== -1"
+        x-html="Component('chat/messages')"
+    ></div>
+    <!-- #endregion -->
+</div>
+<style>
+    #component-chat {
+        width: 100%;
+        height: 100%;
+        background-color: var(--bg-color-dark-1);
+        color: var(--txt-color-dark-1);
+        display: flex;
+        flex-direction: column;
+        padding: var(--pad-normal);
+        padding-bottom: 3px;
+
+        .navigation {
+            height: 4vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            button {
+                margin: 0;
+                width: 4vh;
+                height: 4vh;
+            }
+        }
+
+        #component-messages,
+        #component-lobbies {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+</style>
