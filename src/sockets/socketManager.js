@@ -14,7 +14,6 @@ class SocketManager {
         if (SocketManager._instance) {
             return SocketManager._instance;
         }
-
         SocketManager._instance = this;
     }
 

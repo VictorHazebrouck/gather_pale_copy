@@ -1,5 +1,7 @@
-import { newUserDB } from "../db/users";
+import Alpine from "alpinejs";
+import { newUserDB, getUsersDB } from "../db/users";
 import SocketManager from "../sockets/socketManager";
+import { getRoomsDb } from "../db/chatRooms";
 
 /** @type {ParticipantsStore} */
 export default {
@@ -10,22 +12,32 @@ export default {
         if (this._isInit) {
             return;
         }
+        this._isInit = true;
 
         SocketManager.socket?.on("connectionData", (data) => {
             /** @type {Array<PlayerData & Coordinates>} */
             const players = data.Players;
 
-            for (const {userId, userName} of players) {
-                newUserDB(userId, userName);
+            for (const { userId, userName } of players) {
+                this.syncNames(userId, userName);
             }
         });
-        SocketManager.socket?.on(
-            "newPlayerConnected",
-            (/** @type {PlayerData & Coordinates} */ data) => {
-                console.log("HELLO FROM NEW PLAYER CONNECTED", data);
-            }
-        );
+        SocketManager.socket?.on("newPlayerConnected", (data) => {
+            const { userId = "", userName = "" } = data;
+            this.syncNames(userId, userName);
+        });
+        SocketManager.socket?.on("aNameHasChanged", (data) => {
+            const { userId = "", newName = "" } = data;
+            this.syncNames(userId, newName);
+        });
+    },
+    async syncNames(userId, newName) {
+        if (!userId || !newName) {
+            return;
+        }
 
-        this._isInit = true;
+        await newUserDB(userId, newName);
+        Alpine.store("chat").rooms = await getRoomsDb();
+        this.participants = await getUsersDB()
     },
 };

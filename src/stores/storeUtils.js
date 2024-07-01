@@ -35,9 +35,9 @@ export default {
             return;
         }
 
-        SocketManager.socket?.emit("nameChanged", newName);
+        SocketManager.socket?.emit("nameChanged", {newName});
         Alpine.store("user").userName = newName;
-        
+
         //@ts-ignore
         this.$data.input = "";
     },

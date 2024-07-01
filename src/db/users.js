@@ -22,4 +22,9 @@ async function newUserDB(id, username) {
     UsersCollection.put(user);
 }
 
-export { newUserDB };
+async function getUsersDB(){
+    const users = await UsersCollection.toArray();
+    return users
+}
+
+export { newUserDB, getUsersDB };

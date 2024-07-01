@@ -6,7 +6,7 @@
                 class="popover"
                 x-data="{input: '', ismounted: false}"
                 x-init="setTimeout(()=> {ismounted = true}, 1000)"
-                @click.outside="ismounted ? visible = false : ''"
+                @click.outside="if(!input){ismounted ? visible = false : ''}"
             >
                 <h1 x-text="$store.user.userName">hello from user settings</h1>
                 <button @click="$store.user.resetDB">resetDB</button>
