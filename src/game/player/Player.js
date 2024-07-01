@@ -1,14 +1,13 @@
 import { Assets, Spritesheet, AnimatedSprite, Ticker, Point } from "pixi.js";
-import spriteData from "../assets/Characters/spritesheet.json";
-
-const rawSpritesheet = await Assets.load("/src/game/assets/Characters/spr_alex.png");
-const spriteSheet = new Spritesheet(rawSpritesheet, spriteData);
-await spriteSheet.parse();
 
 class Player extends AnimatedSprite {
-    /** @param {PlayerData} playerData - data required to initialize player */
-    constructor({ userId, userName }) {
+    /**
+     * @param {PlayerData} playerData - data required to initialize player
+     * @param {Spritesheet} spriteSheet - data required to initialize player
+     */
+    constructor({ userId, userName }, spriteSheet) {
         super(spriteSheet.animations["idle"]);
+        this.spriteSheet = spriteSheet;
 
         /** @type {PlayerData} */
         this.playerInformation = {
@@ -41,26 +40,26 @@ class Player extends AnimatedSprite {
         switch (this.moveDirection) {
             case "up":
                 // @ts-ignore
-                if (this.textures[0].uid !== spriteSheet.animations["move_back"][0].uid) {
-                    this.textures = spriteSheet.animations["move_back"];
+                if (this.textures[0].uid !== this.spriteSheet.animations["move_back"][0].uid) {
+                    this.textures = this.spriteSheet.animations["move_back"];
                 }
                 break;
             case "down":
                 // @ts-ignore
-                if (this.textures[0].uid !== spriteSheet.animations["move_front"][0].uid) {
-                    this.textures = spriteSheet.animations["move_front"];
+                if (this.textures[0].uid !== this.spriteSheet.animations["move_front"][0].uid) {
+                    this.textures = this.spriteSheet.animations["move_front"];
                 }
                 break;
             case "left":
                 // @ts-ignore
-                if (this.textures[0].uid !== spriteSheet.animations["move_left"][0].uid) {
-                    this.textures = spriteSheet.animations["move_left"];
+                if (this.textures[0].uid !== this.spriteSheet.animations["move_left"][0].uid) {
+                    this.textures = this.spriteSheet.animations["move_left"];
                 }
                 break;
             case "right":
                 // @ts-ignore
-                if (this.textures[0].uid !== spriteSheet.animations["move_right"][0].uid) {
-                    this.textures = spriteSheet.animations["move_right"];
+                if (this.textures[0].uid !== this.spriteSheet.animations["move_right"][0].uid) {
+                    this.textures = this.spriteSheet.animations["move_right"];
                 }
                 break;
             default:

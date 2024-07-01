@@ -1,15 +1,19 @@
-import { Ticker } from "pixi.js";
+import { Spritesheet, Ticker } from "pixi.js";
 import SocketManager from "../../sockets/socketManager";
 import Player from "./Player";
 import Alpine from "alpinejs";
 import { isPlayer } from "../utils/utils";
+import { loadPlayerSprite } from "../utils/utils";
 
 const socket = SocketManager.getSocket();
 
 class PlayerOther extends Player {
-    /** @param {PlayerData & Coordinates} data - player data necessary to init the player*/
-    constructor({ x, y, ...rest }) {
-        super({ ...rest });
+    /**
+     * @param {PlayerData & Coordinates} data - player data necessary to init the player
+     * @param {Spritesheet} spriteSheet - spritesheet
+     */
+    constructor({ x, y, ...rest }, spriteSheet) {
+        super({ ...rest }, spriteSheet);
 
         this.position.x = x;
         this.position.y = y;
@@ -27,7 +31,9 @@ class PlayerOther extends Player {
             return;
         }
 
-        this.movePlayer(ticker, this.moveDirection);
+        if (this.position && this.position.x && this.position.y) {
+            this.movePlayer(ticker, this.moveDirection);
+        }
     };
 
     _registerRemoteActions = () => {
@@ -75,9 +81,9 @@ class PlayerOther extends Player {
      *
      * @param {PlayerData & Coordinates} playerData - data for the player we're trying ot pass in
      * @param {import("pixi.js").ContainerChild[]} siblings - data from all current players in the container
-     * @returns {PlayerOther | false} - returns the player instance or false
+     * @returns {Promise<PlayerOther | false>} - returns the player instance or false
      */
-    static createPlayer = (playerData, siblings) => {
+    static createPlayer = async (playerData, siblings) => {
         /** @type {Player[]} */
         const players = siblings.filter(isPlayer);
 
@@ -86,8 +92,9 @@ class PlayerOther extends Player {
                 return false;
             }
         }
+        const spriteSheet = await loadPlayerSprite();
 
-        return new PlayerOther(playerData);
+        return new PlayerOther(playerData, spriteSheet);
     };
 }
 

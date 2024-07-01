@@ -36,6 +36,6 @@ class db extends Dexie {
 }
 
 const DB = new db();
-await DB.init();
+DB.init();
 
 export default DB;

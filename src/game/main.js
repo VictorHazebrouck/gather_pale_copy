@@ -36,7 +36,7 @@ async function init() {
     game.addChild(background);
 
     //init self player and attach the camera to it
-    const player = new PlayerSelf();
+    const player = await PlayerSelf.createPlayer();
     player.registerMovementInput();
     //player.registerMovementInput("KeyW","KeyS","KeyA","KeyD")
 
@@ -44,18 +44,19 @@ async function init() {
     game.attachCameraToObject(player);
 
     //handle first connection, get current game state from server
-    socket.on("connectionData", (data) => {
+    socket.on("connectionData", async (data) => {
         for (let i = 0; i < data.Players.length; i++) {
-            const player = PlayerOther.createPlayer(data.Players[i], game.children);
+            const player = await PlayerOther.createPlayer(data.Players[i], game.children);
+
             player && game.addChild(player);
         }
     });
 
     //handle new players connection, get new player's data
-    socket.on("newPlayerConnected", (newPlayerData) => {
-        const player = PlayerOther.createPlayer(newPlayerData, game.children);
+    socket.on("newPlayerConnected", async (newPlayerData) => {
+        const player = await PlayerOther.createPlayer(newPlayerData, game.children);
         player && game.addChild(player);
     });
 }
 
-await init();
+init();

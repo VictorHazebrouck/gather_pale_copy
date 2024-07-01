@@ -1,18 +1,18 @@
 import { Spritesheet, Sprite, Container, Assets } from "pixi.js";
 
 import tilemap from "./tilemap.json";
-import spriteData from "../../assets/Tiles/spritesheet.json";
-const rawSpritesheet = await Assets.load("/src/game/assets/Tiles/topDown_baseTiles.png");
+import spriteData from "../../assets/backgroundSpritesheet.json";
 
 class Background extends Container {
     constructor() {
         super();
-        this.rawSpritesheet = rawSpritesheet;
         this.spriteData = spriteData;
         this.tileMap = tilemap;
     }
 
     async generateBackground() {
+        this.rawSpritesheet = await Assets.load("assets/Tiles/topDown_baseTiles.png");
+
         const spriteSheet = new Spritesheet(this.rawSpritesheet, this.spriteData);
         await spriteSheet.parse();
 

@@ -1,5 +1,15 @@
+import { Spritesheet, Assets } from "pixi.js";
 import Player from "../player/Player";
 import PlayerOther from "../player/PlayerOther";
+
+import spriteData from "../assets/characterSpritesheet.json";
+
+async function loadPlayerSprite() {
+    const rawSpritesheet = await Assets.load("assets/Characters/spr_alex.png");
+    const spriteSheet = new Spritesheet(rawSpritesheet, spriteData);
+    await spriteSheet.parse();
+    return spriteSheet;
+}
 
 /**
  * Util function to check if an object is an instance of PlayerOther
@@ -19,4 +29,4 @@ function isPlayerOther(object) {
     return object instanceof PlayerOther;
 }
 
-export { isPlayer, isPlayerOther };
+export { isPlayer, isPlayerOther, loadPlayerSprite };

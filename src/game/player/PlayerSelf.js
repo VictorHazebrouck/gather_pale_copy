@@ -1,20 +1,23 @@
-import { Ticker } from "pixi.js";
+import { Ticker, Spritesheet } from "pixi.js";
 import SocketManager from "../../sockets/socketManager";
 import Player from "./Player";
 import Alpine from "alpinejs";
 import PlayerOther from "./PlayerOther";
-import { isPlayerOther } from "../utils/utils";
+import { isPlayerOther, loadPlayerSprite } from "../utils/utils";
 
 const socket = SocketManager.getSocket();
 
 class PlayerSelf extends Player {
-    constructor() {
+    /**
+     * @param {Spritesheet} spriteSheet - spritesheet
+     */
+    constructor(spriteSheet) {
         /** @type {PlayerData} */
         const obj = {
             userId: Alpine.store("user").userId,
             userName: Alpine.store("user").userName,
         };
-        super(obj);
+        super(obj, spriteSheet);
 
         this.position.x = Alpine.store("user").lastPositionX;
         this.position.y = Alpine.store("user").lastPositionY;
@@ -163,6 +166,18 @@ class PlayerSelf extends Player {
                 this.queuedDirections = this.queuedDirections.filter((e) => e !== dir);
             }
         };
+    };
+
+    /**
+     * Handles new player creation, avoids creating duplicates
+     * @static
+     *
+     * @returns {Promise<PlayerSelf>} - returns the player instance or false
+     */
+    static createPlayer = async () => {
+        const spriteSheet = await loadPlayerSprite();
+
+        return new PlayerSelf(spriteSheet);
     };
 }
 

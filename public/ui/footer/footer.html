@@ -26,7 +26,7 @@
         <i class="fa-solid fa-video"></i>
     </button>
     <button>
-        <i class="fa-solid fa-display"></i>
+        <i class="fa-solid fa-display" @click="console.log($store.participants)"></i>
     </button>
     <span style="margin-left: auto">
         <button @click="openSidePannel('chat')">
@@ -34,7 +34,7 @@
         </button>
         <button @click="openSidePannel('people');" style="width: 8vh; padding-inline: 5px">
             <i class="fa-solid fa-user-group"></i>
-            <h3 x-text="$store.participants.length"></h3>
+            <h3 x-text="$store.participants.participants.length"></h3>
         </button>
     </span>
 </nav>

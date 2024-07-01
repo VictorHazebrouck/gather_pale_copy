@@ -8,12 +8,12 @@ export default {
     sidePannerSelected: "chat",
 
     async Component(url = "") {
-        const response = await fetch(`/src/ui/${url}.html`);
+        const response = await fetch(`/ui/${url}.html`);
         const data = await response.text();
         return data;
     },
     async outterSwapComponent(url = "") {
-        const response = await fetch(`/src/ui/${url}.html`);
+        const response = await fetch(`/ui/${url}.html`);
         const data = await response.text();
 
         // @ts-ignore $el represents the dom element on which the fn is being called
@@ -35,7 +35,7 @@ export default {
             return;
         }
 
-        SocketManager.socket?.emit("nameChanged", {newName});
+        SocketManager.socket?.emit("nameChanged", { newName });
         Alpine.store("user").userName = newName;
 
         //@ts-ignore
