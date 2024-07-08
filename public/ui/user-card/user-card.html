@@ -4,7 +4,8 @@
     :style="`top: ${y}px; left: ${x}px`"
     x-show="isCardVisible"
     @click.outside="hideCard"
-    @keydown.window="hideCard">
+    @keydown.window="hideCard"
+>
     <p x-text="userName">blablabla</p>
     <p x-text="userId">blablabla</p>
     <button @click="sendMessage">newChat</button>

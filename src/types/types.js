@@ -18,6 +18,7 @@
  * @typedef {object} User
  * @property {string} _id - The unique identifier for the user
  * @property {string} userName - The name of the user
+ * @property {boolean} isConnected - connection status of the user
  */
 
 /**

@@ -14,7 +14,7 @@ async function newUserDB(id, username) {
     const user = await UsersCollection.get(id);
 
     if (!user) {
-        UsersCollection.add({ _id: id, userName: username });
+        UsersCollection.add({ _id: id, userName: username, isConnected: true });
         return;
     }
 
@@ -22,9 +22,19 @@ async function newUserDB(id, username) {
     UsersCollection.put(user);
 }
 
-async function getUsersDB(){
+async function getUsersDB() {
     const users = await UsersCollection.toArray();
-    return users
+    return users;
 }
 
-export { newUserDB, getUsersDB };
+/** @param {string} id */
+async function disconnectUser(id) {
+    const user = await UsersCollection.get(id);
+
+    if (user) {
+        user.isConnected = false;
+        UsersCollection.put(user);
+    }
+}
+
+export { newUserDB, getUsersDB, disconnectUser };

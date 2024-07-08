@@ -1,5 +1,5 @@
 import Alpine from "alpinejs";
-import { newUserDB, getUsersDB } from "../db/users";
+import { newUserDB, getUsersDB, disconnectUser } from "../db/users";
 import SocketManager from "../sockets/socketManager";
 import { getRoomsDb } from "../db/chatRooms";
 
@@ -30,6 +30,9 @@ export default {
             const { userId = "", newName = "" } = data;
             this.syncNames(userId, newName);
         });
+        SocketManager.socket?.on("playerDisconnected", ({ userId }) => {
+            this.disconnectUser(userId);
+        });
     },
     async syncNames(userId, newName) {
         if (!userId || !newName) {
@@ -38,6 +41,9 @@ export default {
 
         await newUserDB(userId, newName);
         Alpine.store("chat").rooms = await getRoomsDb();
-        this.participants = await getUsersDB()
+        this.participants = await getUsersDB();
+    },
+    async disconnectUser(userId) {
+        await disconnectUser(userId);
     },
 };
