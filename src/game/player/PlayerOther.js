@@ -1,9 +1,7 @@
 import { Spritesheet, Ticker } from "pixi.js";
+import { isPlayer, loadPlayerSprite } from "../utils/utils";
 import EventBus from "../../EventBus";
 import Player from "./Player";
-import Alpine from "alpinejs";
-import { isPlayer } from "../utils/utils";
-import { loadPlayerSprite } from "../utils/utils";
 
 class PlayerOther extends Player {
     /**
@@ -69,7 +67,10 @@ class PlayerOther extends Player {
     _registerOnClickActions = () => {
         /** Display playerCard on click */
         this.addEventListener("click", () => {
-            Alpine.store("playerCard").showCard(this.playerInformation, this.getScreenPosition());
+            EventBus.publish("playerClick", {
+                playerInformation: this.playerInformation,
+                position: this.getScreenPosition(),
+            });
         });
     };
 

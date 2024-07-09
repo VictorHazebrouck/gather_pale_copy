@@ -41,7 +41,7 @@ async function init() {
     game.attachCameraToObject(player);
 
     //handle first connection, get current game state from server
-    socket.on("connectionData", async (data) => {
+    EventBus.subscribe("connectionData", async (data) => {
         for (let i = 0; i < data.Players.length; i++) {
             const player = await PlayerOther.createPlayer(data.Players[i], game.children);
 
@@ -50,7 +50,7 @@ async function init() {
     });
 
     //handle new players connection, get new player's data
-    socket.on("newPlayerConnected", async (newPlayerData) => {
+    EventBus.subscribe("newPlayerConnected", async (newPlayerData) => {
         const player = await PlayerOther.createPlayer(newPlayerData, game.children);
         player && game.addChild(player);
     });

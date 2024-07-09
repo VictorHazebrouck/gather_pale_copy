@@ -9,6 +9,7 @@ type EventTypes = {
     move: any;
     nameChanged: any;
     aNameHasChanged: any;
+    playerClick: any;
 };
 
 type Listener<T> = (data: T) => void;

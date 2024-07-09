@@ -3,10 +3,8 @@ import EventBus from "./EventBus";
 
 /**
  * Represents a singleton class for managing Socket.IO connections.
- *
- * @class SocketManager
  */
-class SocketManager {
+class Socket {
     /**
      * Init socket instance with persisted user Data
      *
@@ -50,4 +48,4 @@ class SocketManager {
     }
 }
 
-export default SocketManager;
+export default Socket;
