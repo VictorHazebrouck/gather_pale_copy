@@ -1,15 +1,15 @@
 /** List of all event names with their corresponding data to be passsed around */
 type EventTypes = {
-    newPlayerConnected: any;
-    connectionData: any;
-    newPlayerMove: any;
-    playerDisconnected: any;
-    chatMessageReceived: any;
-    sendChatMessage: any;
-    move: any;
-    nameChanged: any;
-    aNameHasChanged: any;
-    playerClick: any;
+    newPlayerConnected: NewPlayerConnectedEventData;
+    connectionData: ConnectionDataEventData;
+    newPlayerMove: NewPlayerMoveEventData;
+    playerDisconnected: PlayerDisconnectdEventData;
+    chatMessageReceived: ChatMessageReceivedEventData;
+    sendChatMessage: SendChatMessageEventData;
+    move: MoveEventData;
+    nameChanged: NameChangedEventData;
+    aNameHasChanged: ANameHasChangedEventData;
+    playerClick: PlayerClickEventData;
 };
 
 type Listener<T> = (data: T) => void;

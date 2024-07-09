@@ -8,17 +8,18 @@ import { isPlayerOther, loadPlayerSprite } from "../utils/utils";
 class PlayerSelf extends Player {
     /**
      * @param {Spritesheet} spriteSheet - spritesheet
+     * @param {UserStore} playerSelfData - spritesheet
      */
-    constructor(spriteSheet) {
+    constructor(spriteSheet, playerSelfData) {
         /** @type {PlayerData} */
         const obj = {
-            userId: Alpine.store("user").userId,
-            userName: Alpine.store("user").userName,
+            userId: playerSelfData.userId,
+            userName: playerSelfData.userName,
         };
         super(obj, spriteSheet);
 
-        this.position.x = Alpine.store("user").lastPositionX;
-        this.position.y = Alpine.store("user").lastPositionY;
+        this.position.x = playerSelfData.lastPositionX;
+        this.position.y = playerSelfData.lastPositionY;
 
         this.zIndex = 10;
         Ticker.shared.add(this._playerMovement);
@@ -170,12 +171,13 @@ class PlayerSelf extends Player {
      * Handles new player creation, avoids creating duplicates
      * @static
      *
+     * @param {UserStore} playerData
      * @returns {Promise<PlayerSelf>} - returns the player instance or false
      */
-    static createPlayer = async () => {
+    static createPlayer = async (playerData ) => {
         const spriteSheet = await loadPlayerSprite();
 
-        return new PlayerSelf(spriteSheet);
+        return new PlayerSelf(spriteSheet, playerData);
     };
 }
 

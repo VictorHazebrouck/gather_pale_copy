@@ -109,3 +109,66 @@
  * @property {number} x - x coordinaates at the moment of emission
  * @property {number} y - y coordinaates at the moment of emission
  */
+
+/**
+ * @typedef {Object} SendChatMessageEventData
+ * @property {string} userIdReceiver - The user ID of the message receiver.
+ * @property {string} userNameReceiver - The username of the message receiver.
+ * @property {string} userIdSender - The user ID of the message sender.
+ * @property {string} userNameSender - The username of the message sender.
+ * @property {string} value - The message content.
+ * @property {string} time - The time when the message was sent, formatted as a string.
+ */
+
+/**
+ * @typedef {Object} ChatMessageReceivedEventData - The data object containing message details.
+ * @property {string} userIdSender - The user ID of the message sender.
+ * @property {string} userNameSender - The username of the message sender.
+ * @property {string} value - The message content.
+ * @property {string} time - The time when the message was sent.
+ */
+
+/**
+ * @typedef {Object} MoveEventData
+ * @property {string} userId - id from the movement initiator
+ * @property {Direction} direction - direction in which the player wishes to move
+ * @property {number} x - x coordinaates at the moment of emission
+ * @property {number} y - y coordinaates at the moment of emission
+ */
+
+/**
+ * @typedef {Object} NewPlayerMoveEventData
+ * @property {string} userId - id from the movement initiator
+ * @property {Direction} direction - direction in which the player wishes to move
+ * @property {number} x - x coordinaates at the moment of emission
+ * @property {number} y - y coordinaates at the moment of emission
+ */
+
+/** @typedef {PlayerData & Coordinates} NewPlayerConnectedEventData*/
+
+/**
+ * @typedef {Object} ConnectionDataEventData
+ * @property {(PlayerData & Coordinates)[]} Players
+ */
+
+/**
+ * @typedef {Object} PlayerDisconnectdEventData
+ * @property {string} userId
+ */
+
+/**
+ * @typedef {Object} NameChangedEventData
+ * @property {string} newName
+ */
+
+/**
+ * @typedef {Object} ANameHasChangedEventData
+ * @property {string} newName
+ * @property {string} userId
+ */
+
+/**
+ * @typedef {Object} PlayerClickEventData
+ * @property {PlayerData} playerInformation
+ * @property {Coordinates} position
+ */

@@ -8,9 +8,10 @@ import PlayerOther from "./player/PlayerOther";
 /**
  * Initialization function
  *
+ * @param {UserStore} playerSelfData 
  * @returns {Promise<void>}
  */
-async function init() {
+async function initGame(playerSelfData) {
     // get the dom element in which to place the game
     const gamecontainer = document.getElementById("container-game");
     if (!gamecontainer) {
@@ -33,7 +34,7 @@ async function init() {
     game.addChild(background);
 
     //init self player and attach the camera to it
-    const player = await PlayerSelf.createPlayer();
+    const player = await PlayerSelf.createPlayer(playerSelfData);
     player.registerMovementInput();
     //player.registerMovementInput("KeyW","KeyS","KeyA","KeyD")
 
@@ -56,4 +57,4 @@ async function init() {
     });
 }
 
-init();
+export default initGame

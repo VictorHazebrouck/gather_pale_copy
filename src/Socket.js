@@ -37,13 +37,13 @@ class Socket {
 
     initEmiters() {
         EventBus.subscribe("sendChatMessage", (data) => {
-            this.socket.emit("chatMessage");
+            this.socket.emit("chatMessage", data);
         });
         EventBus.subscribe("move", (data) => {
-            this.socket.emit("move");
+            this.socket.emit("move", data);
         });
         EventBus.subscribe("nameChanged", (data) => {
-            this.socket.emit("nameChanged");
+            this.socket.emit("nameChanged", data);
         });
     }
 }
