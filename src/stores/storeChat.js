@@ -1,6 +1,6 @@
 import "../types/types";
 import Alpine from "alpinejs";
-import SocketManager from "../sockets/socketManager";
+import EventBus from "../EventBus";
 import { v4 as uuidv4 } from "uuid";
 import { newChatDb, newRoomDb, getRoomsDb } from "../db/chatRooms";
 
@@ -37,11 +37,11 @@ export default {
         this.goToRoom(this.rooms.length - 1);
     },
     sendMessage(msg = "") {
-        if (!msg || !SocketManager.socket) {
+        if (!msg) {
             return;
         }
 
-        SocketManager.socket.emit("chatMessage", {
+        EventBus.publish("sendChatMessage", {
             /** Send message to backend, will transmit it only to him by his userId */
             userIdReceiver: this.rooms[this.selectedRoom].userId,
             userNameReceiver: this.rooms[this.selectedRoom].userName,
@@ -67,7 +67,7 @@ export default {
     },
     async init() {
         /** Ensures init is being called only once, called by alpine when binding store to x-data */
-        if (this._isInit || !SocketManager.socket) {
+        if (this._isInit) {
             return;
         }
         this._isInit = true;
@@ -76,7 +76,7 @@ export default {
         this.rooms = await getRoomsDb();
 
         /** init chat message socket */
-        SocketManager.socket.on("chatMessageReceived", (data) => {
+        EventBus.subscribe("chatMessageReceived", (data) => {
             const { userIdSender, userNameSender, value, time } = data;
 
             const index = this.rooms.findIndex((e) => e.userId === userIdSender);

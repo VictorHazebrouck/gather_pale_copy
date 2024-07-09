@@ -1,6 +1,6 @@
 import DB from "../db/init";
 import Alpine from "alpinejs";
-import SocketManager from "../sockets/socketManager";
+import EventBus from "../EventBus";
 
 /** @type {UtilsStore} */
 export default {
@@ -35,7 +35,7 @@ export default {
             return;
         }
 
-        SocketManager.socket?.emit("nameChanged", { newName });
+        EventBus.publish("nameChanged", { newName });
         Alpine.store("user").userName = newName;
 
         //@ts-ignore

@@ -1,6 +1,6 @@
 import Alpine from "alpinejs";
 import { newUserDB, getUsersDB, disconnectUser } from "../db/users";
-import SocketManager from "../sockets/socketManager";
+import EventBus from "../EventBus";
 import { getRoomsDb } from "../db/chatRooms";
 
 /** @type {ParticipantsStore} */
@@ -14,7 +14,7 @@ export default {
         }
         this._isInit = true;
 
-        SocketManager.socket?.on("connectionData", (data) => {
+        EventBus.subscribe("connectionData", (data) => {
             /** @type {Array<PlayerData & Coordinates>} */
             const players = data.Players;
 
@@ -22,15 +22,15 @@ export default {
                 this.syncNames(userId, userName);
             }
         });
-        SocketManager.socket?.on("newPlayerConnected", (data) => {
+        EventBus.subscribe("newPlayerConnected", (data) => {
             const { userId = "", userName = "" } = data;
             this.syncNames(userId, userName);
         });
-        SocketManager.socket?.on("aNameHasChanged", (data) => {
+        EventBus.subscribe("aNameHasChanged", (data) => {
             const { userId = "", newName = "" } = data;
             this.syncNames(userId, newName);
         });
-        SocketManager.socket?.on("playerDisconnected", ({ userId }) => {
+        EventBus.subscribe("playerDisconnected", ({ userId }) => {
             this.disconnectUser(userId);
         });
     },

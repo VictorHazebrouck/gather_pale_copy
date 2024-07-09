@@ -1,5 +1,4 @@
 import Alpine from "./registerPlugins";
-import SocketManager from "../sockets/socketManager";
 import storeChat from "./storeChat";
 import storeUtils from "./storeUtils";
 import storePlayerCard from "./storePlayerCard";
@@ -8,9 +7,6 @@ import storeParticipants from "./storeParticipants";
 
 /** Register local storage stuff first */
 Alpine.store("user", storeUserPersist);
-
-/** Init socket with localStorage stuff */
-SocketManager.init(Alpine.store("user"));
 
 /** Register reactive data */
 Alpine.store("utils", storeUtils);

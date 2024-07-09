@@ -1,11 +1,9 @@
 import { Ticker, Spritesheet } from "pixi.js";
-import SocketManager from "../../sockets/socketManager";
+import EventBus from "../../EventBus";
 import Player from "./Player";
 import Alpine from "alpinejs";
 import PlayerOther from "./PlayerOther";
 import { isPlayerOther, loadPlayerSprite } from "../utils/utils";
-
-const socket = SocketManager.getSocket();
 
 class PlayerSelf extends Player {
     /**
@@ -65,7 +63,7 @@ class PlayerSelf extends Player {
                     y: this.position.y,
                 };
 
-                socket.emit("move", obj);
+                EventBus.publish("move", obj);
 
                 this.moveDirection = "stop";
                 return;
@@ -96,7 +94,7 @@ class PlayerSelf extends Player {
             x: this.position.x,
             y: this.position.y,
         };
-        socket.emit("move", obj);
+        EventBus.publish("move", obj);
     };
 
     /**

@@ -1,11 +1,9 @@
 import { Spritesheet, Ticker } from "pixi.js";
-import SocketManager from "../../sockets/socketManager";
+import EventBus from "../../EventBus";
 import Player from "./Player";
 import Alpine from "alpinejs";
 import { isPlayer } from "../utils/utils";
 import { loadPlayerSprite } from "../utils/utils";
-
-const socket = SocketManager.getSocket();
 
 class PlayerOther extends Player {
     /**
@@ -38,7 +36,7 @@ class PlayerOther extends Player {
 
     _registerRemoteActions = () => {
         /** If the broadcasted move is from the player himself, move his sprite accordingly */
-        socket.on("newPlayerMove", (data) => {
+        EventBus.subscribe("newPlayerMove", (data) => {
             /** @type  {MoveInstructions} */
             const { userId, direction, x, y } = data;
 
@@ -61,7 +59,7 @@ class PlayerOther extends Player {
         });
 
         /** If the broadcasted move is from the player himself, destroy his instance */
-        socket.on("playerDisconnected", ({ userId }) => {
+        EventBus.subscribe("playerDisconnected", ({ userId }) => {
             if (this.playerInformation.userId === userId) {
                 this.destroy();
             }

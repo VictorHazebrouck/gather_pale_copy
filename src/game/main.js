@@ -1,6 +1,6 @@
 import { Application, Ticker } from "pixi.js";
 import Background from "./layers/background/Background";
-import SocketManager from "../sockets/socketManager";
+import EventBus from "../EventBus";
 import Game from "./game/Game";
 import PlayerSelf from "./player/PlayerSelf";
 import PlayerOther from "./player/PlayerOther";
@@ -11,9 +11,6 @@ import PlayerOther from "./player/PlayerOther";
  * @returns {Promise<void>}
  */
 async function init() {
-    //get socket instance
-    const socket = SocketManager.getSocket();
-
     // get the dom element in which to place the game
     const gamecontainer = document.getElementById("container-game");
     if (!gamecontainer) {
