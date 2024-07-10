@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>PlayerSelf - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Background.html">Background</a></li><li><a href="Game.html">Game</a></li><li><a href="Player.html">Player</a><ul class='methods'><li data-type='method' style='display: none;'><a href="Player.html#getScreenPosition">getScreenPosition</a></li><li data-type='method' style='display: none;'><a href="Player.html#hasCollided">hasCollided</a></li><li data-type='method' style='display: none;'><a href="Player.html#movePlayer">movePlayer</a></li></ul></li><li><a href="PlayerOther.html">PlayerOther</a><ul class='methods'><li data-type='method' style='display: none;'><a href="PlayerOther.html#createPlayer">createPlayer</a></li></ul></li><li><a href="PlayerSelf.html">PlayerSelf</a><ul class='methods'><li data-type='method' style='display: none;'><a href="PlayerSelf.html#createPlayer">createPlayer</a></li><li data-type='method' style='display: none;'><a href="PlayerSelf.html#registerMovementInput">registerMovementInput</a></li></ul></li><li><a href="Socket.html">Socket</a></li><li><a href="db.html">db</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ANameHasChangedEventData">ANameHasChangedEventData</a></li><li><a href="global.html#ChatMessageReceivedEventData">ChatMessageReceivedEventData</a></li><li><a href="global.html#ChatStore">ChatStore</a></li><li><a href="global.html#ConnectionDataEventData">ConnectionDataEventData</a></li><li><a href="global.html#Coordinates">Coordinates</a></li><li><a href="global.html#Direction">Direction</a></li><li><a href="global.html#EventBus">EventBus</a></li><li><a href="global.html#Message">Message</a></li><li><a href="global.html#MoveEventData">MoveEventData</a></li><li><a href="global.html#MoveInstructions">MoveInstructions</a></li><li><a href="global.html#NameChangedEventData">NameChangedEventData</a></li><li><a href="global.html#NewPlayerConnectedEventData">NewPlayerConnectedEventData</a></li><li><a href="global.html#NewPlayerMoveEventData">NewPlayerMoveEventData</a></li><li><a href="global.html#ParticipantsStore">ParticipantsStore</a></li><li><a href="global.html#PlayerCardStore">PlayerCardStore</a></li><li><a href="global.html#PlayerClickEventData">PlayerClickEventData</a></li><li><a href="global.html#PlayerData">PlayerData</a></li><li><a href="global.html#PlayerDataWithCoordinates">PlayerDataWithCoordinates</a></li><li><a href="global.html#PlayerDisconnectdEventData">PlayerDisconnectdEventData</a></li><li><a href="global.html#Room">Room</a></li><li><a href="global.html#SendChatMessageEventData">SendChatMessageEventData</a></li><li><a href="global.html#User">User</a></li><li><a href="global.html#UserStore">UserStore</a></li><li><a href="global.html#UtilsStore">UtilsStore</a></li><li><a href="global.html#disconnectUser">disconnectUser</a></li><li><a href="global.html#filterPlayerOthers">filterPlayerOthers</a></li><li><a href="global.html#filterPlayers">filterPlayers</a></li><li><a href="global.html#formatNow">formatNow</a></li><li><a href="global.html#getRoomsDb">getRoomsDb</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#newChatDb">newChatDb</a></li><li><a href="global.html#newRoomDb">newRoomDb</a></li><li><a href="global.html#newUserDB">newUserDB</a></li><li><a href="global.html#userIdReceiver">userIdReceiver</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">PlayerSelf</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            PlayerSelf
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+    
+
+    <h4 class="name" id="PlayerSelf"><span class="type-signature"></span>new PlayerSelf<span class="signature">(playerSelfData, spriteSheet)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="game_player_PlayerSelf.js.html">game/player/PlayerSelf.js</a>, <a href="game_player_PlayerSelf.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>playerSelfData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#UserStore">UserStore</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>spritesheet</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>spriteSheet</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Spritesheet</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>spritesheet</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>
+    
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>module:game/player/Player~Player</li>
+    </ul>
+
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="queuedDirections"><span class="type-signature"></span>queuedDirections<span class="type-signature"> :Array.&lt;<a href="global.html#Direction">Direction</a>></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Used together with &quot;moveDirection&quot; to detect a change in requested direction
+Keeps track multiple key pressed at the same time while only allowing for strict x||y movement</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="game_player_PlayerSelf.js.html">game/player/PlayerSelf.js</a>, <a href="game_player_PlayerSelf.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Used together with &quot;moveDirection&quot; to detect a change in requested direction
+Keeps track multiple key pressed at the same time while only allowing for strict x||y movement</p>
+</div>
+
+
+
+    <h5 class="h5-types">Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;<a href="global.html#Direction">Direction</a>></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="createPlayer"><span class="type-signature"></span>createPlayer<span class="signature">(playerData)</span><span class="type-signature"> &rarr; {Promise.&lt;module:game/player/PlayerSelf~PlayerSelf>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Handles new player creation, avoids creating duplicates</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="game_player_PlayerSelf.js.html">game/player/PlayerSelf.js</a>, <a href="game_player_PlayerSelf.js.html#line181">line 181</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>playerData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#UserStore">UserStore</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>returns the player instance or false</li>
+</ul>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;module:game/player/PlayerSelf~PlayerSelf></span>
+
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="registerMovementInput"><span class="type-signature"></span>registerMovementInput<span class="signature">(up, down, left, right)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Adds event listeners for arrow keys, queues/removes directions instructions under queuedDirections
+Initialized by the component itself to arrow keys, calling this elsewhere will &quot;stack&quot; not overwrite</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="game_player_PlayerSelf.js.html">game/player/PlayerSelf.js</a>, <a href="game_player_PlayerSelf.js.html#line114">line 114</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>up</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>up direction movement key code</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>down</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>down direction movement key code</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>left</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>left direction movement key code</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>right</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>right direction movement key code</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a> on Wed Jul 10 2024 15:21:09 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

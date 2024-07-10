@@ -15,7 +15,7 @@ export default {
         this._isInit = true;
 
         EventBus.subscribe("connectionData", (data) => {
-            /** @type {Array<PlayerData & Coordinates>} */
+            /** @type {PlayerDataWithCoordinates[]} */
             const players = data.Players;
 
             for (const { userId, userName } of players) {

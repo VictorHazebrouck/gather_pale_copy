@@ -2,10 +2,10 @@ import { Assets, Spritesheet, AnimatedSprite, Ticker, Point } from "pixi.js";
 
 class Player extends AnimatedSprite {
     /**
-     * @param {PlayerData} playerData - data required to initialize player
+     * @param {PlayerDataWithCoordinates} playerData - data required to initialize player
      * @param {Spritesheet} spriteSheet - data required to initialize player
      */
-    constructor({ userId, userName }, spriteSheet) {
+    constructor({ userId, userName, x, y }, spriteSheet) {
         super(spriteSheet.animations["idle"]);
         this.spriteSheet = spriteSheet;
 
@@ -15,18 +15,26 @@ class Player extends AnimatedSprite {
             userName: userName,
         };
 
+        this.position.x = x;
+        this.position.y = y;
+
+        /** @constant */
         this.anchor.set(0.5, 0.5);
+        /** @constant */
+        this.animationSpeed = 0.1;
+        /** @constant */
+        this.speed = 2;
+
+        /** @type {Direction} */
+        this.moveDirection = "stop";
 
         Ticker.shared.add(this._spriteUpdate);
     }
-    animationSpeed = 0.1;
-    speed = 2;
-    /** @type {Direction} */
-    moveDirection = "stop";
 
     /**
      * Called on each new frame to update the animation of the player according to its current moveDirection.
      * @private
+     * @method
      *
      * @returns {void}
      */
@@ -71,6 +79,7 @@ class Player extends AnimatedSprite {
     /**
      * Moves player smoothly towards a specific directions, to be called on a game-loop
      * @public
+     * @method
      *
      * @param {Ticker} Ticker Info about game loop, time passed since last frame update
      * @param {Direction} direction - direction in which to move the player
@@ -97,6 +106,7 @@ class Player extends AnimatedSprite {
     /**
      * Self explainatory anough i guess
      * @public
+     * @method
      *
      * @param {Direction} direction - instructed direction
      * @param {import("pixi.js").Sprite} object - PIXI sprite that must contain "position" && "bounds" properties
@@ -174,6 +184,7 @@ class Player extends AnimatedSprite {
     /**
      * Function to get position of the player
      * @public
+     * @method
      *
      * @returns {import("pixi.js").Point} - Returns the screen position of the player relative to the canva
      */

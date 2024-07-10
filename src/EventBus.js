@@ -1,4 +1,6 @@
-/** @type {import("./types/eventBus").EventBus} */
+import * as T from "./types/eventBus"
+
+/** @type {T.EventBus} */
 const EventBus = {
     _listeners: {},
 

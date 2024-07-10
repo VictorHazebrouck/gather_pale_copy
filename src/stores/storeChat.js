@@ -22,7 +22,7 @@ export default {
             return this.goToRoom(index);
         }
 
-        /** @type {Room} - temp room holder*/
+        /** @type {Room} */
         const room = {
             _id: uuidv4(),
             userId: userId,
@@ -81,7 +81,7 @@ export default {
 
             const index = this.rooms.findIndex((e) => e.userId === userIdSender);
 
-            /** @type {Message} - temp message holder*/
+            /** @type {Message} */
             const message = {
                 _id: uuidv4(),
                 sender: userIdSender,
@@ -98,7 +98,7 @@ export default {
                 return this.goToRoom(index);
             }
 
-            /** @type {Room} - temp room holder*/
+            /** @type {Room} */
             const room = {
                 _id: uuidv4(),
                 userId: userIdSender,

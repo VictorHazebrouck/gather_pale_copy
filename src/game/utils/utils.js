@@ -13,20 +13,20 @@ async function loadPlayerSprite() {
 
 /**
  * Util function to check if an object is an instance of PlayerOther
- * @param {any} object - game container childs
- * @returns {object is Player} - returns whether the object is of type PlayerOther
+ * @param {any[]} arr - game container childs
+ * @returns {Player[]} - returns array of type Player
  */
-function isPlayer(object) {
-    return object instanceof Player;
+function filterPlayers(arr) {
+    return arr.filter(e => e instanceof Player)
 }
 
 /**
  * Util function to check if an object is an instance of PlayerOther
- * @param {any} object - game container childs
- * @returns {object is PlayerOther} - returns whether the object is of type PlayerOther
+ * @param {any[]} arr - game container childs
+ * @returns {PlayerOther[]} - returns array of type PlayerOther
  */
-function isPlayerOther(object) {
-    return object instanceof PlayerOther;
+function filterPlayerOthers(arr) {
+    return arr.filter(e => e instanceof PlayerOther)
 }
 
-export { isPlayer, isPlayerOther, loadPlayerSprite };
+export { filterPlayers, filterPlayerOthers, loadPlayerSprite };

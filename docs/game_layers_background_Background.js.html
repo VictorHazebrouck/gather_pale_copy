@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>game/layers/background/Background.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Background.html">Background</a></li><li><a href="Game.html">Game</a></li><li><a href="Player.html">Player</a><ul class='methods'><li data-type='method' style='display: none;'><a href="Player.html#getScreenPosition">getScreenPosition</a></li><li data-type='method' style='display: none;'><a href="Player.html#hasCollided">hasCollided</a></li><li data-type='method' style='display: none;'><a href="Player.html#movePlayer">movePlayer</a></li></ul></li><li><a href="PlayerOther.html">PlayerOther</a><ul class='methods'><li data-type='method' style='display: none;'><a href="PlayerOther.html#createPlayer">createPlayer</a></li></ul></li><li><a href="PlayerSelf.html">PlayerSelf</a><ul class='methods'><li data-type='method' style='display: none;'><a href="PlayerSelf.html#createPlayer">createPlayer</a></li><li data-type='method' style='display: none;'><a href="PlayerSelf.html#registerMovementInput">registerMovementInput</a></li></ul></li><li><a href="Socket.html">Socket</a></li><li><a href="db.html">db</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ANameHasChangedEventData">ANameHasChangedEventData</a></li><li><a href="global.html#ChatMessageReceivedEventData">ChatMessageReceivedEventData</a></li><li><a href="global.html#ChatStore">ChatStore</a></li><li><a href="global.html#ConnectionDataEventData">ConnectionDataEventData</a></li><li><a href="global.html#Coordinates">Coordinates</a></li><li><a href="global.html#Direction">Direction</a></li><li><a href="global.html#EventBus">EventBus</a></li><li><a href="global.html#Message">Message</a></li><li><a href="global.html#MoveEventData">MoveEventData</a></li><li><a href="global.html#MoveInstructions">MoveInstructions</a></li><li><a href="global.html#NameChangedEventData">NameChangedEventData</a></li><li><a href="global.html#NewPlayerConnectedEventData">NewPlayerConnectedEventData</a></li><li><a href="global.html#NewPlayerMoveEventData">NewPlayerMoveEventData</a></li><li><a href="global.html#ParticipantsStore">ParticipantsStore</a></li><li><a href="global.html#PlayerCardStore">PlayerCardStore</a></li><li><a href="global.html#PlayerClickEventData">PlayerClickEventData</a></li><li><a href="global.html#PlayerData">PlayerData</a></li><li><a href="global.html#PlayerDataWithCoordinates">PlayerDataWithCoordinates</a></li><li><a href="global.html#PlayerDisconnectdEventData">PlayerDisconnectdEventData</a></li><li><a href="global.html#Room">Room</a></li><li><a href="global.html#SendChatMessageEventData">SendChatMessageEventData</a></li><li><a href="global.html#User">User</a></li><li><a href="global.html#UserStore">UserStore</a></li><li><a href="global.html#UtilsStore">UtilsStore</a></li><li><a href="global.html#disconnectUser">disconnectUser</a></li><li><a href="global.html#filterPlayerOthers">filterPlayerOthers</a></li><li><a href="global.html#filterPlayers">filterPlayers</a></li><li><a href="global.html#formatNow">formatNow</a></li><li><a href="global.html#getRoomsDb">getRoomsDb</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#newChatDb">newChatDb</a></li><li><a href="global.html#newRoomDb">newRoomDb</a></li><li><a href="global.html#newUserDB">newUserDB</a></li><li><a href="global.html#userIdReceiver">userIdReceiver</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">game/layers/background/Background.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Spritesheet, Sprite, Container, Assets } from "pixi.js";
+
+import tilemap from "./tilemap.json";
+import spriteData from "../../assets/backgroundSpritesheet.json";
+
+class Background extends Container {
+    constructor() {
+        super();
+        this.spriteData = spriteData;
+        this.tileMap = tilemap;
+    }
+
+    async generateBackground() {
+        this.rawSpritesheet = await Assets.load("assets/Tiles/topDown_baseTiles.png");
+
+        const spriteSheet = new Spritesheet(this.rawSpritesheet, this.spriteData);
+        await spriteSheet.parse();
+
+        const tileSize = 16;
+        const width = this.tileMap[0].length * tileSize;
+        const height = this.tileMap.length * tileSize;
+        this.height = height;
+        this.width = width;
+
+        //create the map from a matrix
+        for (let i = 0; i &lt; this.tileMap.length; i++) {
+            for (let j = 0; j &lt; this.tileMap[i].length; j++) {
+                /** @todo find a proper way to handle this mess */
+                // @ts-ignore
+                const texture = spriteSheet.textures[`${this.tileMap[i][j]}.png`];
+                const sprite = new Sprite(texture);
+                sprite.position.set(j * tileSize, i * tileSize);
+                this.addChild(sprite);
+            }
+        }
+    }
+}
+
+export default Background;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a> on Wed Jul 10 2024 15:21:09 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

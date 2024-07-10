@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>game/player/Player.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Background.html">Background</a></li><li><a href="Game.html">Game</a></li><li><a href="Player.html">Player</a><ul class='methods'><li data-type='method' style='display: none;'><a href="Player.html#getScreenPosition">getScreenPosition</a></li><li data-type='method' style='display: none;'><a href="Player.html#hasCollided">hasCollided</a></li><li data-type='method' style='display: none;'><a href="Player.html#movePlayer">movePlayer</a></li></ul></li><li><a href="PlayerOther.html">PlayerOther</a><ul class='methods'><li data-type='method' style='display: none;'><a href="PlayerOther.html#createPlayer">createPlayer</a></li></ul></li><li><a href="PlayerSelf.html">PlayerSelf</a><ul class='methods'><li data-type='method' style='display: none;'><a href="PlayerSelf.html#createPlayer">createPlayer</a></li><li data-type='method' style='display: none;'><a href="PlayerSelf.html#registerMovementInput">registerMovementInput</a></li></ul></li><li><a href="Socket.html">Socket</a></li><li><a href="db.html">db</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ANameHasChangedEventData">ANameHasChangedEventData</a></li><li><a href="global.html#ChatMessageReceivedEventData">ChatMessageReceivedEventData</a></li><li><a href="global.html#ChatStore">ChatStore</a></li><li><a href="global.html#ConnectionDataEventData">ConnectionDataEventData</a></li><li><a href="global.html#Coordinates">Coordinates</a></li><li><a href="global.html#Direction">Direction</a></li><li><a href="global.html#EventBus">EventBus</a></li><li><a href="global.html#Message">Message</a></li><li><a href="global.html#MoveEventData">MoveEventData</a></li><li><a href="global.html#MoveInstructions">MoveInstructions</a></li><li><a href="global.html#NameChangedEventData">NameChangedEventData</a></li><li><a href="global.html#NewPlayerConnectedEventData">NewPlayerConnectedEventData</a></li><li><a href="global.html#NewPlayerMoveEventData">NewPlayerMoveEventData</a></li><li><a href="global.html#ParticipantsStore">ParticipantsStore</a></li><li><a href="global.html#PlayerCardStore">PlayerCardStore</a></li><li><a href="global.html#PlayerClickEventData">PlayerClickEventData</a></li><li><a href="global.html#PlayerData">PlayerData</a></li><li><a href="global.html#PlayerDataWithCoordinates">PlayerDataWithCoordinates</a></li><li><a href="global.html#PlayerDisconnectdEventData">PlayerDisconnectdEventData</a></li><li><a href="global.html#Room">Room</a></li><li><a href="global.html#SendChatMessageEventData">SendChatMessageEventData</a></li><li><a href="global.html#User">User</a></li><li><a href="global.html#UserStore">UserStore</a></li><li><a href="global.html#UtilsStore">UtilsStore</a></li><li><a href="global.html#disconnectUser">disconnectUser</a></li><li><a href="global.html#filterPlayerOthers">filterPlayerOthers</a></li><li><a href="global.html#filterPlayers">filterPlayers</a></li><li><a href="global.html#formatNow">formatNow</a></li><li><a href="global.html#getRoomsDb">getRoomsDb</a></li><li><a href="global.html#initGame">initGame</a></li><li><a href="global.html#newChatDb">newChatDb</a></li><li><a href="global.html#newRoomDb">newRoomDb</a></li><li><a href="global.html#newUserDB">newUserDB</a></li><li><a href="global.html#userIdReceiver">userIdReceiver</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">game/player/Player.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Assets, Spritesheet, AnimatedSprite, Ticker, Point } from "pixi.js";
+
+class Player extends AnimatedSprite {
+    /**
+     * @param {PlayerDataWithCoordinates} playerData - data required to initialize player
+     * @param {Spritesheet} spriteSheet - data required to initialize player
+     */
+    constructor({ userId, userName, x, y }, spriteSheet) {
+        super(spriteSheet.animations["idle"]);
+        this.spriteSheet = spriteSheet;
+
+        /** @type {PlayerData} */
+        this.playerInformation = {
+            userId: userId,
+            userName: userName,
+        };
+
+        this.position.x = x;
+        this.position.y = y;
+
+        /** @constant */
+        this.anchor.set(0.5, 0.5);
+        /** @constant */
+        this.animationSpeed = 0.1;
+        /** @constant */
+        this.speed = 2;
+
+        /** @type {Direction} */
+        this.moveDirection = "stop";
+
+        Ticker.shared.add(this._spriteUpdate);
+    }
+
+    /**
+     * Called on each new frame to update the animation of the player according to its current moveDirection.
+     * @private
+     * @method
+     *
+     * @returns {void}
+     */
+    _spriteUpdate = () => {
+        //early exit for the most frequently present case
+        if (this.moveDirection === "stop") {
+            this.stop();
+            return;
+        }
+
+        switch (this.moveDirection) {
+            case "up":
+                // @ts-ignore
+                if (this.textures[0].uid !== this.spriteSheet.animations["move_back"][0].uid) {
+                    this.textures = this.spriteSheet.animations["move_back"];
+                }
+                break;
+            case "down":
+                // @ts-ignore
+                if (this.textures[0].uid !== this.spriteSheet.animations["move_front"][0].uid) {
+                    this.textures = this.spriteSheet.animations["move_front"];
+                }
+                break;
+            case "left":
+                // @ts-ignore
+                if (this.textures[0].uid !== this.spriteSheet.animations["move_left"][0].uid) {
+                    this.textures = this.spriteSheet.animations["move_left"];
+                }
+                break;
+            case "right":
+                // @ts-ignore
+                if (this.textures[0].uid !== this.spriteSheet.animations["move_right"][0].uid) {
+                    this.textures = this.spriteSheet.animations["move_right"];
+                }
+                break;
+            default:
+                break;
+        }
+        this.play();
+    };
+
+    /**
+     * Moves player smoothly towards a specific directions, to be called on a game-loop
+     * @public
+     * @method
+     *
+     * @param {Ticker} Ticker Info about game loop, time passed since last frame update
+     * @param {Direction} direction - direction in which to move the player
+     */
+    movePlayer = ({ deltaTime }, direction) => {
+        switch (direction) {
+            case "up":
+                this.position.y -= this.speed * deltaTime;
+                break;
+            case "down":
+                this.position.y += this.speed * deltaTime;
+                break;
+            case "left":
+                this.position.x -= this.speed * deltaTime;
+                break;
+            case "right":
+                this.position.x += this.speed * deltaTime;
+                break;
+            default:
+                break;
+        }
+    };
+
+    /**
+     * Self explainatory anough i guess
+     * @public
+     * @method
+     *
+     * @param {Direction} direction - instructed direction
+     * @param {import("pixi.js").Sprite} object - PIXI sprite that must contain "position" &amp;&amp; "bounds" properties
+     * @returns {boolean} returns true if player has collided
+     */
+    hasCollided = (direction, object) => {
+        const margin = 2;
+
+        /** Calculate bounds of the player */
+        const playerBounds = {
+            left: this.x + this.bounds.minX,
+            right: this.x + this.bounds.maxX,
+            top: this.y + this.bounds.minY,
+            bottom: this.y + this.bounds.maxY,
+        };
+
+        /** Calculate bounds of the object */
+        const objectBounds = {
+            left: object.x + object.bounds.minX,
+            right: object.x + object.bounds.maxX,
+            top: object.y + object.bounds.minY,
+            bottom: object.y + object.bounds.maxY,
+        };
+
+        //switch for smoother movement and separate margin application to each direction,
+        //avoiding player getting stuck on perpendicular movement change after colliding
+        switch (direction) {
+            case "up":
+                if (
+                    playerBounds.top &lt; objectBounds.bottom &amp;&amp;
+                    playerBounds.top > objectBounds.top &amp;&amp;
+                    playerBounds.right > objectBounds.left + margin &amp;&amp;
+                    playerBounds.left &lt; objectBounds.right - margin
+                ) {
+                    return true;
+                }
+                break;
+            case "down":
+                if (
+                    playerBounds.bottom > objectBounds.top &amp;&amp;
+                    playerBounds.bottom &lt; objectBounds.bottom &amp;&amp;
+                    playerBounds.right > objectBounds.left + margin &amp;&amp;
+                    playerBounds.left &lt; objectBounds.right - margin
+                ) {
+                    return true;
+                }
+                break;
+            case "left":
+                if (
+                    playerBounds.left &lt; objectBounds.right &amp;&amp;
+                    playerBounds.left > objectBounds.left &amp;&amp;
+                    playerBounds.bottom > objectBounds.top + margin &amp;&amp;
+                    playerBounds.top &lt; objectBounds.bottom - margin
+                ) {
+                    return true;
+                }
+                break;
+            case "right":
+                if (
+                    playerBounds.right > objectBounds.left &amp;&amp;
+                    playerBounds.right &lt; objectBounds.right &amp;&amp;
+                    playerBounds.bottom > objectBounds.top + margin &amp;&amp;
+                    playerBounds.top &lt; objectBounds.bottom - margin
+                ) {
+                    return true;
+                }
+                break;
+            default:
+                break;
+        }
+
+        return false;
+    };
+
+    /**
+     * Function to get position of the player
+     * @public
+     * @method
+     *
+     * @returns {import("pixi.js").Point} - Returns the screen position of the player relative to the canva
+     */
+    getScreenPosition = () => {
+        const globalPosition = this.toGlobal(new Point(0, 0));
+        return globalPosition;
+    };
+}
+
+export default Player;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a> on Wed Jul 10 2024 15:21:09 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

@@ -1,18 +1,15 @@
 import { Spritesheet, Ticker } from "pixi.js";
-import { isPlayer, loadPlayerSprite } from "../utils/utils";
+import { filterPlayers, loadPlayerSprite } from "../utils/utils";
 import EventBus from "../../EventBus";
 import Player from "./Player";
 
 class PlayerOther extends Player {
     /**
-     * @param {PlayerData & Coordinates} data - player data necessary to init the player
+     * @param {PlayerDataWithCoordinates} data - player data necessary to init the player
      * @param {Spritesheet} spriteSheet - spritesheet
      */
-    constructor({ x, y, ...rest }, spriteSheet) {
-        super({ ...rest }, spriteSheet);
-
-        this.position.x = x;
-        this.position.y = y;
+    constructor(data, spriteSheet) {
+        super(data, spriteSheet);
 
         this.interactive = true;
         this._registerOnClickActions();
@@ -77,14 +74,14 @@ class PlayerOther extends Player {
     /**
      * Handles new player creation, avoids creating duplicates
      * @static
+     * @method
      *
-     * @param {PlayerData & Coordinates} playerData - data for the player we're trying ot pass in
+     * @param {PlayerDataWithCoordinates} playerData - data for the player we're trying ot pass in
      * @param {import("pixi.js").ContainerChild[]} siblings - data from all current players in the container
      * @returns {Promise<PlayerOther | false>} - returns the player instance or false
      */
     static createPlayer = async (playerData, siblings) => {
-        /** @type {Player[]} */
-        const players = siblings.filter(isPlayer);
+        const players = filterPlayers(siblings);
 
         for (const player of players) {
             if (player?.playerInformation?.userId === playerData.userId) {
