@@ -1,7 +1,17 @@
+/** @module game/player/Player */
+
 import { Assets, Spritesheet, AnimatedSprite, Ticker, Point } from "pixi.js";
 
+/**
+ * Player class that extends AnimatedSprite.
+ *
+ * @class
+ * @extends AnimatedSprite
+ */
 class Player extends AnimatedSprite {
     /**
+     * @constructor
+     *
      * @param {PlayerDataWithCoordinates} playerData - data required to initialize player
      * @param {Spritesheet} spriteSheet - data required to initialize player
      */

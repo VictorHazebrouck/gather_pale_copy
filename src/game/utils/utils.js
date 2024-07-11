@@ -17,7 +17,7 @@ async function loadPlayerSprite() {
  * @returns {Player[]} - returns array of type Player
  */
 function filterPlayers(arr) {
-    return arr.filter(e => e instanceof Player)
+    return arr.filter((e) => e instanceof Player);
 }
 
 /**
@@ -26,7 +26,7 @@ function filterPlayers(arr) {
  * @returns {PlayerOther[]} - returns array of type PlayerOther
  */
 function filterPlayerOthers(arr) {
-    return arr.filter(e => e instanceof PlayerOther)
+    return arr.filter((e) => e instanceof PlayerOther);
 }
 
 export { filterPlayers, filterPlayerOthers, loadPlayerSprite };

@@ -4,6 +4,6 @@ import Alpine from "alpinejs";
 import Socket from "./src/Socket";
 import initGame from "./src/game/main";
 
-new Socket(Alpine.store("user"))
+new Socket(Alpine.store("user"));
 
-initGame(Alpine.store("user"))
+initGame(Alpine.store("user"));

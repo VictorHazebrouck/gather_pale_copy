@@ -3,8 +3,9 @@
     "recurseDepth": 10,
     "opts": {
         "template": "node_modules/docdash",
-        "destination": "./docs",
-        "recursive": true
+        "destination": "./dist/docs",
+        "recursive": true,
+        "verbose": true
     },
     "source": {
         "includePattern": ".+\\.js(doc|x)?$",
@@ -16,11 +17,11 @@
         "dictionaries": ["jsdoc", "closure"]
     },
     "templates": {
-        "cleverLinks": false,
-        "monospaceLinks": false
+        "cleverLinks": true,
+        "monospaceLinks": true
     },
     "typescript": {
-        "moduleRoot": "./src/"
+        "moduleRoot": "src"
     },
     "docdash": {
         "typedefs": true,

@@ -1,10 +1,17 @@
+/** @module game/player/PlayerSelf */
+
 import { Ticker, Spritesheet } from "pixi.js";
 import EventBus from "../../EventBus";
 import Player from "./Player";
 import Alpine from "alpinejs";
-import PlayerOther from "./PlayerOther";
 import { filterPlayerOthers, loadPlayerSprite } from "../utils/utils";
 
+/**
+ * PlayerSelf class that extends Player.
+ *
+ * @class
+ * @extends Player
+ */
 class PlayerSelf extends Player {
     /**
      * @constructor
@@ -46,7 +53,7 @@ class PlayerSelf extends Player {
         if (this.moveDirection === "stop") {
             return;
         }
-        
+
         const collidableObjects = filterPlayerOthers(this.parent.children);
 
         /** Check for collision with each sibling objects */
@@ -80,7 +87,7 @@ class PlayerSelf extends Player {
 
     /**
      * Sends movement instructions to the server and to self only when a change of direction occurs
-     * @private 
+     * @private
      * @method
      */
     _handleMovementInput = () => {
@@ -102,7 +109,7 @@ class PlayerSelf extends Player {
     /**
      * Adds event listeners for arrow keys, queues/removes directions instructions under queuedDirections
      * Initialized by the component itself to arrow keys, calling this elsewhere will "stack" not overwrite
-     * @public 
+     * @public
      * @method
      *
      * @param {string} up - up direction movement key code
@@ -171,7 +178,7 @@ class PlayerSelf extends Player {
 
     /**
      * Handles new player creation, avoids creating duplicates
-     * @static 
+     * @static
      * @method
      *
      * @param {UserStore} playerData

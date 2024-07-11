@@ -8,7 +8,7 @@ import PlayerOther from "./player/PlayerOther";
 /**
  * Initialization function
  *
- * @param {UserStore} playerSelfData 
+ * @param {UserStore} playerSelfData
  * @returns {Promise<void>}
  */
 async function initGame(playerSelfData) {
@@ -57,4 +57,4 @@ async function initGame(playerSelfData) {
     });
 }
 
-export default initGame
+export default initGame;
