@@ -1,5 +1,3 @@
-/** @module */
-
 import { Spritesheet, Ticker } from "pixi.js";
 import { filterPlayers, loadPlayerSprite } from "../utils/utils";
 import EventBus from "../../EventBus";
@@ -7,8 +5,11 @@ import Player from "./Player";
 
 
 /**
+ * Class
+ * 
  * @category GAME
  * @subcategory PLAYER
+ * @extends Player
  */
 class PlayerOther extends Player {
     /**

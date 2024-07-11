@@ -3,6 +3,13 @@ import { Spritesheet, Sprite, Container, Assets } from "pixi.js";
 import tilemap from "./tilemap.json";
 import spriteData from "../../assets/backgroundSpritesheet.json";
 
+/**
+ * Player class that extends AnimatedSprite.
+ *
+ * @category GAME
+ * @subcategory LAYERS
+ * @extends Container
+ */
 class Background extends Container {
     constructor() {
         super();
