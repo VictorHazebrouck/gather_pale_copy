@@ -2,7 +2,8 @@
     "plugins": [
         "node_modules/better-docs/category",
         "node_modules/jsdoc-plugin-typescript",
-        "plugins/markdown"
+        "plugins/markdown",
+        "plugins/summarize"
     ],
     "recurseDepth": 10,
     "opts": {
@@ -21,7 +22,6 @@
         "dictionaries": ["jsdoc", "closure"]
     },
     "templates": {
-        "cleverLinks": true,
         "monospaceLinks": true,
         "search": true,
         "better-docs": {

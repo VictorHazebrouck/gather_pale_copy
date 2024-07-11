@@ -15,6 +15,8 @@ class Game extends Container {
 
     /**
      * Attaches the view to an object, following his every move
+     * 
+     * @method
      * @param {Container} obj PIXI object containing a posision property
      */
     attachCameraToObject = (obj) => {
@@ -25,6 +27,7 @@ class Game extends Container {
      * Moves the camera lul
      * @private
      *
+     * @method
      * @param {Container} obj PIXI object containing a posision property
      */
     _moveCamera = (obj) => {
@@ -39,6 +42,7 @@ class Game extends Container {
      * @todo smoothen the camerma zoom,
      *  - currently seems to focus towards its own anchor(0,0)
      *
+     * @method
      * @param {WheelEvent} e event triggered when using mouse wheel
      */
     _zoomCamera = (e) => {

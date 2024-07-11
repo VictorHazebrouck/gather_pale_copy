@@ -11,7 +11,6 @@ import { filterPlayerOthers, loadPlayerSprite } from "../utils/utils";
  *
  * @category GAME
  * @subcategory PLAYER
- * @extends Player
  */
 class PlayerSelf extends Player {
     /**

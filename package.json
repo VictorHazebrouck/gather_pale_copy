@@ -9,7 +9,7 @@
         "preview": "vite preview",
         "format": "prettier --write .",
         "lint": "eslint .",
-        "docs": "jsdoc src/ -c jsdocConfig.json -r"
+        "docs": "jsdoc src/ -c jsdocConfig.json -r --access \"all\""
     },
     "devDependencies": {
         "eslint": "^9.4.0",

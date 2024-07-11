@@ -1,3 +1,4 @@
+/** @module */
 import { Spritesheet, Ticker } from "pixi.js";
 import { filterPlayers, loadPlayerSprite } from "../utils/utils";
 import EventBus from "../../EventBus";
@@ -9,7 +10,6 @@ import Player from "./Player";
  * 
  * @category GAME
  * @subcategory PLAYER
- * @extends Player
  */
 class PlayerOther extends Player {
     /**
@@ -25,7 +25,11 @@ class PlayerOther extends Player {
         Ticker.shared.add(this._playerMovement);
     }
 
-    /** @param {Ticker} ticker - data about the update loop */
+    /** 
+     * @private
+     * @param {Ticker} ticker - data about the update loop
+     * @method
+     */
     _playerMovement = (ticker) => {
         /** dont perform calculations of player is stopped */
         if (this.moveDirection === "stop") {
