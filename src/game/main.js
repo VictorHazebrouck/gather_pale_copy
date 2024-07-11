@@ -1,3 +1,8 @@
+/** 
+ * @module
+ * @category GAME
+ */
+
 import { Application, Ticker } from "pixi.js";
 import Background from "./layers/background/Background";
 import EventBus from "../EventBus";

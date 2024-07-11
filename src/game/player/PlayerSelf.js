@@ -1,4 +1,4 @@
-/** @module game/player/PlayerSelf */
+/** @module */
 
 import { Ticker, Spritesheet } from "pixi.js";
 import EventBus from "../../EventBus";
@@ -8,6 +8,9 @@ import { filterPlayerOthers, loadPlayerSprite } from "../utils/utils";
 
 /**
  * PlayerSelf class that extends Player.
+ *
+ * @category GAME
+ * @subcategory PLAYER
  *
  * @class
  * @extends Player

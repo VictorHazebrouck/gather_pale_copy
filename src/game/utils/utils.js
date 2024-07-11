@@ -1,3 +1,8 @@
+/** 
+ * @module
+ * @category GAME
+ */
+
 import { Spritesheet, Assets } from "pixi.js";
 import Player from "../player/Player";
 import PlayerOther from "../player/PlayerOther";

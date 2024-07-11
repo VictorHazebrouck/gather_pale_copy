@@ -3,6 +3,8 @@ import EventBus from "./EventBus";
 
 /**
  * Represents a singleton class for managing Socket.IO connections.
+ *
+ * @catgory EventBus
  */
 class Socket {
     /**

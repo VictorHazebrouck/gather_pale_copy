@@ -1,10 +1,15 @@
-/** @module game/player/PlayerOther */
+/** @module */
 
 import { Spritesheet, Ticker } from "pixi.js";
 import { filterPlayers, loadPlayerSprite } from "../utils/utils";
 import EventBus from "../../EventBus";
 import Player from "./Player";
 
+
+/**
+ * @category GAME
+ * @subcategory PLAYER
+ */
 class PlayerOther extends Player {
     /**
      * @param {PlayerDataWithCoordinates} data - player data necessary to init the player

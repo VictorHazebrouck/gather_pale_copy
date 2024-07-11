@@ -1,8 +1,12 @@
 {
-    "plugins": ["plugins/markdown", "node_modules/jsdoc-plugin-typescript"],
+    "plugins": [
+        "node_modules/better-docs/category",
+        "node_modules/jsdoc-plugin-typescript",
+        "plugins/markdown"
+    ],
     "recurseDepth": 10,
     "opts": {
-        "template": "node_modules/docdash",
+        "template": "node_modules/better-docs",
         "destination": "./dist/docs",
         "recursive": true,
         "verbose": true
@@ -18,14 +22,23 @@
     },
     "templates": {
         "cleverLinks": true,
-        "monospaceLinks": true
+        "monospaceLinks": true,
+        "search": true,
+        "better-docs": {
+            "name": "Gather clone documentation",
+            "navLinks": [
+                {
+                    "label": "Github",
+                    "href": "https://github.com/SoftwareBrothers/admin-bro"
+                },
+                {
+                    "label": "Example Application",
+                    "href": "https://admin-bro-example-app-staging.herokuapp.com/admin"
+                }
+            ]
+        }
     },
     "typescript": {
         "moduleRoot": "src"
-    },
-    "docdash": {
-        "typedefs": true,
-        "search": true,
-        "collapse": true
     }
 }

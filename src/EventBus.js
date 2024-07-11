@@ -1,7 +1,11 @@
-/** @module EventBus */
+/** 
+ * @module
+ * @category EVENT_BUS
+ */
 
 /**
  * List of all event names with their corresponding data to be passed around.
+ *
  * @typedef {Object} EventsList
  * @property {NewPlayerConnectedEventData} newPlayerConnected
  * @property {ConnectionDataEventData} connectionData
@@ -13,74 +17,12 @@
  * @property {NameChangedEventData} nameChanged
  * @property {ANameHasChangedEventData} aNameHasChanged
  * @property  {PlayerClickEventData} playerClick
+ * 
+ * @category EVEN
  */
 
 /**
- * Event bus to handle events
- * @class
- *
- */
-class EventBus {
-    constructor() {
-        /** @type {Record<string, Array<function>>} */
-        this._listeners = {};
-    }
-
-    /**
-     * Subscribe a callback function to an event.
-     *
-     * @template {keyof EventsList} EventName
-     * @template {EventsList[EventName]} EventData
-     *
-     * @param {EventName} event - The event name.
-     * @param {function(EventData): void} listener - The callback function to handle the event.
-     */
-    subscribe(event, listener) {
-        if (!this._listeners[event]) {
-            this._listeners[event] = [];
-        }
-        this._listeners[event].push(listener);
-    }
-
-    /**
-     * Unsubscribe a callback function from an event.
-     *
-     * @template {keyof EventsList} EventName
-     * @template {EventsList[EventName]} EventData
-     *
-     * @param {EventName} event - The event name.
-     * @param {function(EventData): void} listener - The callback function to handle the event.
-     */
-    unsubscribe(event, listener) {
-        if (!this._listeners[event]) {
-            return;
-        }
-        this._listeners[event] = this._listeners[event].filter((l) => l !== listener);
-    }
-
-    /**
-     * Publish an event.
-     *
-     * @template {keyof EventsList} EventName
-     * @template {EventsList[EventName]} EventData
-     *
-     * @param {EventName} event - The event name.
-     * @param {EventData} data - The callback function to handle the event.
-     *
-     * @see {EventsList}
-     */
-    publish(event, data) {
-        if (!this._listeners[event]) return;
-
-        this._listeners[event].forEach((listener) => listener(data));
-    }
-}
-
-const eventBus = new EventBus();
-
-export default eventBus;
-
-/**
+ * @event
  * @typedef {Object} SendChatMessageEventData
  * @property {string} userIdReceiver - The user ID of the message receiver.
  * @property {string} userNameReceiver - The username of the message receiver.
@@ -142,3 +84,67 @@ export default eventBus;
  * @property {PlayerData} playerInformation
  * @property {Coordinates} position
  */
+
+
+/**
+ * Centralized events handler
+ *
+ * @category EVENT_BUS
+ */
+class EventBus {
+    constructor() {
+        /** @type {Record<string, Array<function>>} */
+        this._listeners = {};
+    }
+
+    /**
+     * Subscribe a callback function to an event.
+     *
+     * @template {keyof EventsList} EventName
+     * @template {EventsList[EventName]} EventData
+     *
+     * @param {EventName} event - The event name.
+     * @param {function(EventData): void} listener - The callback function to handle the event.
+     */
+    subscribe(event, listener) {
+        if (!this._listeners[event]) {
+            this._listeners[event] = [];
+        }
+        this._listeners[event].push(listener);
+    }
+
+    /**
+     * Unsubscribe a callback function from an event.
+     *
+     * @template {keyof EventsList} EventName
+     * @template {EventsList[EventName]} EventData
+     *
+     * @param {EventName} event - The event name.
+     * @param {function(EventData): void} listener - The callback function to handle the event.
+     */
+    unsubscribe(event, listener) {
+        if (!this._listeners[event]) {
+            return;
+        }
+        this._listeners[event] = this._listeners[event].filter((l) => l !== listener);
+    }
+
+    /**
+     * Publish an event.
+     *
+     * @template {keyof EventsList} EventName
+     * @template {EventsList[EventName]} EventData
+     *
+     * @param {EventName} event - The event name.
+     * @param {EventData} data - The callback function to handle the event.
+     */
+    publish(event, data) {
+        if (!this._listeners[event]) return;
+
+        this._listeners[event].forEach((listener) => listener(data));
+    }
+}
+
+const eventBus = new EventBus();
+
+export default eventBus;

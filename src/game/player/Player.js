@@ -1,10 +1,11 @@
-/** @module game/player/Player */
-
+/** @module */
 import { Assets, Spritesheet, AnimatedSprite, Ticker, Point } from "pixi.js";
 
 /**
  * Player class that extends AnimatedSprite.
  *
+ * @category GAME
+ * @subcategory PLAYER
  * @class
  * @extends AnimatedSprite
  */
