@@ -1,8 +1,4 @@
-/**
- * @category GAME
- * @module
- * @ignore
- */
+/** @ignore @module */
 import { Spritesheet, AnimatedSprite, Ticker, Point } from "pixi.js";
 
 /**

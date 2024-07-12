@@ -1,8 +1,4 @@
-/**
- * @category GAME
- * @module
- * @ignore
- */
+/** @ignore @module */
 import { Spritesheet, Ticker } from "pixi.js";
 import { filterPlayers, loadPlayerSprite } from "../utils/utils";
 import EventBus from "../../EventBus";

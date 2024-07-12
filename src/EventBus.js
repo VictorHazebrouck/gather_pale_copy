@@ -1,8 +1,4 @@
-/**
- * @module
- * @category EVENT_BUS
- * @ignore
- */
+/** @ignore @module */
 
 /**
  * Centralized events handler

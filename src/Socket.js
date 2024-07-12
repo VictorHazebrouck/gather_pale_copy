@@ -1,8 +1,4 @@
-/**
- * @category GAME
- * @module
- * @ignore
- */
+/** @ignore @module */
 import { io } from "socket.io-client";
 import EventBus from "./EventBus";
 
@@ -27,7 +23,7 @@ class Socket {
     /**
      * Initialize capture of socket events sent by the server,
      * Which will in turn get published to the EventBus
-     * 
+     *
      * @method
      */
     initReceivers() {
@@ -51,7 +47,7 @@ class Socket {
     /**
      * Initialize capture of events sent by the EventBus,
      * Which will in turn get published to the server
-     * 
+     *
      * @method
      */
     initEmiters() {
