@@ -2,7 +2,7 @@
 
 import { Ticker, Spritesheet } from "pixi.js";
 import EventBus from "../../EventBus";
-import Player from "./Player";
+import Player from "./PlayerBase";
 import Alpine from "alpinejs";
 import { filterPlayerOthers, loadPlayerSprite } from "../utils/utils";
 

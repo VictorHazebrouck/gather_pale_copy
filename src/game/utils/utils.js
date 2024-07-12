@@ -4,7 +4,7 @@
  */
 
 import { Spritesheet, Assets } from "pixi.js";
-import Player from "../player/Player";
+import Player from "../player/PlayerBase";
 import PlayerOther from "../player/PlayerOther";
 
 import spriteData from "../assets/characterSpritesheet.json";
