@@ -2,17 +2,17 @@
 
 import { Ticker, Spritesheet } from "pixi.js";
 import EventBus from "../../EventBus";
-import Player from "./PlayerBase";
+import PlayerBase from "./PlayerBase";
 import Alpine from "alpinejs";
 import { filterPlayerOthers, loadPlayerSprite } from "../utils/utils";
 
 /**
- * PlayerSelf class that extends Player.
+ * PlayerSelf class that extends PlayerBase.
  *
  * @category GAME
  * @subcategory PLAYER
  */
-class PlayerSelf extends Player {
+class PlayerSelf extends PlayerBase {
     /**
      * @constructor
      * @param {UserStore} playerSelfData - spritesheet

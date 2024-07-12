@@ -7,7 +7,7 @@ import { Spritesheet, AnimatedSprite, Ticker, Point } from "pixi.js";
  * @category GAME
  * @subcategory PLAYER
  */
-class Player extends AnimatedSprite {
+class PlayerBase extends AnimatedSprite {
     /**
      * @constructor
      *
@@ -203,4 +203,4 @@ class Player extends AnimatedSprite {
     };
 }
 
-export default Player;
+export default PlayerBase;

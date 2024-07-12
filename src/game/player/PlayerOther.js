@@ -2,7 +2,7 @@
 import { Spritesheet, Ticker } from "pixi.js";
 import { filterPlayers, loadPlayerSprite } from "../utils/utils";
 import EventBus from "../../EventBus";
-import Player from "./PlayerBase";
+import PlayerBase from "./PlayerBase";
 
 
 /**
@@ -11,7 +11,7 @@ import Player from "./PlayerBase";
  * @category GAME
  * @subcategory PLAYER
  */
-class PlayerOther extends Player {
+class PlayerOther extends PlayerBase {
     /**
      * @param {PlayerDataWithCoordinates} data - player data necessary to init the player
      * @param {Spritesheet} spriteSheet - spritesheet
