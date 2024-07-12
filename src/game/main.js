@@ -5,10 +5,8 @@
 
 import { Application, Ticker } from "pixi.js";
 import Background from "./layers/background/Background";
-import EventBus from "../EventBus";
 import Game from "./game/Game";
-import PlayerSelf from "./player/PlayerSelf";
-import PlayerOther from "./player/PlayerOther";
+import PlayersLayer from "./layers/players/PlayersLayer";
 
 /**
  * Initialization function
@@ -38,28 +36,8 @@ async function initGame(playerSelfData) {
     await background.generateBackground();
     game.addChild(background);
 
-    //init self player and attach the camera to it
-    const player = await PlayerSelf.createPlayer(playerSelfData);
-    player.registerMovementInput();
-    //player.registerMovementInput("KeyW","KeyS","KeyA","KeyD")
-
-    game.addChild(player);
-    game.attachCameraToObject(player);
-
-    //handle first connection, get current game state from server
-    EventBus.subscribe("connectionData", async (data) => {
-        for (let i = 0; i < data.Players.length; i++) {
-            const player = await PlayerOther.createPlayer(data.Players[i], game.children);
-
-            player && game.addChild(player);
-        }
-    });
-
-    //handle new players connection, get new player's data
-    EventBus.subscribe("newPlayerConnected", async (newPlayerData) => {
-        const player = await PlayerOther.createPlayer(newPlayerData, game.children);
-        player && game.addChild(player);
-    });
+    const players = new PlayersLayer(playerSelfData, game)
+    game.addChild(players)
 }
 
 export default initGame;

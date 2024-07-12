@@ -1,4 +1,7 @@
-/** @ignore @module */
+/**
+ * @module
+ * @ignore
+ */
 
 /**
  * Centralized events handler

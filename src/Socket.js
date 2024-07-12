@@ -1,4 +1,7 @@
-/** @ignore @module */
+/**
+ * @module
+ * @ignore
+ */
 import { io } from "socket.io-client";
 import EventBus from "./EventBus";
 

@@ -1,6 +1,6 @@
-/** 
- * @module
- * @alias PlayerBase
+/**
+ * @module 
+ * @ignore
  */
 import { Spritesheet, AnimatedSprite, Ticker, Point } from "pixi.js";
 

@@ -1,3 +1,8 @@
+/**
+ * @module
+ * @ignore
+ */
+
 import { Spritesheet, Sprite, Container, Assets } from "pixi.js";
 
 import tilemap from "./tilemap.json";
