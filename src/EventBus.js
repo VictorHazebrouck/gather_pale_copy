@@ -1,6 +1,7 @@
 /**
  * @module
  * @category EVENT_BUS
+ * @ignore
  */
 
 /**

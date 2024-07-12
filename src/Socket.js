@@ -1,6 +1,7 @@
-/** 
+/**
+ * @category GAME
  * @module
- * @category SOCKET
+ * @ignore
  */
 import { io } from "socket.io-client";
 import EventBus from "./EventBus";
