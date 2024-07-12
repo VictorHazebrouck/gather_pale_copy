@@ -29,11 +29,11 @@
             "navLinks": [
                 {
                     "label": "Github",
-                    "href": "https://github.com/SoftwareBrothers/admin-bro"
+                    "href": "https://github.com/VictorHazebrouck/gather_pale_copy"
                 },
                 {
-                    "label": "Example Application",
-                    "href": "https://admin-bro-example-app-staging.herokuapp.com/admin"
+                    "label": "Deployment",
+                    "href": "https://gather-pale-copy.vercel.app/"
                 }
             ]
         }

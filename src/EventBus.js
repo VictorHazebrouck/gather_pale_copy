@@ -1,4 +1,4 @@
-/** 
+/**
  * @module
  * @category EVENT_BUS
  */
@@ -17,12 +17,9 @@
  * @property {NameChangedEventData} nameChanged
  * @property {ANameHasChangedEventData} aNameHasChanged
  * @property  {PlayerClickEventData} playerClick
- * 
- * @category EVEN
  */
 
 /**
- * @event
  * @typedef {Object} SendChatMessageEventData
  * @property {string} userIdReceiver - The user ID of the message receiver.
  * @property {string} userNameReceiver - The username of the message receiver.
@@ -30,6 +27,10 @@
  * @property {string} userNameSender - The username of the message sender.
  * @property {string} value - The message content.
  * @property {string} time - The time when the message was sent, formatted as a string.
+ *
+ * @event sendChatMessage
+ * @type {SendChatMessageEventData}
+ * @category EVENT_BUS
  */
 
 /**
@@ -38,6 +39,10 @@
  * @property {string} userNameSender - The username of the message sender.
  * @property {string} value - The message content.
  * @property {string} time - The time when the message was sent.
+ *
+ * @event chatMessageReceived
+ * @type {SendChatMessageEventData}
+ * @category EVENT_BUS
  */
 
 /**
@@ -46,6 +51,10 @@
  * @property {Direction} direction - direction in which the player wishes to move
  * @property {number} x - x coordinaates at the moment of emission
  * @property {number} y - y coordinaates at the moment of emission
+ *
+ * @event move
+ * @type {MoveEventData}
+ * @category EVENT_BUS
  */
 
 /**
@@ -54,37 +63,66 @@
  * @property {Direction} direction - direction in which the player wishes to move
  * @property {number} x - x coordinaates at the moment of emission
  * @property {number} y - y coordinaates at the moment of emission
+ *
+ * @event newPlayerMove
+ * @type {NewPlayerMoveEventData}
+ * @category EVENT_BUS
  */
 
-/** @typedef {PlayerDataWithCoordinates} NewPlayerConnectedEventData*/
+/**
+ * @typedef {PlayerDataWithCoordinates} NewPlayerConnectedEventData
+ *
+ * @event newPlayerConnected
+ * @type {NewPlayerConnectedEventData}
+ * @category EVENT_BUS
+ */
 
 /**
  * @typedef {Object} ConnectionDataEventData
  * @property {PlayerDataWithCoordinates[]} Players
+ *
+ * @event connectionData
+ * @type {ConnectionDataEventData}
+ * @category EVENT_BUS
  */
 
 /**
  * @typedef {Object} PlayerDisconnectdEventData
  * @property {string} userId
+ *
+ * @event playerDisconnected
+ * @type {PlayerDisconnectdEventData}
+ * @category EVENT_BUS
  */
 
 /**
  * @typedef {Object} NameChangedEventData
  * @property {string} newName
+ *
+ * @event nameChanged
+ * @type {NameChangedEventData}
+ * @category EVENT_BUS
  */
 
 /**
  * @typedef {Object} ANameHasChangedEventData
  * @property {string} newName
  * @property {string} userId
+ *
+ * @event aNameHasChanged
+ * @type {ANameHasChangedEventData}
+ * @category EVENT_BUS
  */
 
 /**
  * @typedef {Object} PlayerClickEventData
  * @property {PlayerData} playerInformation
  * @property {Coordinates} position
+ *
+ * @event playerClick
+ * @type {PlayerClickEventData}
+ * @category EVENT_BUS
  */
-
 
 /**
  * Centralized events handler
@@ -136,7 +174,7 @@ class EventBus {
      * @template {EventsList[EventName]} EventData
      *
      * @param {EventName} event - The event name.
-     * @param {EventData} data - The callback function to handle the event.
+     * @param {EventData} data - The data to be passed on through the event.
      */
     publish(event, data) {
         if (!this._listeners[event]) return;

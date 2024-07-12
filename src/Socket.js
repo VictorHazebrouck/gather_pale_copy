@@ -1,10 +1,14 @@
+/** 
+ * @module
+ * @category SOCKET
+ */
 import { io } from "socket.io-client";
 import EventBus from "./EventBus";
 
 /**
- * Represents a singleton class for managing Socket.IO connections.
+ * Socket manager class
  *
- * @catgory EventBus
+ * @category SOCKET
  */
 class Socket {
     /**
@@ -19,6 +23,12 @@ class Socket {
         this.initEmiters();
     }
 
+    /**
+     * Initialize capture of socket events sent by the server,
+     * Which will in turn get published to the EventBus
+     * 
+     * @method
+     */
     initReceivers() {
         this.socket.on("newPlayerConnected", (data) => {
             EventBus.publish("newPlayerConnected", data);
@@ -37,6 +47,12 @@ class Socket {
         });
     }
 
+    /**
+     * Initialize capture of events sent by the EventBus,
+     * Which will in turn get published to the server
+     * 
+     * @method
+     */
     initEmiters() {
         EventBus.subscribe("sendChatMessage", (data) => {
             this.socket.emit("chatMessage", data);
