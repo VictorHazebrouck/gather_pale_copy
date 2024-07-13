@@ -64,9 +64,10 @@
  * @property {string} userId - The user ID associated with the card.
  * @property {string} userName - The user name associated with the card.
  * @property {boolean} isCardVisible - Indicates if the card is visible.
- * @property {function(PlayerData, Coordinates): void} showCard - Shows the card at a specified position with user details.
+ * @property {(function(any): void) | null} showCard - Shows the card at a specified position with user details.
  * @property {function(): void} hideCard - Hides the card.
  * @property {function(): void} sendMessage - Sends a message using user details via Alpine store.
+ * @property {function(): void} init - Sends a message using user details via Alpine store.
  */
 
 /**

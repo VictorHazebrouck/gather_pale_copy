@@ -1,16 +1,15 @@
-/** 
- * @module 
- * @ignore 
+/**
+ * @module
+ * @ignore
  * */
 import { Spritesheet, Ticker } from "pixi.js";
 import { filterPlayers, loadPlayerSprite } from "../utils/utils";
 import EventBus from "../../EventBus";
 import PlayerBase from "./PlayerBase";
 
-
 /**
  * Class
- * 
+ *
  * @category GAME
  * @subcategory PLAYER
  */
@@ -28,7 +27,7 @@ class PlayerOther extends PlayerBase {
         Ticker.shared.add(this._playerMovement);
     }
 
-    /** 
+    /**
      * @private
      * @param {Ticker} ticker - data about the update loop
      * @method
