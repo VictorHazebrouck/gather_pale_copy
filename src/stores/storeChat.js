@@ -2,7 +2,7 @@ import "../types/types";
 import Alpine from "alpinejs";
 import EventBus from "../EventBus";
 import { v4 as uuidv4 } from "uuid";
-import { newChatDb, newRoomDb, getRoomsDb } from "../db/chatRooms";
+import { newChatDb, newRoomDb, getRoomsDb } from "../db/collectionRooms";
 
 /** @type {ChatStore} */
 export default {

@@ -1,4 +1,4 @@
-import DB from "../db/init";
+import DB from "../db/DB";
 import Alpine from "alpinejs";
 import EventBus from "../EventBus";
 

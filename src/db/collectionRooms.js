@@ -1,4 +1,4 @@
-import DB from "./init";
+import DB from "./DB";
 
 const ChatCollection = DB.chat_rooms;
 const UsersCollection = DB.users;

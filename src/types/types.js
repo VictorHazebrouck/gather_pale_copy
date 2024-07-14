@@ -107,8 +107,6 @@
  * @property {User[]} participants - list of participants
  * @property {boolean} _isInit - flag to ensure init is being called only once
  * @property {function():void} init - initialization function
- * @property {function(string, string):void} syncNames - initialization function
- * @property {function(string):void} disconnectUser - initialization function
  */
 
 /**

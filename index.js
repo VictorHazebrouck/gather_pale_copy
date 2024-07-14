@@ -1,4 +1,4 @@
-import "./src/db/init";
+import "./src/db/DB";
 import "./src/stores/registerStates";
 import Alpine from "alpinejs";
 import Socket from "./src/Socket";
