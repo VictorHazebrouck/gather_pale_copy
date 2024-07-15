@@ -32,6 +32,10 @@ class db extends Dexie {
             console.log("Database initialized");
             registerSubscribers(this);
             registerPublishers(this);
+
+            const chatrooms = await this.chat_rooms.toArray()
+            eventBus.publish("DBRoomsInit", chatrooms)
+            
         } catch (error) {
             throw new Error("Failed to initialize database");
         }

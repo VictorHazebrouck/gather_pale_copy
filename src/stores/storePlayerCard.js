@@ -1,5 +1,5 @@
 import Alpine from "alpinejs";
-import EventBus from "../EventBus";
+import eventBus from "../EventBus";
 
 /** @type {PlayerCardStore} */
 export default {
@@ -20,7 +20,7 @@ export default {
         Alpine.store("chat").newRoom(obj);
     },
     init() {
-        EventBus.subscribe("playerClick", ({ position, playerInformation }) => {
+        eventBus.subscribe("playerClick", ({ position, playerInformation }) => {
             this.x = position.x;
             this.y = position.y;
             this.userId = playerInformation.userId;

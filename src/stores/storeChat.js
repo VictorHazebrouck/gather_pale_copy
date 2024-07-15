@@ -1,8 +1,6 @@
-import "../types/types";
 import Alpine from "alpinejs";
 import EventBus from "../EventBus";
 import { v4 as uuidv4 } from "uuid";
-import { newChatDb, newRoomDb, getRoomsDb } from "../db/collectionRooms";
 
 /** @type {ChatStore} */
 export default {
@@ -61,49 +59,12 @@ export default {
         }
         this._isInit = true;
 
-        /** Get rooms from idb */
-        this.rooms = await getRoomsDb();
-
-        EventBus.subscribe("DBRoomsHasChanged", (data) => {
+        EventBus.once("DBRoomsInit", (data) => {
             this.rooms = data;
         });
 
-        /** init chat message socket */
-        EventBus.subscribe("chatMessageReceived", (data) => {
-            const { userIdSender, userNameSender, value, time } = data;
-
-            const index = this.rooms.findIndex((e) => e.userId === userIdSender);
-
-            /** @type {Message} */
-            const message = {
-                _id: uuidv4(),
-                sender: userIdSender,
-                value: value,
-                time: time,
-            };
-
-            /** If room already exists, open current one */
-            if (index !== -1) {
-                /** Push message to your room && save it to db*/
-                this.rooms[index].messages.push(message);
-                newChatDb(this.rooms[index]._id, message);
-
-                return this.goToRoom(index);
-            }
-
-            /** @type {Room} */
-            const room = {
-                _id: uuidv4(),
-                userId: userIdSender,
-                userName: userNameSender,
-                messages: [message],
-            };
-
-            /** Else create a new room containing the new message && save it to db */
-            this.rooms.push(room);
-            newRoomDb(room);
-
-            this.goToRoom(this.rooms.length - 1);
+        EventBus.subscribe("DBRoomsHasChanged", (data) => {
+            this.rooms = data;
         });
     },
     _isInit: false,

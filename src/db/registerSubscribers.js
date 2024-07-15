@@ -16,6 +16,7 @@ function registerSubscribers(dataBase) {
         // Bulk put the updated users back into the database
         await dataBase.users.bulkPut(users);
 
+        // Mark connected users as so
         for (let { userId, userName } of Players) {
             const user = await dataBase.users.get(userId);
 
@@ -74,23 +75,55 @@ function registerSubscribers(dataBase) {
     });
 
     eventBus.subscribe("sendChatMessage", async (data) => {
+        const { userIdSender, userNameReceiver, userIdReceiver, value, time } = data;
         /** If room already exists, open current one */
-        const room = await dataBase.chat_rooms.get(data.roomId);
+        const room = await dataBase.chat_rooms.where("userId").equals(userIdReceiver).first();
 
         /** @type {Message} */
         const message = {
             _id: uuidv4(),
-            sender: data.userIdSender,
-            value: data.value,
-            time: data.time,
+            sender: userIdSender,
+            value: value,
+            time: time,
         };
 
         if (!room) {
             /** @type {Room} */
             const room = {
-                _id: data.roomId,
-                userId: data.userIdReceiver,
-                userName: data.userNameReceiver,
+                _id: uuidv4(),
+                userId: userIdReceiver,
+                userName: userNameReceiver,
+                messages: [message],
+            };
+
+            await dataBase.chat_rooms.add(room);
+            return;
+        }
+
+        /** Add the message to your own chat && save it to db*/
+        room.messages.push(message);
+        await dataBase.chat_rooms.put(room);
+    });
+
+    eventBus.subscribe("chatMessageReceived", async (data) => {
+        const { userIdSender, userNameSender, value, time } = data;
+
+        const room = await dataBase.chat_rooms.where("userId").equals(userIdSender).first();
+
+        /** @type {Message} */
+        const message = {
+            _id: uuidv4(),
+            sender: userIdSender,
+            value: value,
+            time: time,
+        };
+
+        if (!room) {
+            /** @type {Room} */
+            const room = {
+                _id: uuidv4(),
+                userId: userIdSender,
+                userName: userNameSender,
                 messages: [message],
             };
 

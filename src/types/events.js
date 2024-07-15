@@ -20,6 +20,7 @@
  * @property  {PlayerClickEventData} playerClick
  * @property  {DBUsersHasChangedEventData} DBUsersHasChanged
  * @property  {DBRoomsHasChangedEventData} DBRoomsHasChanged
+ * @property  {DBRoomsInit} DBRoomsInit
  */
 
 /**
@@ -32,6 +33,14 @@
 
 /**
  * @typedef {Room[]} DBRoomsHasChangedEventData
+ *
+ * @event DBRoomsHasChanged
+ * @type {DBRoomsHasChangedEventData}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {Room[]} DBRoomsInit
  *
  * @event DBRoomsHasChanged
  * @type {DBRoomsHasChangedEventData}
