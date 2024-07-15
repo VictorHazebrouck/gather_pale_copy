@@ -60,6 +60,25 @@ class EventBus {
 
         this._listeners[event].forEach((listener) => listener(data));
     }
+
+    /**
+     * Unsubscribe a callback function from an event.
+     *
+     * @template {keyof EventsList} EventName
+     * @template {EventsList[EventName]} EventData
+     *
+     * @param {EventName} event - The event name.
+     * @param {function(EventData): void} listener - The callback function to handle the event.
+     */
+    once(event, listener) {
+        /** @param {EventData} data */
+        const wrapper = (data) => {
+            listener(data);
+            this.unsubscribe(event, wrapper);
+        };
+
+        this.subscribe(event, wrapper);
+    }
 }
 
 const eventBus = new EventBus();

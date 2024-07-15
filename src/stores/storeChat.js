@@ -15,7 +15,7 @@ export default {
     goToRoom(index = -1) {
         this.selectedRoom = index;
     },
-    newRoom({ userId = "", userName = "" }) {
+    newRoom({ userId, userName }) {
         /** If room already exists, open current one */
         const index = this.rooms.findIndex((e) => e.userId === userId);
         if (index !== -1) {
@@ -30,9 +30,8 @@ export default {
             messages: [],
         };
 
-        /** Else create a new room && save it to db*/
+        /** Else create a new temp room until first message sent*/
         this.rooms.push(room);
-        newRoomDb(room);
 
         this.goToRoom(this.rooms.length - 1);
     },
@@ -43,6 +42,7 @@ export default {
 
         EventBus.publish("sendChatMessage", {
             /** Send message to backend, will transmit it only to him by his userId */
+            roomId: this.rooms[this.selectedRoom]._id,
             userIdReceiver: this.rooms[this.selectedRoom].userId,
             userNameReceiver: this.rooms[this.selectedRoom].userName,
             userIdSender: Alpine.store("user").userId,
@@ -50,17 +50,6 @@ export default {
             value: msg,
             time: formatNow(),
         });
-
-        /** @type {Message} */
-        const message = {
-            _id: uuidv4(),
-            sender: Alpine.store("user").userId,
-            value: msg,
-            time: formatNow(),
-        };
-        /** Add the message to your own chat && save it to db*/
-        this.rooms[this.selectedRoom].messages.push(message);
-        newChatDb(this.rooms[this.selectedRoom]._id, message);
 
         // @ts-ignore $data represents the data in the context in which the fn in being called
         this.$data.input = "";
@@ -74,6 +63,10 @@ export default {
 
         /** Get rooms from idb */
         this.rooms = await getRoomsDb();
+
+        EventBus.subscribe("DBRoomsHasChanged", (data) => {
+            this.rooms = data;
+        });
 
         /** init chat message socket */
         EventBus.subscribe("chatMessageReceived", (data) => {

@@ -19,6 +19,7 @@
  * @property {ANameHasChangedEventData} aNameHasChanged
  * @property  {PlayerClickEventData} playerClick
  * @property  {DBUsersHasChangedEventData} DBUsersHasChanged
+ * @property  {DBRoomsHasChangedEventData} DBRoomsHasChanged
  */
 
 /**
@@ -30,7 +31,16 @@
  */
 
 /**
+ * @typedef {Room[]} DBRoomsHasChangedEventData
+ *
+ * @event DBRoomsHasChanged
+ * @type {DBRoomsHasChangedEventData}
+ * @category EVENT_BUS
+ */
+
+/**
  * @typedef {Object} SendChatMessageEventData
+ * @property {string} roomId - The room ID.
  * @property {string} userIdReceiver - The user ID of the message receiver.
  * @property {string} userNameReceiver - The username of the message receiver.
  * @property {string} userIdSender - The user ID of the message sender.

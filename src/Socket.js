@@ -3,7 +3,7 @@
  * @ignore
  */
 import { io } from "socket.io-client";
-import EventBus from "./EventBus";
+import eventBus from "./EventBus";
 
 /**
  * Socket manager class
@@ -25,42 +25,42 @@ class Socket {
 
     /**
      * Initialize capture of socket events sent by the server,
-     * Which will in turn get published to the EventBus
+     * Which will in turn get published to the eventBus
      *
      * @method
      */
     initReceivers() {
         this.socket.on("newPlayerConnected", (data) => {
-            EventBus.publish("newPlayerConnected", data);
+            eventBus.publish("newPlayerConnected", data);
         });
         this.socket.on("connectionData", (data) => {
-            EventBus.publish("connectionData", data);
+            eventBus.publish("connectionData", data);
         });
         this.socket.on("newPlayerMove", (data) => {
-            EventBus.publish("newPlayerMove", data);
+            eventBus.publish("newPlayerMove", data);
         });
         this.socket.on("playerDisconnected", (data) => {
-            EventBus.publish("playerDisconnected", data);
+            eventBus.publish("playerDisconnected", data);
         });
         this.socket.on("chatMessageReceived", (data) => {
-            EventBus.publish("chatMessageReceived", data);
+            eventBus.publish("chatMessageReceived", data);
         });
     }
 
     /**
-     * Initialize capture of events sent by the EventBus,
+     * Initialize capture of events sent by the eventBus,
      * Which will in turn get published to the server
      *
      * @method
      */
     initEmiters() {
-        EventBus.subscribe("sendChatMessage", (data) => {
+        eventBus.subscribe("sendChatMessage", (data) => {
             this.socket.emit("chatMessage", data);
         });
-        EventBus.subscribe("move", (data) => {
+        eventBus.subscribe("move", (data) => {
             this.socket.emit("move", data);
         });
-        EventBus.subscribe("nameChanged", (data) => {
+        eventBus.subscribe("nameChanged", (data) => {
             this.socket.emit("nameChanged", data);
         });
     }
