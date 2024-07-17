@@ -73,7 +73,7 @@ class PlayerSelf extends PlayerBase {
                     y: this.position.y,
                 };
 
-                EventBus.publish("move", obj);
+                EventBus.publish("initiate_move_instructions", obj);
 
                 this.moveDirection = "stop";
                 return;
@@ -105,7 +105,7 @@ class PlayerSelf extends PlayerBase {
             x: this.position.x,
             y: this.position.y,
         };
-        EventBus.publish("move", obj);
+        EventBus.publish("initiate_move_instructions", obj);
     };
 
     /**

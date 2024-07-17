@@ -45,7 +45,7 @@ class PlayerOther extends PlayerBase {
 
     _registerRemoteActions = () => {
         /** If the broadcasted move is from the player himself, move his sprite accordingly */
-        EventBus.subscribe("newPlayerMove", (data) => {
+        EventBus.subscribe("receive_move_instructions", (data) => {
             /** @type  {MoveInstructions} */
             const { userId, direction, x, y } = data;
 
@@ -68,7 +68,7 @@ class PlayerOther extends PlayerBase {
         });
 
         /** If the broadcasted move is from the player himself, destroy his instance */
-        EventBus.subscribe("playerDisconnected", ({ userId }) => {
+        EventBus.subscribe("player_disconnected", ({ userId }) => {
             if (this.playerInformation.userId === userId) {
                 this.destroy();
             }
@@ -78,7 +78,7 @@ class PlayerOther extends PlayerBase {
     _registerOnClickActions = () => {
         /** Display playerCard on click */
         this.addEventListener("click", () => {
-            EventBus.publish("playerClick", {
+            EventBus.publish("game_player_clicked", {
                 playerInformation: this.playerInformation,
                 position: this.getScreenPosition(),
             });
