@@ -35,7 +35,7 @@ class PlayersLayer extends Container {
 
     init() {
         //handle first connection, get current game state from server
-        EventBus.subscribe("connectionData", async (data) => {
+        EventBus.subscribe("receive_initial_gamestate", async (data) => {
             for (let i = 0; i < data.Players.length; i++) {
                 const player = await PlayerOther.createPlayer(data.Players[i], this.children);
 
@@ -46,7 +46,7 @@ class PlayersLayer extends Container {
         });
 
         //handle new players connection, get new player's data
-        EventBus.subscribe("newPlayerConnected", async (newPlayerData) => {
+        EventBus.subscribe("new_player_connected", async (newPlayerData) => {
             const player = await PlayerOther.createPlayer(newPlayerData, this.children);
 
             if (player) {

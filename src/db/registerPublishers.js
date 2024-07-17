@@ -7,7 +7,7 @@ function registerPublishers(dataBase) {
         // handler used to retrun refreshed collection after update
         async function handleRefresh() {
             const rooms = await dataBase.chat_rooms.toArray();
-            eventBus.publish("DBRoomsHasChanged", rooms);
+            eventBus.publish("DB_rooms_has_changed", rooms);
         }
 
         transaction.on.complete.subscribe(handleRefresh);
@@ -17,7 +17,7 @@ function registerPublishers(dataBase) {
         // handler used to retrun refreshed collection after update
         async function handleRefresh() {
             const users = await dataBase.users.toArray();
-            eventBus.publish("DBUsersHasChanged", users);
+            eventBus.publish("DB_users_has_changed", users);
         }
 
         transaction.on.complete.subscribe(handleRefresh);
