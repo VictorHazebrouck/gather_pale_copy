@@ -8,25 +8,30 @@
  * List of all event names with their corresponding data to be passed around.
  *
  * @typedef {Object} EventsList
- * @property {NewPlayerConnectedEventData} newPlayerConnected
- * @property {ConnectionDataEventData} connectionData
- * @property {NewPlayerMoveEventData} newPlayerMove
- * @property {PlayerDisconnectdEventData} playerDisconnected
- * @property {ChatMessageReceivedEventData} chatMessageReceived
- * @property {SendChatMessageEventData} sendChatMessage
- * @property {MoveEventData} move
- * @property {NameChangedEventData} nameChanged
- * @property {ANameHasChangedEventData} aNameHasChanged
- * @property  {PlayerClickEventData} playerClick
- * @property  {DBUsersHasChangedEventData} DBUsersHasChanged
- * @property  {DBRoomsHasChangedEventData} DBRoomsHasChanged
- * @property  {DBRoomsInit} DBRoomsInit
+ * @property {ConnectionDataEventData} receive_initial_gamestate
+ * @property {NewPlayerConnectedEventData} new_player_connected
+ * @property {PlayerDisconnectdEventData} player_disconnected
+ * @property {MoveEventData} initiate_move_instructions
+ * @property {NewPlayerMoveEventData} receive_move_instructions
+ * @property  {PlayerClickEventData} game_player_clicked
+ *
+ * @property {SendChatMessageEventData} initiate_chat_message
+ * @property {ChatMessageReceivedEventData} receive_chat_message
+ * @property {NameChangedEventData} initiate_username_change
+ * @property {ANameHasChangedEventData} receive_username_change
+ *
+ * @property  {DBUsersHasChangedEventData} DB_users_has_changed
+ * @property  {DBRoomsHasChangedEventData} DB_rooms_has_changed
+ * @property  {DBRoomsInit} DB_rooms_init
+ *
+ * @property  {PeerInitiateCallEventData} peer_initiate_call_request
+ * @property  {PeerReceiveCallEventData} peer_receive_call_request
  */
 
 /**
  * @typedef {User[]} DBUsersHasChangedEventData
  *
- * @event DBUsersHasChanged
+ * @event DB_users_has_changed
  * @type {DBUsersHasChangedEventData}
  * @category EVENT_BUS
  */
@@ -34,7 +39,7 @@
 /**
  * @typedef {Room[]} DBRoomsHasChangedEventData
  *
- * @event DBRoomsHasChanged
+ * @event DB_rooms_has_changed
  * @type {DBRoomsHasChangedEventData}
  * @category EVENT_BUS
  */
@@ -42,7 +47,7 @@
 /**
  * @typedef {Room[]} DBRoomsInit
  *
- * @event DBRoomsHasChanged
+ * @event DB_rooms_init
  * @type {DBRoomsHasChangedEventData}
  * @category EVENT_BUS
  */
@@ -57,7 +62,7 @@
  * @property {string} value - The message content.
  * @property {string} time - The time when the message was sent, formatted as a string.
  *
- * @event sendChatMessage
+ * @event initiate_chat_message
  * @type {SendChatMessageEventData}
  * @category EVENT_BUS
  */
@@ -69,7 +74,7 @@
  * @property {string} value - The message content.
  * @property {string} time - The time when the message was sent.
  *
- * @event chatMessageReceived
+ * @event receive_chat_message
  * @type {SendChatMessageEventData}
  * @category EVENT_BUS
  */
@@ -81,7 +86,7 @@
  * @property {number} x - x coordinaates at the moment of emission
  * @property {number} y - y coordinaates at the moment of emission
  *
- * @event move
+ * @event initiate_move_instructions
  * @type {MoveEventData}
  * @category EVENT_BUS
  */
@@ -93,7 +98,7 @@
  * @property {number} x - x coordinaates at the moment of emission
  * @property {number} y - y coordinaates at the moment of emission
  *
- * @event newPlayerMove
+ * @event receive_move_instructions
  * @type {NewPlayerMoveEventData}
  * @category EVENT_BUS
  */
@@ -101,7 +106,7 @@
 /**
  * @typedef {PlayerDataWithCoordinates} NewPlayerConnectedEventData
  *
- * @event newPlayerConnected
+ * @event new_player_connected
  * @type {NewPlayerConnectedEventData}
  * @category EVENT_BUS
  */
@@ -110,7 +115,7 @@
  * @typedef {Object} ConnectionDataEventData
  * @property {PlayerDataWithCoordinates[]} Players
  *
- * @event connectionData
+ * @event receive_initial_gamestate
  * @type {ConnectionDataEventData}
  * @category EVENT_BUS
  */
@@ -119,7 +124,7 @@
  * @typedef {Object} PlayerDisconnectdEventData
  * @property {string} userId
  *
- * @event playerDisconnected
+ * @event player_disconnected
  * @type {PlayerDisconnectdEventData}
  * @category EVENT_BUS
  */
@@ -128,7 +133,7 @@
  * @typedef {Object} NameChangedEventData
  * @property {string} newName
  *
- * @event nameChanged
+ * @event initiate_username_change
  * @type {NameChangedEventData}
  * @category EVENT_BUS
  */
@@ -138,7 +143,7 @@
  * @property {string} newName
  * @property {string} userId
  *
- * @event aNameHasChanged
+ * @event receive_username_change
  * @type {ANameHasChangedEventData}
  * @category EVENT_BUS
  */
@@ -148,7 +153,25 @@
  * @property {PlayerData} playerInformation
  * @property {Coordinates} position
  *
- * @event playerClick
+ * @event game_player_clicked
+ * @type {PlayerClickEventData}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {Object} PeerReceiveCallEventData
+ * @property {string} userId
+ *
+ * @event peer_receive_call_request
+ * @type {PlayerClickEventData}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {Object} PeerInitiateCallEventData
+ * @property {string} userId
+ *
+ * @event peer_initiate_call_request
  * @type {PlayerClickEventData}
  * @category EVENT_BUS
  */

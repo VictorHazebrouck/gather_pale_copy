@@ -20,7 +20,7 @@ export default {
         Alpine.store("chat").newRoom(obj);
     },
     init() {
-        eventBus.subscribe("playerClick", ({ position, playerInformation }) => {
+        eventBus.subscribe("game_player_clicked", ({ position, playerInformation }) => {
             this.x = position.x;
             this.y = position.y;
             this.userId = playerInformation.userId;

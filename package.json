@@ -28,6 +28,7 @@
         "dexie": "^4.0.7",
         "jsdoc": "^4.0.3",
         "jsdoc-plugin-typescript": "^2.2.1",
+        "peerjs": "^1.5.4",
         "pixi.js": "^8.1.5",
         "socket.io": "^4.7.5",
         "socket.io-client": "^4.7.5",

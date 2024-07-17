@@ -38,7 +38,7 @@ export default {
             return;
         }
 
-        EventBus.publish("sendChatMessage", {
+        EventBus.publish("initiate_chat_message", {
             /** Send message to backend, will transmit it only to him by his userId */
             roomId: this.rooms[this.selectedRoom]._id,
             userIdReceiver: this.rooms[this.selectedRoom].userId,
@@ -59,11 +59,11 @@ export default {
         }
         this._isInit = true;
 
-        EventBus.once("DBRoomsInit", (data) => {
+        EventBus.once("DB_rooms_init", (data) => {
             this.rooms = data;
         });
 
-        EventBus.subscribe("DBRoomsHasChanged", (data) => {
+        EventBus.subscribe("DB_rooms_has_changed", (data) => {
             this.rooms = data;
         });
     },

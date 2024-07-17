@@ -35,7 +35,7 @@ export default {
             return;
         }
 
-        EventBus.publish("nameChanged", { newName });
+        EventBus.publish("initiate_username_change", { newName });
         Alpine.store("user").userName = newName;
 
         //@ts-ignore

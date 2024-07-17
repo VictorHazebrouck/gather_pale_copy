@@ -62,7 +62,7 @@ class EventBus {
     }
 
     /**
-     * Unsubscribe a callback function from an event.
+     * Subscribes a callback function to an event only once.
      *
      * @template {keyof EventsList} EventName
      * @template {EventsList[EventName]} EventData

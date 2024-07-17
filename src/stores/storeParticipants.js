@@ -11,7 +11,7 @@ export default {
         }
         this._isInit = true;
 
-        EventBus.subscribe("DBUsersHasChanged", (users) => {
+        EventBus.subscribe("DB_users_has_changed", (users) => {
             this.participants = users;
         });
     },

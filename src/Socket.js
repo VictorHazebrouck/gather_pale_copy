@@ -31,19 +31,22 @@ class Socket {
      */
     initReceivers() {
         this.socket.on("newPlayerConnected", (data) => {
-            eventBus.publish("newPlayerConnected", data);
+            eventBus.publish("new_player_connected", data);
         });
         this.socket.on("connectionData", (data) => {
-            eventBus.publish("connectionData", data);
+            eventBus.publish("receive_initial_gamestate", data);
         });
         this.socket.on("newPlayerMove", (data) => {
-            eventBus.publish("newPlayerMove", data);
+            eventBus.publish("receive_move_instructions", data);
         });
         this.socket.on("playerDisconnected", (data) => {
-            eventBus.publish("playerDisconnected", data);
+            eventBus.publish("player_disconnected", data);
         });
         this.socket.on("chatMessageReceived", (data) => {
-            eventBus.publish("chatMessageReceived", data);
+            eventBus.publish("receive_chat_message", data);
+        });
+        this.socket.on("newUserJoin", (data) => {
+            eventBus.publish("peer_receive_call_request", data);
         });
     }
 
@@ -54,14 +57,17 @@ class Socket {
      * @method
      */
     initEmiters() {
-        eventBus.subscribe("sendChatMessage", (data) => {
+        eventBus.subscribe("initiate_chat_message", (data) => {
             this.socket.emit("chatMessage", data);
         });
-        eventBus.subscribe("move", (data) => {
+        eventBus.subscribe("initiate_move_instructions", (data) => {
             this.socket.emit("move", data);
         });
-        eventBus.subscribe("nameChanged", (data) => {
+        eventBus.subscribe("initiate_username_change", (data) => {
             this.socket.emit("nameChanged", data);
+        });
+        eventBus.subscribe("peer_initiate_call_request", (data) => {
+            this.socket.emit("userJoinVideo");
         });
     }
 }
