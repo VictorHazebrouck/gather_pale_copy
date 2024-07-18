@@ -14,6 +14,8 @@
  * @property {MoveEventData} initiate_move_instructions
  * @property {NewPlayerMoveEventData} receive_move_instructions
  * @property  {PlayerClickEventData} game_player_clicked
+ * @property  {GamePlayerJoinNearbyEventData} game_player_join_nearby_area
+ * @property  {GamePlayerLeaveNearbyEventData} game_player_leave_nearby_area
  *
  * @property {SendChatMessageEventData} initiate_chat_message
  * @property {ChatMessageReceivedEventData} receive_chat_message
@@ -23,6 +25,7 @@
  * @property  {DBUsersHasChangedEventData} DB_users_has_changed
  * @property  {DBRoomsHasChangedEventData} DB_rooms_has_changed
  * @property  {DBRoomsInit} DB_rooms_init
+ * @property  {DBUsersInit} DB_users_init
  *
  * @property  {PeerInitiateCallEventData} peer_initiate_call_request
  * @property  {PeerReceiveCallEventData} peer_receive_call_request
@@ -49,6 +52,14 @@
  *
  * @event DB_rooms_init
  * @type {DBRoomsHasChangedEventData}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {User[]} DBUsersInit
+ *
+ * @event DB_users_init
+ * @type {DBUsersInit}
  * @category EVENT_BUS
  */
 
@@ -173,5 +184,23 @@
  *
  * @event peer_initiate_call_request
  * @type {PlayerClickEventData}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {Object} GamePlayerJoinNearbyEventData
+ * @property {string} userId
+ *
+ * @event game_player_join_nearby_area
+ * @type {GamePlayerJoinNearbyEventData}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {Object} GamePlayerLeaveNearbyEventData
+ * @property {string} userId
+ *
+ * @event game_player_leave_nearby_area
+ * @type {GamePlayerLeaveNearbyEventData}
  * @category EVENT_BUS
  */

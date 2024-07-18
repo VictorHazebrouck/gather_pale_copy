@@ -3,11 +3,11 @@
  * @ignore
  */
 import { Ticker, Spritesheet } from "pixi.js";
-import EventBus from "../../EventBus";
 import PlayerBase from "./PlayerBase";
 import Alpine from "alpinejs";
 import { filterPlayerOthers, loadPlayerSprite } from "../utils/utils";
 import PlayerOther from "./PlayerOther";
+import eventBus from "../../EventBus";
 
 /**
  * PlayerSelf class that extends PlayerBase.
@@ -78,7 +78,7 @@ class PlayerSelf extends PlayerBase {
                     y: this.position.y,
                 };
 
-                EventBus.publish("initiate_move_instructions", obj);
+                eventBus.publish("initiate_move_instructions", obj);
 
                 this.moveDirection = "stop";
                 return;
@@ -110,7 +110,7 @@ class PlayerSelf extends PlayerBase {
             x: this.position.x,
             y: this.position.y,
         };
-        EventBus.publish("initiate_move_instructions", obj);
+        eventBus.publish("initiate_move_instructions", obj);
     };
 
     /**
@@ -134,12 +134,12 @@ class PlayerSelf extends PlayerBase {
             if (distance < 100) {
                 if (!this.nearbyPlayersIds.has(userId)) {
                     this.nearbyPlayersIds.add(userId);
-                    console.log("new user nearby !");
+                    eventBus.publish("game_player_join_nearby_area", { userId: userId });
                 }
             } else {
                 if (this.nearbyPlayersIds.has(userId)) {
                     this.nearbyPlayersIds.delete(userId);
-                    console.log("new user left !");
+                    eventBus.publish("game_player_leave_nearby_area", { userId: userId });
                 }
             }
         }
