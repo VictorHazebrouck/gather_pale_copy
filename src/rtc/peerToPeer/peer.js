@@ -46,7 +46,13 @@ class PeerJS extends Peer {
     addStream(userId, stream) {
         if (!this.streams.find((s) => s.userId === userId) && this.myId !== userId) {
             this.streams.push({ userId, stream });
+            
         }
+        
+        eventBus.publish("peer_receive_media_stream", {
+            userIdCaller: userId,
+            stream: stream,
+        });
     }
 
     /**
@@ -75,12 +81,14 @@ class PeerJS extends Peer {
     async init() {
         // On successfull connection to peer server, initiate call request
         this.on("open", (id) => {
-            eventBus.publish("peer_initiate_call_request", { userId: id });
+            console.log("connected to peer server!");
         });
 
         // when a new user tries to call us, handle it
         this.on("call", (call) => {
             call.answer(this.myStream);
+            console.log("accepting call request");
+
             call.on("stream", (videoStream) => {
                 this.addStream(call.peer, videoStream);
             });
@@ -93,10 +101,13 @@ class PeerJS extends Peer {
         // when other player sends us a call request, initiate a peerjs connection
         eventBus.subscribe("peer_receive_call_request", ({ userId }) => {
             if (!this.myStream) {
+                console.log("cannot call without video sharing");
                 return;
             }
 
             const call = this.call(userId, this.myStream);
+
+            console.log("initiated call request");
 
             call.on("stream", (userStream) => {
                 this.addStream(userId, userStream);

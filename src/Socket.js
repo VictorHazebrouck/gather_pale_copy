@@ -67,7 +67,7 @@ class Socket {
             this.socket.emit("nameChanged", data);
         });
         eventBus.subscribe("peer_initiate_call_request", (data) => {
-            this.socket.emit("userJoinVideo");
+            this.socket.emit("userJoinVideo", data);
         });
     }
 }

@@ -1,37 +1,67 @@
 <ul x-data="$store.videoChat" id="nearby-main">
-    <template x-for="particiant in nearbyPlayers">
-        <div class="participant-card">
-            <p x-text="particiant"></p>
+    <template x-for="player in nearbyPlayers">
+        <div class="nearby-player-card">
+            <p x-text="player.userId"></p>
+            <i x-show="!player.stream" class="fa-solid fa-video-slash" style="color: red"></i>
+            <template x-if="player.stream">
+                <video
+                    x-show="player.stream"
+                    class="video"
+                    x-ref="video"
+                    x-init="$refs.video.srcObject = player.stream"
+                    autoplay
+                    muted="true"
+                ></video>
+            </template>
         </div>
     </template>
 </ul>
-
-</div>
 <style>
     #nearby-main {
         position: absolute;
-        width: 200px;
         height: 100%;
-        background-color: red;
-        color: var(--txt-color-dark-1); 
+        color: var(--txt-color-dark-1);
         display: flex;
         flex-direction: column;
-        padding: var(--pad-normal);
+        padding-left: var(--pad-small);
         padding-bottom: 3px;
+        overflow: hidden;
 
-        .participant-card {
+        .nearby-player-card {
             margin-top: var(--pad-small);
-            border-radius: var(--rad-normal);
+            border-radius: var(--rad-big);
+            border: 2px solid red;
+            width: 180px;
+            height: 100px;
+            min-height: 100px;
             background-color: var(--bg-color-dark-2);
-            padding: var(--pad-small);
             cursor: pointer;
+            overflow: hidden;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
 
             &:hover {
                 background-color: var(--bg-color-dark-1-hover);
             }
 
             p {
+                position: absolute;
+                align-self: flex-start;
                 color: var(--txt-color-dark-2);
+            }
+
+            i {
+                font-size: 22px;
+            }
+
+            .video {
+                margin: 0;
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
             }
         }
     }

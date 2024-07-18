@@ -29,6 +29,7 @@
  *
  * @property  {PeerInitiateCallEventData} peer_initiate_call_request
  * @property  {PeerReceiveCallEventData} peer_receive_call_request
+ * @property  {PeerReceiveMediaStreamEventData} peer_receive_media_stream
  */
 
 /**
@@ -174,16 +175,27 @@
  * @property {string} userId
  *
  * @event peer_receive_call_request
- * @type {PlayerClickEventData}
+ * @type {PeerReceiveCallEventData}
  * @category EVENT_BUS
  */
 
 /**
  * @typedef {Object} PeerInitiateCallEventData
- * @property {string} userId
+ * @property {string} userIdCaller
+ * @property {string} userIdReceiver
  *
  * @event peer_initiate_call_request
- * @type {PlayerClickEventData}
+ * @type {PeerInitiateCallEventData}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {Object} PeerReceiveMediaStreamEventData
+ * @property {string} userIdCaller
+ * @property {MediaStream} stream
+ *
+ * @event peer_receive_media_stream
+ * @type {PeerReceiveMediaStreamEventData}
  * @category EVENT_BUS
  */
 
