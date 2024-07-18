@@ -1,6 +1,18 @@
+/**
+ * @module
+ * @ignore
+ * @category PEER_JS
+ */
+
 import Peer from "peerjs";
 import eventBus from "../../EventBus";
 
+/**
+ * Class to handle peer to peer connections
+ *
+ * @class
+ * @category PEER_JS
+ */
 class PeerJS extends Peer {
     /** @param {string} userId */
     constructor(userId) {
@@ -46,6 +58,9 @@ class PeerJS extends Peer {
         this.streams = this.streams.filter((s) => s.userId !== userId);
     }
 
+    /**
+     * Handle personnal video stream authoriation request
+     */
     async initializePersonalVideoStream() {
         try {
             // Request access to the camera

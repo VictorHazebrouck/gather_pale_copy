@@ -7,6 +7,7 @@ import EventBus from "../../EventBus";
 import PlayerBase from "./PlayerBase";
 import Alpine from "alpinejs";
 import { filterPlayerOthers, loadPlayerSprite } from "../utils/utils";
+import PlayerOther from "./PlayerOther";
 
 /**
  * PlayerSelf class that extends PlayerBase.
@@ -31,7 +32,11 @@ class PlayerSelf extends PlayerBase {
 
         super(obj, spriteSheet);
 
+        /**@type {Set<string>} */
+        this.nearbyPlayersIds = new Set();
+
         Ticker.shared.add(this._playerMovement);
+        setInterval(this._checkNearbyPlayers, 1000);
     }
 
     /**
@@ -106,6 +111,38 @@ class PlayerSelf extends PlayerBase {
             y: this.position.y,
         };
         EventBus.publish("initiate_move_instructions", obj);
+    };
+
+    /**
+     * Called on each frame to check who's nearby us.
+     * @private
+     * @method
+     *
+     * @returns {void}
+     */
+    _checkNearbyPlayers = () => {
+        const otherPlayers = filterPlayerOthers(this.parent.children);
+
+        for (const player of otherPlayers) {
+            const { x, y } = player.position;
+            const a = Math.abs(this.x - x);
+            const b = Math.abs(this.y - y);
+            const distance = Math.sqrt(a * a + b * b);
+
+            const userId = player.playerInformation.userId;
+
+            if (distance < 100) {
+                if (!this.nearbyPlayersIds.has(userId)) {
+                    this.nearbyPlayersIds.add(userId);
+                    console.log("new user nearby !");
+                }
+            } else {
+                if (this.nearbyPlayersIds.has(userId)) {
+                    this.nearbyPlayersIds.delete(userId);
+                    console.log("new user left !");
+                }
+            }
+        }
     };
 
     /**
