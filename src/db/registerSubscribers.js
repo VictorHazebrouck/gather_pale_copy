@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 /** @param {db} dataBase */
 function registerSubscribers(dataBase) {
     //init db, proceed to sync names with ids, reset connection state and mak as connected
-    eventBus.once("connectionData", async ({ Players }) => {
+    eventBus.once("receive_initial_gamestate", async ({ Players }) => {
         const users = await dataBase.users.toArray();
 
         // Update the isConnected property for each user
@@ -32,7 +32,7 @@ function registerSubscribers(dataBase) {
     });
 
     // when a new player connects, sync his name, and mark him as connected
-    eventBus.subscribe("newPlayerConnected", async ({ userId, userName }) => {
+    eventBus.subscribe("new_player_connected", async ({ userId, userName }) => {
         const user = await dataBase.users.get(userId);
 
         if (!user) {
@@ -48,7 +48,7 @@ function registerSubscribers(dataBase) {
         dataBase.users.put(user);
     });
 
-    eventBus.subscribe("aNameHasChanged", async ({ userId, newName }) => {
+    eventBus.subscribe("receive_username_change", async ({ userId, newName }) => {
         const user = await dataBase.users.get(userId);
 
         if (!user) {
@@ -65,7 +65,7 @@ function registerSubscribers(dataBase) {
     });
 
     // when a player disconnects, mark him as disconnected
-    eventBus.subscribe("playerDisconnected", async ({ userId }) => {
+    eventBus.subscribe("player_disconnected", async ({ userId }) => {
         const user = await dataBase.users.get(userId);
 
         if (user) {
@@ -74,7 +74,7 @@ function registerSubscribers(dataBase) {
         }
     });
 
-    eventBus.subscribe("sendChatMessage", async (data) => {
+    eventBus.subscribe("initiate_chat_message", async (data) => {
         const { userIdSender, userNameReceiver, userIdReceiver, value, time } = data;
         /** If room already exists, open current one */
         const room = await dataBase.chat_rooms.where("userId").equals(userIdReceiver).first();
@@ -105,7 +105,7 @@ function registerSubscribers(dataBase) {
         await dataBase.chat_rooms.put(room);
     });
 
-    eventBus.subscribe("chatMessageReceived", async (data) => {
+    eventBus.subscribe("receive_chat_message", async (data) => {
         const { userIdSender, userNameSender, value, time } = data;
 
         const room = await dataBase.chat_rooms.where("userId").equals(userIdSender).first();

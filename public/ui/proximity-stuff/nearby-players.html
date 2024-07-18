@@ -1,18 +1,19 @@
-<ul x-data="$store.participants" id="participants-main">
-    <template x-for="particiant in participants">
+<ul x-data="$store.videoChat" id="nearby-main">
+    <template x-for="particiant in nearbyPlayers">
         <div class="participant-card">
-            <p x-text="particiant.isConnected"></p>
-            <p x-text="particiant.userName"></p>
-            <p x-text="particiant._id"></p>
+            <p x-text="particiant"></p>
         </div>
     </template>
 </ul>
+
+</div>
 <style>
-    #participants-main {
-        width: 100%;
+    #nearby-main {
+        position: absolute;
+        width: 200px;
         height: 100%;
-        background-color: var(--bg-color-dark-1);
-        color: var(--txt-color-dark-1);
+        background-color: red;
+        color: var(--txt-color-dark-1); 
         display: flex;
         flex-direction: column;
         padding: var(--pad-normal);
