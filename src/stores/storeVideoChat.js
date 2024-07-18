@@ -47,5 +47,9 @@ export default {
         eventBus.subscribe("game_player_leave_nearby_area", ({ userId }) => {
             this.nearbyPlayers = this.nearbyPlayers.filter((e) => e.userId !== userId);
         });
+
+        eventBus.subscribe("player_disconnected", ({ userId }) => {
+            this.nearbyPlayers = this.nearbyPlayers.filter((e) => e.userId !== userId);
+        });
     },
 };
