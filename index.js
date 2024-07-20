@@ -1,5 +1,5 @@
 import "./src/db/DB";
-import "./src/stores/registerStates";
+import "./src/alpine/registerStates";
 import Alpine from "alpinejs";
 import Socket from "./src/Socket";
 import initGame from "./src/game/main";

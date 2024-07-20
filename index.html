@@ -15,23 +15,23 @@
         <div id="container-main">
             <div id="container-content">
                 <div id="container-game">
-                    <div x-init="outterSwapComponent('user-card/user-card')"></div>
-                    <div x-init="outterSwapComponent('proximity-stuff/nearby-players')"></div>
+                    <div x-component.outer="'user-card/user-card'"></div>
+                    <div x-component.outer="'proximity-stuff/nearby-players'"></div>
                 </div>
                 <div id="container-right-pannel" x-show="isSidePannelVisible">
                     <div
                         id="container-chat"
                         x-show="sidePannerSelected === 'chat'"
-                        x-html="Component('chat/chat')"
+                        x-component="'chat/chat'"
                     ></div>
                     <div
                         id="container-participants"
                         x-show="sidePannerSelected === 'people'"
-                        x-html="Component('participants/participants')"
+                        x-component="'participants/participants'"
                     ></div>
                 </div>
             </div>
-            <div id="container-footer" x-html="Component('footer/footer')"></div>
+            <div id="container-footer" x-component="'footer/footer'"></div>
         </div>
     </body>
     <script type="module" src="/index.js"></script>

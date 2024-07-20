@@ -6,19 +6,6 @@ import EventBus from "../EventBus";
 export default {
     isSidePannelVisible: true,
     sidePannerSelected: "chat",
-
-    async Component(url = "") {
-        const response = await fetch(`/ui/${url}.html`);
-        const data = await response.text();
-        return data;
-    },
-    async outterSwapComponent(url = "") {
-        const response = await fetch(`/ui/${url}.html`);
-        const data = await response.text();
-
-        // @ts-ignore $el represents the dom element on which the fn is being called
-        this.$el.outerHTML = data;
-    },
     closeSidePannel() {
         this.isSidePannelVisible = false;
     },

@@ -38,33 +38,6 @@ class PeerJS extends Peer {
     }
 
     /**
-     * Adds a stream to the streams array
-     *
-     * @param {string} userId
-     * @param {MediaStream} stream
-     */
-    addStream(userId, stream) {
-        if (!this.streams.find((s) => s.userId === userId) && this.myId !== userId) {
-            this.streams.push({ userId, stream });
-            
-        }
-        
-        eventBus.publish("peer_receive_media_stream", {
-            userIdCaller: userId,
-            stream: stream,
-        });
-    }
-
-    /**
-     * Removes a stream from the streams array
-     *
-     * @param {string} userId
-     */
-    removeStream(userId) {
-        this.streams = this.streams.filter((s) => s.userId !== userId);
-    }
-
-    /**
      * Handle personnal video stream authoriation request
      */
     async initializePersonalVideoStream() {
@@ -80,7 +53,7 @@ class PeerJS extends Peer {
 
     async init() {
         // On successfull connection to peer server, initiate call request
-        this.on("open", (id) => {
+        this.on("open", () => {
             console.log("connected to peer server!");
         });
 
@@ -90,11 +63,10 @@ class PeerJS extends Peer {
             console.log("accepting call request");
 
             call.on("stream", (videoStream) => {
-                this.addStream(call.peer, videoStream);
-            });
-
-            call.on("close", () => {
-                this.removeStream(call.peer);
+                eventBus.publish("peer_receive_media_stream", {
+                    userIdCaller: call.peer,
+                    stream: videoStream,
+                });
             });
         });
 
@@ -110,12 +82,20 @@ class PeerJS extends Peer {
             console.log("initiated call request");
 
             call.on("stream", (userStream) => {
-                this.addStream(userId, userStream);
+                eventBus.publish("peer_receive_media_stream", {
+                    userIdCaller: userId,
+                    stream: userStream,
+                });
             });
+        });
 
-            call.on("close", () => {
-                this.removeStream(userId);
-            });
+        eventBus.subscribe("mute_video", (/**@type {boolean}*/ bool) => {
+            console.log("miting...");
+            this.myStream?.getVideoTracks().forEach((track) => (track.enabled = bool));
+        });
+        eventBus.subscribe("mute_audio", (/**@type {boolean}*/ bool) => {
+            console.log("miting...");
+            this.myStream?.getAudioTracks().forEach((track) => (track.enabled = bool));
         });
     }
 }

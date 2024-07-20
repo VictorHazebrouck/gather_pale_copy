@@ -11,9 +11,25 @@ export default {
 
     /** @type {RemoteStream[]} */
     nearbyPlayers: [],
+    isMySoundEnabled: false,
+    isMyVideoEnabled: false,
+    isMyScreenshareEnabled: false,
+
+    muteVideo() {
+        eventBus.publish("mute_video", this.isMyVideoEnabled);
+        this.isMyVideoEnabled = !this.isMyVideoEnabled;
+    },
+    muteAudio() {
+        eventBus.publish("mute_audio", this.isMySoundEnabled);
+        this.isMySoundEnabled = !this.isMySoundEnabled;
+    },
+    shareScreen() {
+        eventBus.publish("share_screen", this.isMySoundEnabled);
+        this.isMyScreenshareEnabled = !this.isMyScreenshareEnabled;
+    },
 
     _isInit: false,
-    async init() {
+    init() {
         if (this._isInit) {
             return;
         } else {
@@ -21,6 +37,7 @@ export default {
         }
 
         eventBus.subscribe("game_player_join_nearby_area", ({ userId }) => {
+            console.log("player nearby !!");
             this.nearbyPlayers.push({
                 stream: null,
                 screenShare: null,

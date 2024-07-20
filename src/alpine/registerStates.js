@@ -10,11 +10,11 @@ import storeVideoChat from "./storeVideoChat";
 Alpine.store("user", storeUserPersist);
 
 /** Register reactive data */
+Alpine.store("videoChat", storeVideoChat);
 Alpine.store("utils", storeUtils);
 Alpine.store("chat", storeChat);
 Alpine.store("playerCard", storePlayerCard);
 Alpine.store("participants", storeParticipants);
-Alpine.store("videoChat", storeVideoChat);
 
 /** Start the application */
 Alpine.start();

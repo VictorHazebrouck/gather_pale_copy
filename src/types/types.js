@@ -47,8 +47,6 @@
  * @typedef {object} UtilsStore
  * @property {boolean} isSidePannelVisible - Indicates if the side panel is visible.
  * @property {string} sidePannerSelected - The currently selected panel ('chat', 'settings', etc.).
- * @property {function(string): Promise<string>} Component - Asynchronously fetches and returns HTML content from a specified URL.
- * @property {function(string): Promise<void>} outterSwapComponent - Asynchronously fetches HTML content and replaces the outer HTML of the current element.
  * @property {function(): void} closeSidePannel - Closes the side panel by setting `isSidePanelVisible` to false.
  * @property {function(string): void} openSidePannel - Opens the side panel and sets the selected panel.
  * @property {function(): void} resetDB - Function to reset the database

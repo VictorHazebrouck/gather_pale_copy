@@ -1,5 +1,5 @@
-<ul x-data="$store.videoChat" id="nearby-main">
-    <template x-for="player in nearbyPlayers">
+<ul id="nearby-main">
+    <template x-for="player in $store.videoChat.nearbyPlayers">
         <div class="nearby-player-card">
             <p x-text="player.userId"></p>
             <i x-show="!player.stream" class="fa-solid fa-video-slash" style="color: red"></i>
@@ -8,9 +8,8 @@
                     x-show="player.stream"
                     class="video"
                     x-ref="video"
-                    x-init="$refs.video.srcObject = player.stream"
+                    x-init="$refs.video.srcObject = player.stream; $refs.video.muted = true;"
                     autoplay
-                    muted="true"
                 ></video>
             </template>
         </div>
