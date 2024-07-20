@@ -27,7 +27,7 @@ class PlayersLayer extends Container {
         PlayerSelf.createPlayer(playerSelfData).then((player) => {
             player.registerMovementInput();
             this.addChild(player);
-            game.attachCameraToObject(player)
+            game.attachCameraToObject(player);
         });
 
         this.init();

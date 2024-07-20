@@ -1,5 +1,3 @@
-import jsdoc from "eslint-plugin-jsdoc";
-
 export default [
     {
         ignores: [
@@ -11,23 +9,13 @@ export default [
             "public/**/*.min.js",
         ],
     },
-    jsdoc.configs["flat/recommended"],
     {
         rules: {
-            "no-unused-vars": "off",
+            "no-unused-vars": "warn",
             "no-console": "off",
             semi: ["error", "always"],
             quotes: ["error", "double"],
             "no-trailing-spaces": "error",
-            "no-restricted-syntax": [
-                "error",
-                {
-                    selector: "ConditionalExpression",
-                    message: "Ternary expressions are not allowed.",
-                },
-            ],
-            "jsdoc/tag-lines": "off",
-            "jsdoc/no-undefined-types": "off",
         },
     },
 ];

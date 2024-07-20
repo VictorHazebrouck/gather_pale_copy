@@ -1,4 +1,4 @@
-/** 
+/**
  * @module
  * @category GAME
  */
@@ -36,8 +36,8 @@ async function initGame(playerSelfData) {
     await background.generateBackground();
     game.addChild(background);
 
-    const players = new PlayersLayer(playerSelfData, game)
-    game.addChild(players)
+    const players = new PlayersLayer(playerSelfData, game);
+    game.addChild(players);
 }
 
 export default initGame;

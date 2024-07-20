@@ -15,7 +15,7 @@ class Game extends Container {
 
     /**
      * Attaches the view to an object, following his every move
-     * 
+     *
      * @method
      * @param {Container} obj PIXI object containing a posision property
      */

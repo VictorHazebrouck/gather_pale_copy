@@ -33,12 +33,11 @@ class db extends Dexie {
             registerSubscribers(this);
             registerPublishers(this);
 
-            const chatrooms = await this.chat_rooms.toArray()
-            eventBus.publish("DB_rooms_init", chatrooms)
+            const chatrooms = await this.chat_rooms.toArray();
+            eventBus.publish("DB_rooms_init", chatrooms);
 
-            const users = await this.users.toArray()
-            eventBus.publish("DB_users_init", users)
-            
+            const users = await this.users.toArray();
+            eventBus.publish("DB_users_init", users);
         } catch (error) {
             throw new Error("Failed to initialize database");
         }

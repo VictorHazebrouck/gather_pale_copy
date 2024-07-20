@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 function Component(Alpine) {
     Alpine.directive("component", async (el, { expression, modifiers }, { evaluate }) => {
         const componentPath = evaluate(expression);

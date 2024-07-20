@@ -1,5 +1,5 @@
-import { db } from "./DB";
 import eventBus from "../EventBus";
+import { db } from "./DB";
 
 /** @param {db} dataBase */
 function registerPublishers(dataBase) {
