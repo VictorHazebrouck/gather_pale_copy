@@ -9,7 +9,7 @@ const DB_VERSION = 1;
 /**
  * @class
  */
-class db extends Dexie {
+class DB extends Dexie {
     constructor() {
         super(DB_NAME);
 
@@ -49,8 +49,4 @@ class db extends Dexie {
     }
 }
 
-const DB = new db();
-DB.init();
-
 export default DB;
-export { db };

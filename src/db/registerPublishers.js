@@ -1,7 +1,7 @@
 import eventBus from "../EventBus";
-import { db } from "./DB";
+import DB from "./DB";
 
-/** @param {db} dataBase */
+/** @param {DB} dataBase */
 function registerPublishers(dataBase) {
     dataBase.chat_rooms.hook("updating", async (modifications, primKey, obj, transaction) => {
         // handler used to retrun refreshed collection after update

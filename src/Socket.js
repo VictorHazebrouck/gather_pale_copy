@@ -48,6 +48,9 @@ class Socket {
         this.socket.on("newUserJoin", (data) => {
             eventBus.publish("peer_receive_call_request", data);
         });
+        this.socket.on("aNameHasChanged", (data) => {
+            eventBus.publish("receive_username_change", data);
+        });
     }
 
     /**

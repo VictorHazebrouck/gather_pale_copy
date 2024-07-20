@@ -1,8 +1,8 @@
 import eventBus from "../EventBus";
-import { db } from "./DB";
+import DB from "./DB";
 import { v4 as uuidv4 } from "uuid";
 
-/** @param {db} dataBase */
+/** @param {DB} dataBase */
 function registerSubscribers(dataBase) {
     //init db, proceed to sync names with ids, reset connection state and mak as connected
     eventBus.once("receive_initial_gamestate", async ({ Players }) => {
@@ -40,16 +40,18 @@ function registerSubscribers(dataBase) {
             return;
         }
 
-        if (user.userName === userName) {
-            return;
+        if (user.userName !== userName) {
+            user.userName = userName;
         }
 
-        user.userName = userName;
+        user.isConnected = true;
         dataBase.users.put(user);
     });
 
     eventBus.subscribe("receive_username_change", async ({ userId, newName }) => {
         const user = await dataBase.users.get(userId);
+
+        console.log("receive usernamechnge");
 
         if (!user) {
             dataBase.users.add({ _id: userId, userName: newName, isConnected: true });
