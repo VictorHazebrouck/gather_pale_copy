@@ -1,0 +1,9 @@
+<span style="margin-left: auto">
+    <button @click="openSidePannel('chat')">
+        <i class="fa-solid fa-comments"></i>
+    </button>
+    <button @click="openSidePannel('people');" style="width: 8vh; padding-inline: 5px">
+        <i class="fa-solid fa-user-group"></i>
+        <h3 x-text="$store.participants.participants.length"></h3>
+    </button>
+</span>
