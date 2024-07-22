@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @ignore
+ * @category DB
+ */
+
 import eventBus from "../EventBus";
 import DB from "./DB";
 import { v4 as uuidv4 } from "uuid";

@@ -5,7 +5,7 @@ import Socket from "./src/Socket";
 import initGame from "./src/game/main";
 import PeerJS from "./src/rtc/peerToPeer/peer";
 
-new DB().init()
+new DB().init();
 new Socket(Alpine.store("user"));
 new PeerJS(Alpine.store("user").userId);
 

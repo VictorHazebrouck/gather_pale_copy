@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @ignore
+ * @category DB
+ */
+
 import Dexie from "dexie";
 import eventBus from "../EventBus";
 import registerSubscribers from "./registerSubscribers";
@@ -8,6 +14,7 @@ const DB_VERSION = 1;
 
 /**
  * @class
+ * @category DB
  */
 class DB extends Dexie {
     constructor() {

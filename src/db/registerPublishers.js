@@ -1,3 +1,8 @@
+/**
+ * @module
+ * @category DB
+ */
+
 import eventBus from "../EventBus";
 import DB from "./DB";
 
