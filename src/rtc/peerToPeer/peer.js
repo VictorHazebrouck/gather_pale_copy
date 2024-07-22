@@ -23,7 +23,6 @@ class PeerJS extends Peer {
             secure: false,
         });
         this.myId = userId;
-        this.myStream = undefined;
         this.init();
     }
 

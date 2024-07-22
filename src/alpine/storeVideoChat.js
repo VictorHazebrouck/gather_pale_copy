@@ -60,12 +60,14 @@ export default {
                 userIdCaller: Alpine.store("user").userId,
             });
 
-            eventBus.publish("initiate_audio_mute_change", this.isMySoundEnabled);
-            eventBus.publish("initiate_video_mute_change", this.isMyVideoEnabled);
+            setTimeout(() => {
+                eventBus.publish("initiate_audio_mute_change", this.isMySoundEnabled);
+                eventBus.publish("initiate_video_mute_change", this.isMyVideoEnabled);
+            }, 500);
         });
 
         eventBus.subscribe("peer_receive_media_stream", (data) => {
-            const { userIdCaller, stream } = data;
+            const { userIdCaller } = data;
 
             const i = this.nearbyPlayers.findIndex((e) => e.userId === userIdCaller);
 
@@ -76,7 +78,7 @@ export default {
 
             this.nearbyPlayers[i] = {
                 ...this.nearbyPlayers[i],
-                stream: stream,
+                stream: data.stream,
             };
 
             return;
@@ -97,7 +99,7 @@ export default {
                 return;
             }
 
-            this.nearbyPlayers[i].isSoundEnabled = state;
+            this.nearbyPlayers[i] = { ...this.nearbyPlayers[i], isSoundEnabled: state };
         });
 
         eventBus.subscribe("receive_video_mute_change", ({ userId, state }) => {
@@ -107,7 +109,7 @@ export default {
                 return;
             }
 
-            this.nearbyPlayers[i].isVideoEnabled = state;
+            this.nearbyPlayers[i] = { ...this.nearbyPlayers[i], isVideoEnabled: state };
         });
     },
 
@@ -120,13 +122,9 @@ export default {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
 
             // sync muted and video state
+            stream.getVideoTracks().forEach((track) => (track.enabled = this.isMyVideoEnabled));
+            stream.getAudioTracks().forEach((track) => (track.enabled = this.isMySoundEnabled));
             this.myStream = stream;
-            this.myStream
-                .getVideoTracks()
-                .forEach((track) => (track.enabled = this.isMyVideoEnabled));
-            this.myStream
-                .getAudioTracks()
-                .forEach((track) => (track.enabled = this.isMySoundEnabled));
 
             // share reference to my video stream to the rest of the application
             eventBus.publish("personal_media_stream_initialized", this.myStream);

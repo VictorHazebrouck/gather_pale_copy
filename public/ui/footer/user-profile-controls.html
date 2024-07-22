@@ -1,5 +1,19 @@
-<button x-data="{visible: false}">
-    <i class="fa-solid fa-user-gear" @click="visible = !visible"></i>
+<div x-data="{visible: false}" class="user-profile-container">
+    <div class="self-video-container">
+        <template x-if="$store.videoChat.myStream">
+            <video
+                x-show="$store.videoChat.isMyVideoEnabled"
+                class="video-self"
+                x-ref="video"
+                x-init="$refs.video.srcObject = $store.videoChat.myStream; $refs.video.muted = true;"
+                autoplay
+            ></video>
+        </template>
+        <i x-show="!$store.videoChat.isMyVideoEnabled" class="fa-solid fa-video-slash"></i>
+    </div>
+    <div class="self-user-information" @click="visible = !visible">
+        <h5 x-text="$store.user.userName"></h5>
+    </div>
     <template x-if="visible">
         <div
             class="popover"
@@ -17,9 +31,52 @@
             />
         </div>
     </template>
-</button>
+</div>
 
 <style>
+    .user-profile-container {
+        height: 5vh;
+        display: flex;
+        border-radius: var(--rad-normal);
+        overflow: hidden;
+        cursor: pointer;
+        border: var(--border-big);
+        margin-right: 20px;
+
+        .self-user-information {
+            margin: 0;
+            padding: 5px 10px;
+            background-color: var(--bg-color-dark-2);
+            border-radius: 0;
+            width: 18vh;
+        }
+
+        .self-video-container {
+            width: 9vh;
+            height: 5vh;
+            background-color: var(--bg-color-dark-2);
+            border-right: var(--border-big);
+            cursor: pointer;
+            overflow: hidden;
+            align-self: center;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .video-self {
+                margin: 0;
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
+            }
+
+            i {
+                font-size: smaller;
+                color: gray;
+            }
+        }
+    }
     .popover {
         position: absolute;
         bottom: 5.5vh;

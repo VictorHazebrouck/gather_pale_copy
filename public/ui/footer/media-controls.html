@@ -1,9 +1,11 @@
 <div style="display: flex" x-data="$store.videoChat">
-    <button :style="isMySoundEnabled ? 'color: green;' : 'color: red;'" @click="muteAudio">
-        <i class="fa-solid fa-microphone"></i>
-    </button>
     <button :style="isMyVideoEnabled ? 'color: green;' : 'color: red;'" @click="muteVideo">
-        <i class="fa-solid fa-video"></i>
+        <i :class="isMyVideoEnabled ? 'fa-solid fa-video' : 'fa-solid fa-video-slash'"></i>
+    </button>
+    <button :style="isMySoundEnabled ? 'color: green;' : 'color: red;'" @click="muteAudio">
+        <i
+            :class="isMySoundEnabled ? 'fa-solid fa-microphone' : 'fa-solid fa-microphone-slash'"
+        ></i>
     </button>
     <button :style="isMyScreenshareEnabled ? 'color: green;' : ''" @click="shareScreen">
         <i class="fa-solid fa-display"></i>
