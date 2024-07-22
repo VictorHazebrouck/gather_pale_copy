@@ -2,6 +2,22 @@ import eventBus from "../EventBus";
 import DB from "./DB";
 import { v4 as uuidv4 } from "uuid";
 
+/**
+ * @param {DB} dataBase
+ * @param {string} userId
+ * @param {string} newName
+ */
+async function syncRoomPartner(dataBase, userId, newName) {
+    const correspondingroom = await dataBase.chat_rooms.where("userId").equals(userId).first();
+
+    if (!correspondingroom) {
+        return;
+    }
+
+    correspondingroom.userName = newName;
+    dataBase.chat_rooms.put(correspondingroom);
+}
+
 /** @param {DB} dataBase */
 function registerSubscribers(dataBase) {
     //init db, proceed to sync names with ids, reset connection state and mak as connected
@@ -25,7 +41,11 @@ function registerSubscribers(dataBase) {
                 return;
             }
 
-            user.userName = userName;
+            if (user.userName !== userName) {
+                user.userName = userName;
+                syncRoomPartner(dataBase, userId, userName);
+            }
+
             user.isConnected = true;
             dataBase.users.put(user);
         }
@@ -42,6 +62,7 @@ function registerSubscribers(dataBase) {
 
         if (user.userName !== userName) {
             user.userName = userName;
+            syncRoomPartner(dataBase, userId, userName);
         }
 
         user.isConnected = true;
@@ -64,6 +85,8 @@ function registerSubscribers(dataBase) {
 
         user.userName = newName;
         dataBase.users.put(user);
+
+        syncRoomPartner(dataBase, userId, newName);
     });
 
     // when a player disconnects, mark him as disconnected

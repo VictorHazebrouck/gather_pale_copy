@@ -51,6 +51,12 @@ class Socket {
         this.socket.on("aNameHasChanged", (data) => {
             eventBus.publish("receive_username_change", data);
         });
+        this.socket.on("receive_video_mute_change", (data) => {
+            eventBus.publish("receive_video_mute_change", data);
+        });
+        this.socket.on("receive_audio_mute_change", (data) => {
+            eventBus.publish("receive_audio_mute_change", data);
+        });
     }
 
     /**
@@ -71,6 +77,12 @@ class Socket {
         });
         eventBus.subscribe("peer_initiate_call_request", (data) => {
             this.socket.emit("userJoinVideo", data);
+        });
+        eventBus.subscribe("initiate_video_mute_change", (data) => {
+            this.socket.emit("initiate_video_mute_change", data);
+        });
+        eventBus.subscribe("initiate_audio_mute_change", (data) => {
+            this.socket.emit("initiate_audio_mute_change", data);
         });
     }
 }

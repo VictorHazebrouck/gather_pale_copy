@@ -23,38 +23,18 @@ class PeerJS extends Peer {
             secure: false,
         });
         this.myId = userId;
-
-        /**
-         * @typedef {object} Stream
-         * @property {string} userId
-         * @property {MediaStream} stream
-         */
-
-        /** @type {Stream[]} */
-        this.streams = [];
-
-        this.initializePersonalVideoStream();
+        this.myStream = undefined;
         this.init();
     }
 
-    /**
-     * Handle personnal video stream authoriation request
-     */
-    async initializePersonalVideoStream() {
-        try {
-            // Request access to the camera
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    init() {
+        eventBus.once("personal_media_stream_initialized", (stream) => {
             this.myStream = stream;
-        } catch (error) {
-            alert("Error accessing media devices, please allow access");
-            console.error("Error accessing media devices:", error);
-        }
-    }
+        });
 
-    async init() {
-        // On successfull connection to peer server, initiate call request
+        // Successfull connection to peer server
         this.on("open", () => {
-            console.log("connected to peer server!");
+            console.log("successfully connected to peer server!");
         });
 
         // when a new user tries to call us, handle it
@@ -62,10 +42,10 @@ class PeerJS extends Peer {
             call.answer(this.myStream);
             console.log("accepting call request");
 
-            call.on("stream", (videoStream) => {
+            call.on("stream", (stream) => {
                 eventBus.publish("peer_receive_media_stream", {
                     userIdCaller: call.peer,
-                    stream: videoStream,
+                    stream: stream,
                 });
             });
         });
@@ -87,15 +67,6 @@ class PeerJS extends Peer {
                     stream: userStream,
                 });
             });
-        });
-
-        eventBus.subscribe("mute_video", (/**@type {boolean}*/ bool) => {
-            console.log("miting...");
-            this.myStream?.getVideoTracks().forEach((track) => (track.enabled = bool));
-        });
-        eventBus.subscribe("mute_audio", (/**@type {boolean}*/ bool) => {
-            console.log("miting...");
-            this.myStream?.getAudioTracks().forEach((track) => (track.enabled = bool));
         });
     }
 }

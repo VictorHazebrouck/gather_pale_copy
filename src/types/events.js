@@ -27,9 +27,15 @@
  * @property  {DBRoomsInit} DB_rooms_init
  * @property  {DBUsersInit} DB_users_init
  *
+ * @property {InitializePersonalVideoStream} personal_media_stream_initialized
  * @property  {PeerInitiateCallEventData} peer_initiate_call_request
  * @property  {PeerReceiveCallEventData} peer_receive_call_request
  * @property  {PeerReceiveMediaStreamEventData} peer_receive_media_stream
+ *
+ * @property {PlayerAudioMuteStateChange} initiate_video_mute_change
+ * @property {PlayerVideoMuteStateChange} initiate_audio_mute_change
+ * @property {ReceivePlayerVideoMuteStateChange} receive_audio_mute_change
+ * @property {ReceivePlayerVideoMuteStateChange} receive_video_mute_change
  */
 
 /**
@@ -200,11 +206,55 @@
  */
 
 /**
+ * @typedef {MediaStream} InitializePersonalVideoStream
+ *
+ * @event personal_media_stream_initialized
+ * @type {InitializePersonalVideoStream}
+ * @category EVENT_BUS
+ */
+
+/**
  * @typedef {Object} GamePlayerJoinNearbyEventData
  * @property {string} userId
  *
  * @event game_player_join_nearby_area
  * @type {GamePlayerJoinNearbyEventData}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {boolean} PlayerAudioMuteStateChange
+ *
+ * @event initiate_audio_mute_change
+ * @type {PlayerAudioMuteStateChange}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {object} ReceivePlayerAudioMuteStateChange
+ * @property {boolean} state
+ * @property {string} userId
+ *
+ * @event initiate_audio_mute_change
+ * @type {PlayerAudioMuteStateChange}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {boolean} PlayerVideoMuteStateChange
+ *
+ * @event initiate_video_mute_change
+ * @type {PlayerVideoMuteStateChange}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {object} ReceivePlayerVideoMuteStateChange
+ * @property {boolean} state
+ * @property {string} userId
+ *
+ * @event initiate_video_mute_change
+ * @type {PlayerVideoMuteStateChange}
  * @category EVENT_BUS
  */
 
