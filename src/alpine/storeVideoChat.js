@@ -6,6 +6,8 @@ export default {
      * @typedef {object} RemoteStream
      * @property {MediaStream | null} stream
      * @property {MediaStream | null} screenShare
+     * @property {boolean} isSoundEnabled
+     * @property {boolean} isVideoEnabled
      * @property {string} userId
      */
 
@@ -22,12 +24,12 @@ export default {
     muteVideo() {
         this.isMyVideoEnabled = !this.isMyVideoEnabled;
         this.myStream?.getVideoTracks().forEach((track) => (track.enabled = this.isMyVideoEnabled));
-        eventBus.publish("initiate_video_mute_change", this.isMyVideoEnabled)
+        eventBus.publish("initiate_video_mute_change", this.isMyVideoEnabled);
     },
     muteAudio() {
         this.isMySoundEnabled = !this.isMySoundEnabled;
         this.myStream?.getAudioTracks().forEach((track) => (track.enabled = this.isMySoundEnabled));
-        eventBus.publish("initiate_audio_mute_change", this.isMySoundEnabled)
+        eventBus.publish("initiate_audio_mute_change", this.isMySoundEnabled);
     },
     shareScreen() {
         this.isMyScreenshareEnabled = !this.isMyScreenshareEnabled;
@@ -49,6 +51,8 @@ export default {
                 userId: userId,
                 stream: null,
                 screenShare: null,
+                isSoundEnabled: false,
+                isVideoEnabled: false,
             });
 
             eventBus.publish("peer_initiate_call_request", {
@@ -56,8 +60,8 @@ export default {
                 userIdCaller: Alpine.store("user").userId,
             });
 
-            eventBus.publish("initiate_audio_mute_change", this.isMySoundEnabled)
-            eventBus.publish("initiate_video_mute_change", this.isMyVideoEnabled)
+            eventBus.publish("initiate_audio_mute_change", this.isMySoundEnabled);
+            eventBus.publish("initiate_video_mute_change", this.isMyVideoEnabled);
         });
 
         eventBus.subscribe("peer_receive_media_stream", (data) => {
@@ -86,12 +90,25 @@ export default {
             this.cleanupPlayer(userId);
         });
 
-        eventBus.subscribe("receive_audio_mute_change", ({userId, state})=>{
-            console.log("hahaha");
-        })
-        eventBus.subscribe("receive_video_mute_change", ({userId, state})=>{
-            console.log("haha");
-        })
+        eventBus.subscribe("receive_audio_mute_change", ({ userId, state }) => {
+            const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
+
+            if (i === -1) {
+                return;
+            }
+
+            this.nearbyPlayers[i].isSoundEnabled = state;
+        });
+
+        eventBus.subscribe("receive_video_mute_change", ({ userId, state }) => {
+            const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
+
+            if (i === -1) {
+                return;
+            }
+
+            this.nearbyPlayers[i].isVideoEnabled = state;
+        });
     },
 
     /**

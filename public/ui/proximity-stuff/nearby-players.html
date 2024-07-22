@@ -1,7 +1,7 @@
 <ul id="nearby-main">
     <template x-for="player in $store.videoChat.nearbyPlayers">
         <div class="nearby-player-card">
-            <p x-text="player.userId"></p>
+            <p x-text="player.isVideoEnabled + ' ' + player.isSoundEnabled"></p>
             <i x-show="!player.stream" class="fa-solid fa-video-slash" style="color: red"></i>
             <template x-if="player.stream">
                 <video
