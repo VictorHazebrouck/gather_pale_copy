@@ -3,6 +3,8 @@
  * @ignore
  */
 import { Spritesheet, AnimatedSprite, Ticker, Point } from "pixi.js";
+import NameTag from "./NameTag";
+import eventBus from "../../EventBus";
 
 /**
  * Player class that extends AnimatedSprite.
@@ -41,6 +43,7 @@ class PlayerBase extends AnimatedSprite {
         this.moveDirection = "stop";
 
         Ticker.shared.add(this._spriteUpdate);
+        this._createNameTag({ userId, userName });
     }
 
     /**
@@ -204,6 +207,27 @@ class PlayerBase extends AnimatedSprite {
         const globalPosition = this.toGlobal(new Point(0, 0));
         return globalPosition;
     };
+
+    /**
+     * Function to handle creating and updating name tag
+     * @private
+     * @method
+     *
+     * @param {PlayerData} data
+     */
+    _createNameTag({ userId, userName }) {
+        let nameTag = new NameTag({ userId, userName });
+        this.addChild(nameTag);
+
+        eventBus.subscribe("receive_username_change", (data) => {
+            if (data.userId === userId) {
+                this.playerInformation.userName = data.newName;
+                nameTag.destroy();
+                nameTag = new NameTag({ userId, userName: data.newName });
+                this.addChild(nameTag);
+            }
+        });
+    }
 }
 
 export default PlayerBase;
