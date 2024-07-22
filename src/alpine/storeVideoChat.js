@@ -22,11 +22,21 @@ export default {
     isMyScreenshareEnabled: false,
 
     muteVideo() {
+        if (!this.myStream) {
+            this.initializePersonalVideoStream();
+            return;
+        }
+
         this.isMyVideoEnabled = !this.isMyVideoEnabled;
         this.myStream?.getVideoTracks().forEach((track) => (track.enabled = this.isMyVideoEnabled));
         eventBus.publish("initiate_video_mute_change", this.isMyVideoEnabled);
     },
     muteAudio() {
+        if (!this.myStream) {
+            this.initializePersonalVideoStream();
+            return;
+        }
+
         this.isMySoundEnabled = !this.isMySoundEnabled;
         this.myStream?.getAudioTracks().forEach((track) => (track.enabled = this.isMySoundEnabled));
         eventBus.publish("initiate_audio_mute_change", this.isMySoundEnabled);
