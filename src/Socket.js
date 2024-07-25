@@ -5,7 +5,7 @@
 import { io } from "socket.io-client";
 import eventBus from "./EventBus";
 
-const remoteUrl = "http://185.133.250.190/3015";
+const remoteUrl = "http://185.133.250.190:3015";
 const localUrl = "http://localhost:3015";
 
 /**

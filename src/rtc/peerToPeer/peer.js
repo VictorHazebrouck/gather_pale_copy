@@ -8,7 +8,7 @@ import Peer from "peerjs";
 import eventBus from "../../EventBus";
 
 const remoteConfig = {
-    host: "http://185.133.250.190/",
+    host: "185.133.250.190",
     port: 3016,
     path: "/",
     secure: false,
