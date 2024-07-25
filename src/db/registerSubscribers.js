@@ -1,6 +1,5 @@
 /**
  * @module
- * @ignore
  * @category DB
  */
 
@@ -27,6 +26,9 @@ async function syncRoomPartner(dataBase, userId, newName) {
 /** @param {DB} dataBase */
 function registerSubscribers(dataBase) {
     //init db, proceed to sync names with ids, reset connection state and mak as connected
+    /**
+     * @listens receive_initial_gamestate
+     */
     eventBus.once("receive_initial_gamestate", async ({ Players }) => {
         const users = await dataBase.users.toArray();
 
