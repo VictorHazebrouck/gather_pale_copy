@@ -7,6 +7,20 @@
 import Peer from "peerjs";
 import eventBus from "../../EventBus";
 
+const remoteConfig = {
+    host: "http://185.133.250.190/",
+    port: 3016,
+    path: "/",
+    secure: false,
+};
+
+const localConfig = {
+    host: "localhost",
+    port: 3016,
+    path: "/",
+    secure: false,
+};
+
 /**
  * Class to handle peer to peer connections
  *
@@ -16,12 +30,7 @@ import eventBus from "../../EventBus";
 class PeerJS extends Peer {
     /** @param {string} userId */
     constructor(userId) {
-        super(userId, {
-            host: "localhost",
-            port: 3016,
-            path: "/peerjs",
-            secure: false,
-        });
+        super(userId, remoteConfig);
         this.myId = userId;
         this.init();
     }

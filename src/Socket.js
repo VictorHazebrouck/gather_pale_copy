@@ -5,6 +5,9 @@
 import { io } from "socket.io-client";
 import eventBus from "./EventBus";
 
+const remoteUrl = "http://185.133.250.190/3015";
+const localUrl = "http://localhost:3015";
+
 /**
  * Socket manager class
  *
@@ -17,7 +20,7 @@ class Socket {
      * @param {UserStore} userData - init socket with Persisted User data
      */
     constructor(userData) {
-        this.socket = io("http://localhost:3015", { query: userData });
+        this.socket = io(remoteUrl, { query: userData });
 
         this.initReceivers();
         this.initEmiters();
