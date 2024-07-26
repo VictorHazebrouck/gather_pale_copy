@@ -8,10 +8,9 @@ import Peer from "peerjs";
 import eventBus from "../../EventBus";
 
 const remoteConfig = {
-    host: "185.133.250.190",
-    port: 3016,
-    path: "/",
-    secure: false,
+    host: "un-indien-dans-la-ville.store",
+    path: "/3016",
+    secure: true,
 };
 
 const localConfig = {
