@@ -6,7 +6,6 @@ import { Ticker, Spritesheet } from "pixi.js";
 import PlayerBase from "./PlayerBase";
 import Alpine from "alpinejs";
 import { filterPlayerOthers, loadPlayerSprite } from "../utils/utils";
-import PlayerOther from "./PlayerOther";
 import eventBus from "../../EventBus";
 
 /**
@@ -36,10 +35,7 @@ class PlayerSelf extends PlayerBase {
         this.nearbyPlayersIds = new Set();
 
         Ticker.shared.add(this._playerMovement);
-        setInterval(this._checkNearbyPlayers, 1000);
-        eventBus.subscribe("player_disconnected", (data) =>
-            this.nearbyPlayersIds.delete(data.userId)
-        );
+        this._checkNearbyPlayers();
     }
 
     /**
@@ -117,35 +113,42 @@ class PlayerSelf extends PlayerBase {
     };
 
     /**
-     * Called on each frame to check who's nearby us.
+     * Handles nearby players detection
+     * fires player join and player leave nearby events
      * @private
      * @method
      *
      * @returns {void}
      */
     _checkNearbyPlayers = () => {
-        const otherPlayers = filterPlayerOthers(this.parent.children);
+        setInterval(() => {
+            const otherPlayers = filterPlayerOthers(this.parent.children);
 
-        for (const player of otherPlayers) {
-            const { x, y } = player.position;
-            const a = Math.abs(this.x - x);
-            const b = Math.abs(this.y - y);
-            const distance = Math.sqrt(a * a + b * b);
+            for (const player of otherPlayers) {
+                const { x, y } = player.position;
+                const a = Math.abs(this.x - x);
+                const b = Math.abs(this.y - y);
+                const distance = Math.sqrt(a * a + b * b);
 
-            const userId = player.playerInformation.userId;
+                const userId = player.playerInformation.userId;
 
-            if (distance < 100) {
-                if (!this.nearbyPlayersIds.has(userId)) {
-                    this.nearbyPlayersIds.add(userId);
-                    eventBus.publish("game_player_join_nearby_area", { userId: userId });
-                }
-            } else {
-                if (this.nearbyPlayersIds.has(userId)) {
-                    this.nearbyPlayersIds.delete(userId);
-                    eventBus.publish("game_player_leave_nearby_area", { userId: userId });
+                if (distance < 100) {
+                    if (!this.nearbyPlayersIds.has(userId)) {
+                        this.nearbyPlayersIds.add(userId);
+                        eventBus.publish("game_player_join_nearby_area", { userId: userId });
+                    }
+                } else {
+                    if (this.nearbyPlayersIds.has(userId)) {
+                        this.nearbyPlayersIds.delete(userId);
+                        eventBus.publish("game_player_leave_nearby_area", { userId: userId });
+                    }
                 }
             }
-        }
+        }, 500);
+
+        eventBus.subscribe("player_disconnected", (data) =>
+            this.nearbyPlayersIds.delete(data.userId)
+        );
     };
 
     /**
