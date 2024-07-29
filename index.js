@@ -1,14 +1,15 @@
 import DB from "./src/db/DB";
-import Alpine from "./src/alpine/registerStates";
+import "./src/alpine/registerStates";
+import Alpine from "alpinejs";
 import Socket from "./src/Socket";
 import initGame from "./src/game/main";
 import PeerJS from "./src/rtc/peerToPeer/peer";
 import eventBus from "./src/EventBus";
 
-//first initialize Alpine js
+//inti Alpine state manager first
 Alpine.start();
 
-//then init db
+//inti db
 new DB().init();
 
 //init socket io stuff
