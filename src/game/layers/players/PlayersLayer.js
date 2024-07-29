@@ -5,7 +5,6 @@
 
 import { Container } from "pixi.js";
 import EventBus from "../../../EventBus";
-import PlayerSelf from "../../player/PlayerSelf";
 import PlayerOther from "../../player/PlayerOther";
 
 /**
@@ -16,21 +15,8 @@ import PlayerOther from "../../player/PlayerOther";
  * @extends Container
  */
 class PlayersLayer extends Container {
-    /**
-     *
-     * @param {UserStore} playerSelfData
-     */
-    constructor(playerSelfData, game) {
+    constructor() {
         super();
-
-        // add self to container
-        PlayerSelf.createPlayer(playerSelfData).then((player) => {
-            player.registerMovementInput();
-            player.registerMovementInput("KeyW", "KeyS", "KeyA", "KeyD");
-            this.addChild(player);
-            game.attachCameraToObject(player);
-        });
-
         this.init();
     }
 

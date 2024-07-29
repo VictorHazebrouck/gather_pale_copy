@@ -41,7 +41,7 @@ class PeerJS extends Peer {
 
         // Successfull connection to peer server
         this.on("open", () => {
-            console.log("successfully connected to peer server!");
+            eventBus.publish("peer_successfull_initialization", undefined)
         });
 
         // when a new user tries to call us, handle it

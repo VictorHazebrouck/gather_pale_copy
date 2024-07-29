@@ -30,6 +30,8 @@
  * @property  {PeerInitiateCallEventData} peer_initiate_call_request
  * @property  {PeerReceiveCallEventData} peer_receive_call_request
  * @property  {PeerReceiveMediaStreamEventData} peer_receive_media_stream
+ * @property  {PeerSuccessfullConnection} peer_successfull_initialization
+ * @property  {SocketSuccessfullConnection} socket_successfull_initialization
  *
  * @property {PlayerAudioMuteStateChange} initiate_video_mute_change
  * @property {PlayerVideoMuteStateChange} initiate_audio_mute_change
@@ -200,6 +202,22 @@
  * @property {MediaStream} stream
  *
  * @event peer_receive_media_stream
+ * @type {PeerReceiveMediaStreamEventData}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {undefined} PeerSuccessfullConnection
+ *
+ * @event peer_successfull_initialization
+ * @type {PeerReceiveMediaStreamEventData}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {undefined} SocketSuccessfullConnection
+ *
+ * @event socket_successfull_initialization
  * @type {PeerReceiveMediaStreamEventData}
  * @category EVENT_BUS
  */

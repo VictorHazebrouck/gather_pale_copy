@@ -33,6 +33,10 @@ class Socket {
      * @method
      */
     initReceivers() {
+        this.socket.on("connect", () => {
+            eventBus.publish("socket_successfull_initialization", undefined);
+        });
+
         this.socket.on("newPlayerConnected", (data) => {
             eventBus.publish("new_player_connected", data);
         });

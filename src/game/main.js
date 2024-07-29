@@ -7,6 +7,7 @@ import { Application, Ticker } from "pixi.js";
 import Background from "./layers/background/Background";
 import Game from "./game/Game";
 import PlayersLayer from "./layers/players/PlayersLayer";
+import PlayerSelf from "./player/PlayerSelf";
 
 /**
  * Initialization function
@@ -36,8 +37,17 @@ async function initGame(playerSelfData) {
     await background.generateBackground();
     game.addChild(background);
 
-    const players = new PlayersLayer(playerSelfData, game);
-    game.addChild(players);
+    // init self
+    const playerSelf = await PlayerSelf.createPlayer(playerSelfData);
+    playerSelf.registerMovementInput();
+    playerSelf.registerMovementInput("KeyW", "KeyS", "KeyA", "KeyD");
+
+    // inti players layer
+    const playersLayer = new PlayersLayer(playerSelfData, game);
+    playersLayer.addChild(playerSelf);
+
+    game.attachCameraToObject(playerSelf);
+    game.addChild(playersLayer);
 }
 
 export default initGame;
