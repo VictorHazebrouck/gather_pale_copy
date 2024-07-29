@@ -56,10 +56,9 @@ export default {
         await this.initializePersonalVideoStream();
 
         eventBus.subscribe("game_player_join_nearby_area", ({ userId }) => {
-            console.log("player nearby !!");
-
             const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
 
+            // if player don't exist yes, create it
             if(i === -1 ){
                 this.nearbyPlayers.push({
                     userId: userId,
@@ -70,6 +69,7 @@ export default {
                 });
             }
 
+            // initiate video call
             eventBus.publish("peer_initiate_call_request", {
                 userIdReceiver: userId,
                 userIdCaller: Alpine.store("user").userId,
@@ -82,14 +82,15 @@ export default {
         });
 
         eventBus.subscribe("peer_receive_media_stream", (data) => {
-            const { userIdCaller, stream } = data;
+            const { userIdCaller } = data;
 
             const i = this.nearbyPlayers.findIndex((e) => e.userId === userIdCaller);
 
+            // if player don't exist yet, add him together with his stream
             if (i === -1) {
                 this.nearbyPlayers.push({
                     userId: userIdCaller,
-                    stream: stream,
+                    stream: data.stream,
                     screenShare: null,
                     isSoundEnabled: false,
                     isVideoEnabled: false,
@@ -97,9 +98,10 @@ export default {
                 return;
             }
 
+            // if player does exist, only add a videostream to its existing obj
             this.nearbyPlayers[i] = {
                 ...this.nearbyPlayers[i],
-                stream: stream,
+                stream: data.stream,
             };
 
             return;
@@ -162,4 +164,8 @@ export default {
         }
         this.nearbyPlayers = this.nearbyPlayers.filter((e) => e.userId !== userId);
     },
+
+    log(){
+        console.log(eventBus._listeners);
+    }
 };
