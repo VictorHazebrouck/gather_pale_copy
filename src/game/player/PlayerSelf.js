@@ -17,19 +17,13 @@ import eventBus from "../../EventBus";
 class PlayerSelf extends PlayerBase {
     /**
      * @constructor
-     * @param {UserStore} playerSelfData - spritesheet
+     * @private
+     * 
+     * @param {PlayerDataWithCoordinates} playerData - player data
      * @param {Spritesheet} spriteSheet - spritesheet
      */
-    constructor(spriteSheet, playerSelfData) {
-        /** @type {PlayerDataWithCoordinates} */
-        const obj = {
-            userId: playerSelfData.userId,
-            userName: playerSelfData.userName,
-            x: playerSelfData.lastPositionX,
-            y: playerSelfData.lastPositionY,
-        };
-
-        super(obj, spriteSheet);
+    constructor(spriteSheet, playerData) {
+        super(playerData, spriteSheet);
 
         /**@type {Set<string>} */
         this.nearbyPlayersIds = new Set();
@@ -39,7 +33,7 @@ class PlayerSelf extends PlayerBase {
     }
 
     /**
-     * Used together with "moveDirection" to detect a change in requested direction
+     * Used together with @see {moveDirection} to detect a change in requested direction
      * Keeps track multiple key pressed at the same time while only allowing for strict x||y movement
      *
      * @type {Direction[]}
@@ -113,45 +107,6 @@ class PlayerSelf extends PlayerBase {
     };
 
     /**
-     * Handles nearby players detection
-     * fires player join and player leave nearby events
-     * @private
-     * @method
-     *
-     * @returns {void}
-     */
-    _checkNearbyPlayers = () => {
-        setInterval(() => {
-            const otherPlayers = filterPlayerOthers(this.parent.children);
-
-            for (const player of otherPlayers) {
-                const { x, y } = player.position;
-                const a = Math.abs(this.x - x);
-                const b = Math.abs(this.y - y);
-                const distance = Math.sqrt(a * a + b * b);
-
-                const userId = player.playerInformation.userId;
-
-                if (distance < 100) {
-                    if (!this.nearbyPlayersIds.has(userId)) {
-                        this.nearbyPlayersIds.add(userId);
-                        eventBus.publish("game_player_join_nearby_area", { userId: userId });
-                    }
-                } else {
-                    if (this.nearbyPlayersIds.has(userId)) {
-                        this.nearbyPlayersIds.delete(userId);
-                        eventBus.publish("game_player_leave_nearby_area", { userId: userId });
-                    }
-                }
-            }
-        }, 500);
-
-        eventBus.subscribe("player_disconnected", (data) =>
-            this.nearbyPlayersIds.delete(data.userId)
-        );
-    };
-
-    /**
      * Adds event listeners for arrow keys, queues/removes directions instructions under queuedDirections
      * Initialized by the component itself to arrow keys, calling this elsewhere will "stack" not overwrite
      * @public
@@ -222,17 +177,64 @@ class PlayerSelf extends PlayerBase {
     };
 
     /**
+     * Handles nearby players detection
+     * fires player join and player leave nearby events
+     * @private
+     * @method
+     *
+     * @returns {void}
+     */
+    _checkNearbyPlayers = () => {
+        setInterval(() => {
+            const otherPlayers = filterPlayerOthers(this.parent.children);
+
+            for (const player of otherPlayers) {
+                const { x, y } = player.position;
+                const a = Math.abs(this.x - x);
+                const b = Math.abs(this.y - y);
+                const distance = Math.sqrt(a * a + b * b);
+
+                const userId = player.playerInformation.userId;
+
+                if (distance < 100) {
+                    if (!this.nearbyPlayersIds.has(userId)) {
+                        this.nearbyPlayersIds.add(userId);
+                        eventBus.publish("game_player_join_nearby_area", { userId: userId });
+                    }
+                } else {
+                    if (this.nearbyPlayersIds.has(userId)) {
+                        this.nearbyPlayersIds.delete(userId);
+                        eventBus.publish("game_player_leave_nearby_area", { userId: userId });
+                    }
+                }
+            }
+        }, 500);
+
+        eventBus.subscribe("player_disconnected", (data) =>
+            this.nearbyPlayersIds.delete(data.userId)
+        );
+    };
+
+    /**
      * Handles new player creation, avoids creating duplicates
      * @static
      * @method
      *
-     * @param {UserStore} playerData
+     * @param {UserStore} playerSelfData
      * @returns {Promise<PlayerSelf>} - returns the player instance or false
      */
-    static createPlayer = async (playerData) => {
+    static createPlayer = async (playerSelfData) => {
         const spriteSheet = await loadPlayerSprite();
 
-        return new PlayerSelf(spriteSheet, playerData);
+        /** @type {PlayerDataWithCoordinates} */
+        const obj = {
+            userId: playerSelfData.userId,
+            userName: playerSelfData.userName,
+            x: playerSelfData.lastPositionX,
+            y: playerSelfData.lastPositionY,
+        };
+
+        return new PlayerSelf(spriteSheet, obj);
     };
 }
 

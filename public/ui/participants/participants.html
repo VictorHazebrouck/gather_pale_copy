@@ -1,12 +1,37 @@
-<ul x-data="$store.participants" id="participants-main">
-    <template x-for="particiant in participants">
-        <div class="participant-card">
-            <p x-text="particiant.isConnected"></p>
-            <p x-text="particiant.userName"></p>
-            <p x-text="particiant._id"></p>
+<div x-data="$store.participants" id="participants-main">
+    <div class="navigation">
+        <h3 x-text="'Participants'"></h3>
+        <button @click="closeSidePannel()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <div x-data="{isVisible: true}">
+        <div @click="isVisible = !isVisible" class="accordion-title">
+            <i :class="isVisible ? 'fa-solid fa-angle-down' : 'fa-solid fa-angle-right'"></i>
+            <h4>connected</h4>
         </div>
-    </template>
-</ul>
+        <ul x-show="isVisible" x-transition>
+            <template x-for="particiant in participants.filter(e => e.isConnected)">
+                <li class="participant-card" @click="clickPlayerCard(particiant)">
+                    <p x-text="particiant.userName"></p>
+                </li>
+            </template>
+        </ul>
+    </div>
+    <div x-data="{isVisible: false}" x-transition>
+        <div @click="isVisible = !isVisible" class="accordion-title">
+            <i :class="isVisible ? 'fa-solid fa-angle-down' : 'fa-solid fa-angle-right'"></i>
+            <h4>disconnected</h4>
+        </div>
+        <ul x-show="isVisible">
+            <template x-for="particiant in participants.filter(e => !e.isConnected)">
+                <li class="participant-card">
+                    <p x-text="particiant.userName"></p>
+                </li>
+            </template>
+        </ul>
+    </div>
+</div>
 <style>
     #participants-main {
         width: 100%;
@@ -32,6 +57,39 @@
             p {
                 color: var(--txt-color-dark-2);
             }
+        }
+
+        .accordion-title {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-block: var(--pad-normal);
+
+            i {
+                width: 30px;
+            }
+        }
+
+        .navigation {
+            height: 4vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--bg-color-dark-1);
+            color: var(--txt-color-dark-1);
+
+            button {
+                margin: 0;
+                width: 4vh;
+                height: 4vh;
+            }
+        }
+
+        #component-messages,
+        #component-lobbies {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
     }
 </style>

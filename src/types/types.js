@@ -102,6 +102,7 @@
  * Represents the participants data
  *
  * @typedef {object} ParticipantsStore
+ * @property {function(User):void} clickPlayerCard
  * @property {User[]} participants - list of participants
  * @property {boolean} _isInit - flag to ensure init is being called only once
  * @property {function():void} init - initialization function
