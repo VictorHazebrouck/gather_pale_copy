@@ -82,14 +82,14 @@ export default {
         });
 
         eventBus.subscribe("peer_receive_media_stream", (data) => {
-            const { userIdCaller } = data;
+            // don't destructure data.stream in order to keep to original referecence
 
-            const i = this.nearbyPlayers.findIndex((e) => e.userId === userIdCaller);
+            const i = this.nearbyPlayers.findIndex((e) => e.userId === data.userIdCaller);
 
             // if player don't exist yet, add him together with his stream
             if (i === -1) {
                 this.nearbyPlayers.push({
-                    userId: userIdCaller,
+                    userId: data.userIdCaller,
                     stream: data.stream,
                     screenShare: null,
                     isSoundEnabled: false,

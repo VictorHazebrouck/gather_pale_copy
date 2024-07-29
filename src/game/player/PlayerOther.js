@@ -68,7 +68,8 @@ class PlayerOther extends PlayerBase {
         eventBus.subscribe("receive_move_instructions", handleMovement);
 
         /** 
-         * If the broadcasted move is from the player himself, destroy his instance 
+         * If the broadcasted move is from the player himself, 
+         * destroy his instance and remove his listeners
          * @param {PlayerDisconnectdEventData} data
          */
         const disconnectUser = ({ userId }) => {
