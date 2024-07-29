@@ -57,13 +57,18 @@ export default {
 
         eventBus.subscribe("game_player_join_nearby_area", ({ userId }) => {
             console.log("player nearby !!");
-            this.nearbyPlayers.push({
-                userId: userId,
-                stream: null,
-                screenShare: null,
-                isSoundEnabled: false,
-                isVideoEnabled: false,
-            });
+
+            const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
+
+            if(i === -1 ){
+                this.nearbyPlayers.push({
+                    userId: userId,
+                    stream: null,
+                    screenShare: null,
+                    isSoundEnabled: false,
+                    isVideoEnabled: false,
+                });
+            }
 
             eventBus.publish("peer_initiate_call_request", {
                 userIdReceiver: userId,
@@ -77,18 +82,24 @@ export default {
         });
 
         eventBus.subscribe("peer_receive_media_stream", (data) => {
-            const { userIdCaller } = data;
+            const { userIdCaller, stream } = data;
 
             const i = this.nearbyPlayers.findIndex((e) => e.userId === userIdCaller);
 
             if (i === -1) {
-                console.error("error, could find corresponding player");
+                this.nearbyPlayers.push({
+                    userId: userIdCaller,
+                    stream: stream,
+                    screenShare: null,
+                    isSoundEnabled: false,
+                    isVideoEnabled: false,
+                });
                 return;
             }
 
             this.nearbyPlayers[i] = {
                 ...this.nearbyPlayers[i],
-                stream: data.stream,
+                stream: stream,
             };
 
             return;
