@@ -5,6 +5,14 @@
             <i class="fa-solid fa-xmark"></i>
         </button>
     </div>
+    <div class="input" x-data="{input: ''}">
+        <input
+            type="text"
+            placeholder="Search..."
+            x-model="input"
+            @keydown.enter="searchUser(input)"
+        />
+    </div>
     <div x-data="{isVisible: true}">
         <div @click="isVisible = !isVisible" class="accordion-title">
             <i :class="isVisible ? 'fa-solid fa-angle-down' : 'fa-solid fa-angle-right'"></i>
@@ -90,6 +98,21 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+        }
+
+        .input {
+            height: 8vh;
+            min-height: 8vh;
+            display: flex;
+            align-items: center;
+
+            button {
+                margin: 0;
+            }
+
+            input {
+                flex-grow: 1;
+            }
         }
     }
 </style>

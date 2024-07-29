@@ -5,7 +5,7 @@ export default {
     participants: [],
 
     /** @param {User} player */
-    clickPlayerCard(player){
+    clickPlayerCard(player) {
         console.log("hahahahah");
     },
 
