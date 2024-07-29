@@ -56,10 +56,12 @@ export default {
         await this.initializePersonalVideoStream();
 
         eventBus.subscribe("game_player_join_nearby_area", ({ userId }) => {
+            console.log("player joining nearby area...");
+
             const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
 
             // if player don't exist yes, create it
-            if(i === -1 ){
+            if (i === -1) {
                 this.nearbyPlayers.push({
                     userId: userId,
                     stream: null,
@@ -78,10 +80,11 @@ export default {
             setTimeout(() => {
                 eventBus.publish("initiate_audio_mute_change", this.isMySoundEnabled);
                 eventBus.publish("initiate_video_mute_change", this.isMyVideoEnabled);
-            }, 500);
+            }, 1000);
         });
 
         eventBus.subscribe("peer_receive_media_stream", (data) => {
+            console.log("player calling...");
             // don't destructure data.stream in order to keep to original referecence
 
             const i = this.nearbyPlayers.findIndex((e) => e.userId === data.userIdCaller);
@@ -116,6 +119,7 @@ export default {
         });
 
         eventBus.subscribe("receive_audio_mute_change", ({ userId, state }) => {
+            console.log("receiving audio mute state...", state);
             const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
 
             if (i === -1) {
@@ -126,6 +130,7 @@ export default {
         });
 
         eventBus.subscribe("receive_video_mute_change", ({ userId, state }) => {
+            console.log("receiving video mute state...", state);
             const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
 
             if (i === -1) {
@@ -165,7 +170,7 @@ export default {
         this.nearbyPlayers = this.nearbyPlayers.filter((e) => e.userId !== userId);
     },
 
-    log(){
+    log() {
         console.log(eventBus._listeners);
-    }
+    },
 };
