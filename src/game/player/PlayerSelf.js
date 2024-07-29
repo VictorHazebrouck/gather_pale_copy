@@ -37,6 +37,9 @@ class PlayerSelf extends PlayerBase {
 
         Ticker.shared.add(this._playerMovement);
         setInterval(this._checkNearbyPlayers, 1000);
+        eventBus.subscribe("player_disconnected", (data) =>
+            this.nearbyPlayersIds.delete(data.userId)
+        );
     }
 
     /**

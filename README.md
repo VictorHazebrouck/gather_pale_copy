@@ -1,7 +1,7 @@
 # gather_pale_copy
 
 # BUGS
-    - keydown movement actiosn triggered 3 times instead of once
+    - collision not triggered when user reloads page near self
     - first time new messages don't show up, need to refresh page
     - message lobbies don't get sorted by newest message received
     - sometimes get incorrect initial game state
