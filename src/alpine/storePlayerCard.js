@@ -18,6 +18,7 @@ export default {
             userId: this.userId,
         };
         Alpine.store("chat").newRoom(obj);
+        Alpine.store("utils").sidePannerSelected = "chat"
     },
     init() {
         eventBus.subscribe("game_player_clicked", ({ position, playerInformation }) => {

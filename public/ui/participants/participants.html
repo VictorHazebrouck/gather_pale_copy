@@ -12,7 +12,7 @@
         <div @click="isVisible = !isVisible" class="accordion-title">
             <i :class="isVisible ? 'fa-solid fa-angle-down' : 'fa-solid fa-angle-right'"></i>
             <h4>connected</h4>
-            <p x-text="'(' + participants.filter(e => e.isConnected).length + ')'"></p>
+            <p x-text="' (' + participants.filter(e => e.isConnected).length + ')'"></p>
         </div>
         <ul x-show="isVisible" x-transition>
             <template x-for="particiant in participants.filter(e => e.isConnected)">
@@ -26,7 +26,7 @@
         <div @click="isVisible = !isVisible" class="accordion-title">
             <i :class="isVisible ? 'fa-solid fa-angle-down' : 'fa-solid fa-angle-right'"></i>
             <h4>disconnected</h4>
-            <p x-text="'(' + participants.filter(e => !e.isConnected).length + ')'"></p>
+            <p x-text="' (' + participants.filter(e => !e.isConnected).length + ')'"></p>
         </div>
         <ul x-show="isVisible" x-transition>
             <template x-for="particiant in participants.filter(e => !e.isConnected)">
