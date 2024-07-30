@@ -1,21 +1,12 @@
 import Alpine from "alpinejs";
 import eventBus from "../EventBus";
 
+/** @type {VideoChatStore} */
 export default {
-    /**
-     * @typedef {object} RemoteStream
-     * @property {MediaStream | null} stream
-     * @property {MediaStream | null} screenShare
-     * @property {boolean} isSoundEnabled
-     * @property {boolean} isVideoEnabled
-     * @property {string} userId
-     */
-
-    /** @type {RemoteStream[]} */
     nearbyPlayers: [],
-    /** @type {MediaStream | null} */
+
     myStream: null,
-    /** @type {MediaStream | null} */
+
     myScreenShare: null,
     isMySoundEnabled: Alpine.$persist(false),
     isMyVideoEnabled: Alpine.$persist(false),
@@ -43,6 +34,31 @@ export default {
     },
     shareScreen() {
         this.isMyScreenshareEnabled = !this.isMyScreenshareEnabled;
+    },
+
+    async initializePersonalVideoStream() {
+        try {
+            // Request access to the camera
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+
+            // sync muted and video state
+            stream.getVideoTracks().forEach((track) => (track.enabled = this.isMyVideoEnabled));
+            stream.getAudioTracks().forEach((track) => (track.enabled = this.isMySoundEnabled));
+            this.myStream = stream;
+
+            // share reference to my video stream to the rest of the application
+            eventBus.publish("personal_media_stream_initialized", this.myStream);
+        } catch (error) {
+            console.error("Error accessing media devices:", error);
+        }
+    },
+
+    cleanupPlayer(userId) {
+        const player = this.nearbyPlayers.find((e) => e.userId === userId);
+        if (player && player.stream) {
+            player.stream.getTracks().forEach((track) => track.stop());
+        }
+        this.nearbyPlayers = this.nearbyPlayers.filter((e) => e.userId !== userId);
     },
 
     _isInit: false,
@@ -139,38 +155,5 @@ export default {
 
             this.nearbyPlayers[i] = { ...this.nearbyPlayers[i], isVideoEnabled: state };
         });
-    },
-
-    /**
-     * Handle personnal video stream authoriation request
-     */
-    async initializePersonalVideoStream() {
-        try {
-            // Request access to the camera
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-
-            // sync muted and video state
-            stream.getVideoTracks().forEach((track) => (track.enabled = this.isMyVideoEnabled));
-            stream.getAudioTracks().forEach((track) => (track.enabled = this.isMySoundEnabled));
-            this.myStream = stream;
-
-            // share reference to my video stream to the rest of the application
-            eventBus.publish("personal_media_stream_initialized", this.myStream);
-        } catch (error) {
-            console.error("Error accessing media devices:", error);
-        }
-    },
-
-    /** @param {string} userId  */
-    cleanupPlayer(userId) {
-        const player = this.nearbyPlayers.find((e) => e.userId === userId);
-        if (player && player.stream) {
-            player.stream.getTracks().forEach((track) => track.stop());
-        }
-        this.nearbyPlayers = this.nearbyPlayers.filter((e) => e.userId !== userId);
-    },
-
-    log() {
-        console.log(eventBus._listeners);
     },
 };
