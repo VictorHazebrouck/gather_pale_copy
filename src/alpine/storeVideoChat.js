@@ -7,7 +7,7 @@ export default {
 
     myStream: null,
     myScreenShare: null,
-    
+
     isMySoundEnabled: Alpine.$persist(false),
     isMyVideoEnabled: Alpine.$persist(false),
     isMyScreenshareEnabled: false,
@@ -117,7 +117,15 @@ export default {
                 return;
             }
 
-            // if player does exist, only add a videostream to its existing obj
+            //if player already has a stream, destroy incoming ones
+            if (this.nearbyPlayers[i].stream) {
+                data.stream.getTracks().forEach((track) => {
+                    track.stop();
+                });
+                return;
+            }
+
+            // if player does exist and does not already have a stream, only add a videostream to its existing obj
             this.nearbyPlayers[i] = {
                 ...this.nearbyPlayers[i],
                 stream: data.stream,
