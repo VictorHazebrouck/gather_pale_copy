@@ -43,7 +43,7 @@ async function initGame(playerSelfData) {
     playerSelf.registerMovementInput("KeyW", "KeyS", "KeyA", "KeyD");
 
     // inti players layer
-    const playersLayer = new PlayersLayer(playerSelfData, game);
+    const playersLayer = new PlayersLayer();
     playersLayer.addChild(playerSelf);
 
     game.attachCameraToObject(playerSelf);

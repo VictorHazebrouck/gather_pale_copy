@@ -6,8 +6,8 @@ export default {
     nearbyPlayers: [],
 
     myStream: null,
-
     myScreenShare: null,
+    
     isMySoundEnabled: Alpine.$persist(false),
     isMyVideoEnabled: Alpine.$persist(false),
     isMyScreenshareEnabled: false,
