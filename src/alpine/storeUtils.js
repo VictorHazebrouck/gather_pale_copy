@@ -1,11 +1,10 @@
-import DB from "../db/DB";
 import Alpine from "alpinejs";
 import EventBus from "../EventBus";
 
 /** @type {UtilsStore} */
 export default {
     isSidePannelVisible: true,
-    sidePannerSelected: "chat",
+    sidePannerSelected: Alpine.$persist("chat"),
     closeSidePannel() {
         this.isSidePannelVisible = false;
     },
@@ -13,10 +12,7 @@ export default {
         this.isSidePannelVisible = true;
         this.sidePannerSelected = pannel;
     },
-    resetDB() {
-        DB.deleteDB();
-        Alpine.store("chat").rooms = [];
-    },
+    resetDB() {},
     changeName(newName = "") {
         if (!newName) {
             return;
