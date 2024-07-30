@@ -6,17 +6,13 @@
         </button>
     </div>
     <div class="input" x-data="{input: ''}">
-        <input
-            type="text"
-            placeholder="Search..."
-            x-model="input"
-            @keydown.enter="searchUser(input)"
-        />
+        <input type="text" placeholder="Search..." x-model="input" @keyup="searchUser(input)" />
     </div>
     <div x-data="{isVisible: true}">
         <div @click="isVisible = !isVisible" class="accordion-title">
             <i :class="isVisible ? 'fa-solid fa-angle-down' : 'fa-solid fa-angle-right'"></i>
             <h4>connected</h4>
+            <p x-text="'(' + participantsBase.filter(e => e.isConnected).length + ')'"></p>
         </div>
         <ul x-show="isVisible" x-transition>
             <template x-for="particiant in participants.filter(e => e.isConnected)">
@@ -26,12 +22,13 @@
             </template>
         </ul>
     </div>
-    <div x-data="{isVisible: false}" x-transition>
+    <div x-data="{isVisible: false}">
         <div @click="isVisible = !isVisible" class="accordion-title">
             <i :class="isVisible ? 'fa-solid fa-angle-down' : 'fa-solid fa-angle-right'"></i>
             <h4>disconnected</h4>
+            <p x-text="'(' + participantsBase.filter(e => !e.isConnected).length + ')'"></p>
         </div>
-        <ul x-show="isVisible">
+        <ul x-show="isVisible" x-transition>
             <template x-for="particiant in participants.filter(e => !e.isConnected)">
                 <li class="participant-card">
                     <p x-text="particiant.userName"></p>
@@ -75,6 +72,7 @@
 
             i {
                 width: 30px;
+                font-size: 14px;
             }
         }
 

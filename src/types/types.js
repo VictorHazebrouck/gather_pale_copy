@@ -103,7 +103,10 @@
  *
  * @typedef {object} ParticipantsStore
  * @property {function(User):void} clickPlayerCard
- * @property {User[]} participants - list of participants
+ * @property {string} searchFilter - value of search input
+ * @property {User[]} participants - list of participants filtered via search input
+ * @property {User[]} participantsBase - base list of participants
+ * @property {function(string):void} searchUser - search user by name
  * @property {boolean} _isInit - flag to ensure init is being called only once
  * @property {function():void} init - initialization function
  */
