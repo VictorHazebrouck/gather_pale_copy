@@ -117,14 +117,6 @@ export default {
                 return;
             }
 
-            //if player already has a stream, destroy incoming ones
-            if (this.nearbyPlayers[i].stream) {
-                data.stream.getTracks().forEach((track) => {
-                    track.stop();
-                });
-                return;
-            }
-
             // if player does exist and does not already have a stream, only add a videostream to its existing obj
             this.nearbyPlayers[i] = {
                 ...this.nearbyPlayers[i],
