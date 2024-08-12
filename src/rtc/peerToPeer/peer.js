@@ -7,11 +7,10 @@
 import Peer from "peerjs";
 import eventBus from "../../EventBus";
 
-const remoteConfig = {
-    host: "un-indien-dans-la-ville.store",
-    path: "/3016",
-    secure: true,
-};
+const URL_PEERJS = import.meta.env.VITE_PEERJS_BACKEND_URL;
+const PATH_PEERJS = import.meta.env.VITE_PEER_SERVER_PATH;
+const IS_SECURE_PEERJS = import.meta.env.VITE_PEER_SERVER_IS_SECURE == "true" ? true : false;
+const PORT_PEERJS = import.meta.env.VITE_PEER_SERVER_PORT;
 
 const localConfig = {
     host: "localhost",
@@ -29,7 +28,12 @@ const localConfig = {
 class PeerJS extends Peer {
     /** @param {string} userId */
     constructor(userId) {
-        super(userId, remoteConfig);
+        super(userId, {
+            host: URL_PEERJS,
+            path: PATH_PEERJS,
+            secure: IS_SECURE_PEERJS,
+            port: PORT_PEERJS,
+        });
         this.myId = userId;
         this.init();
     }
@@ -41,7 +45,7 @@ class PeerJS extends Peer {
 
         // Successfull connection to peer server
         this.on("open", () => {
-            eventBus.publish("peer_successfull_initialization", undefined)
+            eventBus.publish("peer_successfull_initialization", undefined);
         });
 
         // when a new user tries to call us, handle it

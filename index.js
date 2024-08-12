@@ -38,3 +38,5 @@ function checkInitialization() {
         initGame(Alpine.store("user"));
     }
 }
+
+console.log("urlback:", import.meta.env.VITE_BACKEND_URL)

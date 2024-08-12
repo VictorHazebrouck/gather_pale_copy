@@ -5,8 +5,8 @@
 import { io } from "socket.io-client";
 import eventBus from "./EventBus";
 
-const remoteUrl = "https://un-indien-dans-la-ville.store";
-const localUrl = "http://localhost:3015";
+const URL_SOCKETIO = import.meta.env.VITE_SOCKETIO_BACKEND_URL
+const PATH_SOCKETIO = import.meta.env.VITE_SOCKETIO_PATH
 
 /**
  * Socket manager class
@@ -20,7 +20,7 @@ class Socket {
      * @param {UserStore} userData - init socket with Persisted User data
      */
     constructor(userData) {
-        this.socket = io(remoteUrl, { path: "/3015/socket.io", query: userData });
+        this.socket = io(URL_SOCKETIO, { path: PATH_SOCKETIO, query: userData });
 
         this.initReceivers();
         this.initEmiters();
