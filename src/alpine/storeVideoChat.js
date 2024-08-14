@@ -20,8 +20,40 @@ export default {
             await this.initializeScreenCastStream();
             this.isMyScreenshareEnabled = true;
         } else {
+            const track = this.myStream.getTracks().find((track) => track.contentHint === "detail");
+
+            if (!track) {
+                return console.error("Couldt find screencast ");
+            }
+            track.stop();
+            this.myStream.removeTrack(track);
+            this.myStream.dispatchEvent(
+                new CustomEvent("removetrack", {
+                    detail: this.nearbyPlayers,
+                })
+            );
+
             this.isMyScreenshareEnabled = false;
         }
+    },
+
+    async initializeScreenCastStream() {
+        const [track, err] = await requestScreencastVideoTrack();
+
+        if (err !== null) {
+            return console.error("Error getting screencast", err);
+        }
+
+        track.addEventListener("ended", () => {
+            this.myStream.removeTrack(track);
+            this.myStream.dispatchEvent(
+                new CustomEvent("removetrack", { detail: this.nearbyPlayers })
+            );
+            this.isMyScreenshareEnabled = false;
+        });
+
+        this.myStream.addTrack(track);
+        this.myStream.dispatchEvent(new CustomEvent("addtrack", { detail: this.nearbyPlayers }));
     },
 
     async initializePersonalVideoStream() {
@@ -33,18 +65,9 @@ export default {
 
         this.myStream.addTrack(videoTrack);
         this.myStream.addTrack(audioTrack);
+        this.myStream.dispatchEvent(new Event("addtrack"));
 
         eventBus.publish("personal_media_stream_initialized", this.myStream);
-    },
-
-    async initializeScreenCastStream() {
-        const [track, err] = await requestScreencastVideoTrack();
-
-        if (err !== null) {
-            return console.error("Error getting screencast", err);
-        }
-
-        this.myStream.addTrack(track);
     },
 
     muteVideo() {
@@ -116,7 +139,7 @@ export default {
         });
 
         eventBus.subscribe("peer_receive_media_stream", (data) => {
-            console.log("player calling...");
+            console.log("receiveing media stream: ", data.stream.getTracks());
             // don't destructure data.stream in order to keep to original referecence
 
             const i = this.nearbyPlayers.findIndex((e) => e.userId === data.userIdCaller);
@@ -132,17 +155,25 @@ export default {
                 return;
             }
 
+            const temp = [...this.nearbyPlayers];
             // if player does exist and does not already have a stream, only add a videostream to its existing obj
-            this.nearbyPlayers[i] = {
+            temp[i] = {
                 ...this.nearbyPlayers[i],
                 stream: data.stream,
             };
+
+            setTimeout(() => {
+                this.nearbyPlayers = [];
+                setTimeout(() => {
+                    this.nearbyPlayers = temp;
+                }, 50);
+            }, 50);
         });
 
         eventBus.subscribe("receive_audio_mute_change", ({ userId, state }) => {
             const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
 
-            if (i === -1) {
+            if (i !== -1) {
                 this.nearbyPlayers[i] = { ...this.nearbyPlayers[i], isSoundEnabled: state };
             }
         });

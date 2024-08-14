@@ -35,7 +35,6 @@ class PeerJS extends Peer {
         this.init();
     }
 
-
     init() {
         this.on("open", () => {
             eventBus.publish("peer_successfull_initialization", undefined);
@@ -44,12 +43,50 @@ class PeerJS extends Peer {
         // succesfull access towebcam and audio
         eventBus.once("personal_media_stream_initialized", (stream) => {
             this.myStream = stream;
+
+            this.myStream.addEventListener("addtrack", (data) => {
+                const currentUsers = data.detail.map((e) => e.userId);
+
+                for (let userId of currentUsers) {
+                    this.connections[userId].forEach((conn) => {
+                        conn.close();
+                    });
+
+                    const call = this.call(userId, stream);
+
+                    call.on("stream", (userStream) => {
+                        eventBus.publish("peer_receive_media_stream", {
+                            userIdCaller: call.peer,
+                            stream: userStream,
+                        });
+                    });
+                }
+            });
+
+            this.myStream.addEventListener("removetrack", (data) => {
+                const currentUsers = data.detail.map((e) => e.userId);
+
+                for (let userId of currentUsers) {
+                    this.connections[userId].forEach((conn) => {
+                        conn.close();
+                    });
+
+                    const call = this.call(userId, stream);
+
+                    call.on("stream", (userStream) => {
+                        eventBus.publish("peer_receive_media_stream", {
+                            userIdCaller: call.peer,
+                            stream: userStream,
+                        });
+                    });
+                }
+            });
         });
 
         // start sharing screen
         eventBus.subscribe("screencast_media_stream_initialized", (stream) => {
             this.myScreenCast = stream;
-            console.log(this.myStream?.getTracks(), stream.getTracks())
+            console.log(this.myStream?.getTracks(), stream.getTracks());
         });
 
         // when a new user tries to call us, handle it
@@ -63,6 +100,10 @@ class PeerJS extends Peer {
                     userIdCaller: call.peer,
                     stream: stream,
                 });
+            });
+
+            call.on("close", () => {
+                console.log("call closed");
             });
         });
 
