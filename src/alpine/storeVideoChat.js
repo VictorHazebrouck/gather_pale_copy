@@ -1,35 +1,20 @@
 import Alpine from "alpinejs";
 import eventBus from "../EventBus";
+import {
+    requestScreencastVideoTrack,
+    requestWebcamAndAudioTracks,
+    muteWebcamTrack,
+    muteAudioTrack,
+} from "../utils/videoStuff";
 
 /** @type {VideoChatStore} */
 export default {
     nearbyPlayers: [],
-
-    myStream: null,
-    myScreenShare: null,
-
-    isMySoundEnabled: Alpine.$persist(false),
-    isMyVideoEnabled: Alpine.$persist(false),
+    myStream: new MediaStream(),
+    isMySoundEnabled: false,
+    isMyVideoEnabled: false,
     isMyScreenshareEnabled: false,
 
-    muteVideo() {
-        if (!this.myStream) {
-            return this.initializePersonalVideoStream();
-        }
-
-        this.isMyVideoEnabled = !this.isMyVideoEnabled;
-        this.myStream?.getVideoTracks().forEach((track) => (track.enabled = this.isMyVideoEnabled));
-        eventBus.publish("initiate_video_mute_change", this.isMyVideoEnabled);
-    },
-    muteAudio() {
-        if (!this.myStream) {
-            return this.initializePersonalVideoStream();
-        }
-
-        this.isMySoundEnabled = !this.isMySoundEnabled;
-        this.myStream?.getAudioTracks().forEach((track) => (track.enabled = this.isMySoundEnabled));
-        eventBus.publish("initiate_audio_mute_change", this.isMySoundEnabled);
-    },
     async shareScreen() {
         if (!this.isMyScreenshareEnabled) {
             await this.initializeScreenCastStream();
@@ -40,40 +25,54 @@ export default {
     },
 
     async initializePersonalVideoStream() {
-        try {
-            // Request access to the camera
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        const [videoTrack, audioTrack, err] = await requestWebcamAndAudioTracks();
 
-            // sync muted and video state
-            stream.getVideoTracks().forEach((track) => (track.enabled = this.isMyVideoEnabled));
-            stream.getAudioTracks().forEach((track) => (track.enabled = this.isMySoundEnabled));
-            this.myStream = stream;
-
-            // share reference to my video stream to the rest of the application
-            eventBus.publish("personal_media_stream_initialized", this.myStream);
-        } catch (error) {
-            console.error("Error accessing media devices:", error);
+        if (err) {
+            return console.error("Error getting stream", err);
         }
+
+        this.myStream.addTrack(videoTrack);
+        this.myStream.addTrack(audioTrack);
+
+        eventBus.publish("personal_media_stream_initialized", this.myStream);
     },
 
     async initializeScreenCastStream() {
-        try {
-            // Request access to the camera
-            const stream = await navigator.mediaDevices.getDisplayMedia({
-                video: true,
-                audio: false,
-            });
+        const [track, err] = await requestScreencastVideoTrack();
 
-            this.myScreenShare = stream;
-
-            // share reference to my video stream to the rest of the application
-            eventBus.publish("screencast_media_stream_initialized", {
-                screenshare: this.myScreenShare,
-                nearplayers: this.nearbyPlayers,
-            });
-        } catch (error) {
-            console.error("Error accessing media devices:", error);
+        if (err !== null) {
+            return console.error("Error getting screencast", err);
         }
+
+        this.myStream.addTrack(track);
+    },
+
+    muteVideo() {
+        if (!this.myStream) return this.initializePersonalVideoStream();
+
+        this.isMyVideoEnabled = !this.isMyVideoEnabled;
+
+        const err = muteWebcamTrack(this.myStream, this.isMyVideoEnabled);
+
+        if (err !== null) {
+            return console.error("Couldn't find webcam track");
+        }
+
+        eventBus.publish("initiate_video_mute_change", this.isMyVideoEnabled);
+    },
+
+    muteAudio() {
+        if (!this.myStream) return this.initializePersonalVideoStream();
+
+        this.isMySoundEnabled = !this.isMySoundEnabled;
+
+        const err = muteAudioTrack(this.myStream, this.isMySoundEnabled);
+
+        if (err !== null) {
+            return console.error("Couldn't find audio track");
+        }
+
+        eventBus.publish("initiate_audio_mute_change", this.isMySoundEnabled);
     },
 
     cleanupPlayer(userId) {
@@ -84,13 +83,9 @@ export default {
         this.nearbyPlayers = this.nearbyPlayers.filter((e) => e.userId !== userId);
     },
 
-    _isInit: false,
     async init() {
-        if (this._isInit) {
-            return;
-        } else {
-            this._isInit = true;
-        }
+        if (this._isInit) return;
+        this._isInit = true;
 
         this.initializePersonalVideoStream();
 
@@ -99,7 +94,6 @@ export default {
 
             const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
 
-            // if player don't exist yes, create it
             if (i === -1) {
                 this.nearbyPlayers.push({
                     userId: userId,
@@ -110,7 +104,6 @@ export default {
                 });
             }
 
-            // initiate video call
             eventBus.publish("peer_initiate_call_request", {
                 userIdReceiver: userId,
                 userIdCaller: Alpine.store("user").userId,
@@ -128,7 +121,6 @@ export default {
 
             const i = this.nearbyPlayers.findIndex((e) => e.userId === data.userIdCaller);
 
-            // if player don't exist yet, add him together with his stream
             if (i === -1) {
                 this.nearbyPlayers.push({
                     userId: data.userIdCaller,
@@ -145,10 +137,23 @@ export default {
                 ...this.nearbyPlayers[i],
                 stream: data.stream,
             };
-
-            return;
         });
 
+        eventBus.subscribe("receive_audio_mute_change", ({ userId, state }) => {
+            const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
+
+            if (i === -1) {
+                this.nearbyPlayers[i] = { ...this.nearbyPlayers[i], isSoundEnabled: state };
+            }
+        });
+
+        eventBus.subscribe("receive_video_mute_change", ({ userId, state }) => {
+            const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
+
+            if (i !== -1) {
+                this.nearbyPlayers[i] = { ...this.nearbyPlayers[i], isVideoEnabled: state };
+            }
+        });
         eventBus.subscribe("game_player_leave_nearby_area", ({ userId }) => {
             this.cleanupPlayer(userId);
         });
@@ -156,27 +161,6 @@ export default {
         eventBus.subscribe("player_disconnected", ({ userId }) => {
             this.cleanupPlayer(userId);
         });
-
-        eventBus.subscribe("receive_audio_mute_change", ({ userId, state }) => {
-            console.log("receiving audio mute state...", state);
-            const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
-
-            if (i === -1) {
-                return;
-            }
-
-            this.nearbyPlayers[i] = { ...this.nearbyPlayers[i], isSoundEnabled: state };
-        });
-
-        eventBus.subscribe("receive_video_mute_change", ({ userId, state }) => {
-            console.log("receiving video mute state...", state);
-            const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
-
-            if (i === -1) {
-                return;
-            }
-
-            this.nearbyPlayers[i] = { ...this.nearbyPlayers[i], isVideoEnabled: state };
-        });
     },
+    _isInit: false,
 };

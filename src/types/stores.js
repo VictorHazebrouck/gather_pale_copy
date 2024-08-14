@@ -66,8 +66,7 @@
 /**
  * @typedef {object} VideoChatStore
  * @property {RemoteStream[]} nearbyPlayers - list of remote streams of nearby players
- * @property {MediaStream | null} myStream - my current media stream
- * @property {MediaStream | null} myScreenShare - my current media stream
+ * @property {MediaStream} myStream - my current media stream
  * @property {boolean} isMySoundEnabled - my current sound sharing state
  * @property {boolean} isMyVideoEnabled - my current video charing state
  * @property {boolean} isMyScreenshareEnabled - my current screencast sharing state
