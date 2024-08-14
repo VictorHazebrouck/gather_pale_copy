@@ -27,6 +27,7 @@
  * @property  {DBUsersInit} DB_users_init
  *
  * @property {InitializePersonalVideoStream} personal_media_stream_initialized
+ * @property {InitializePersonalScreencat} screencast_media_stream_initialized
  * @property  {PeerInitiateCallEventData} peer_initiate_call_request
  * @property  {PeerReceiveCallEventData} peer_receive_call_request
  * @property  {PeerReceiveMediaStreamEventData} peer_receive_media_stream
@@ -227,6 +228,14 @@
  *
  * @event personal_media_stream_initialized
  * @type {InitializePersonalVideoStream}
+ * @category EVENT_BUS
+ */
+
+/**
+ * @typedef {MediaStream} InitializePersonalScreencat
+ *
+ * @event screencast_media_stream_initialized
+ * @type {InitializePersonalScreencat}
  * @category EVENT_BUS
  */
 

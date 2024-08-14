@@ -30,8 +30,13 @@ export default {
         this.myStream?.getAudioTracks().forEach((track) => (track.enabled = this.isMySoundEnabled));
         eventBus.publish("initiate_audio_mute_change", this.isMySoundEnabled);
     },
-    shareScreen() {
-        this.isMyScreenshareEnabled = !this.isMyScreenshareEnabled;
+    async shareScreen() {
+        if (!this.isMyScreenshareEnabled) {
+            await this.initializeScreenCastStream();
+            this.isMyScreenshareEnabled = true;
+        } else {
+            this.isMyScreenshareEnabled = false;
+        }
     },
 
     async initializePersonalVideoStream() {
@@ -46,6 +51,26 @@ export default {
 
             // share reference to my video stream to the rest of the application
             eventBus.publish("personal_media_stream_initialized", this.myStream);
+        } catch (error) {
+            console.error("Error accessing media devices:", error);
+        }
+    },
+
+    async initializeScreenCastStream() {
+        try {
+            // Request access to the camera
+            const stream = await navigator.mediaDevices.getDisplayMedia({
+                video: true,
+                audio: false,
+            });
+
+            this.myScreenShare = stream;
+
+            // share reference to my video stream to the rest of the application
+            eventBus.publish("screencast_media_stream_initialized", {
+                screenshare: this.myScreenShare,
+                nearplayers: this.nearbyPlayers,
+            });
         } catch (error) {
             console.error("Error accessing media devices:", error);
         }

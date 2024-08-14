@@ -35,20 +35,27 @@ class PeerJS extends Peer {
         this.init();
     }
 
+
     init() {
+        this.on("open", () => {
+            eventBus.publish("peer_successfull_initialization", undefined);
+        });
+
+        // succesfull access towebcam and audio
         eventBus.once("personal_media_stream_initialized", (stream) => {
             this.myStream = stream;
         });
 
-        // Successfull connection to peer server
-        this.on("open", () => {
-            eventBus.publish("peer_successfull_initialization", undefined);
+        // start sharing screen
+        eventBus.subscribe("screencast_media_stream_initialized", (stream) => {
+            this.myScreenCast = stream;
         });
 
         // when a new user tries to call us, handle it
         this.on("call", (call) => {
             call.answer(this.myStream);
-            console.log("accepting call request");
+            
+            console.log("accepting call request...");
 
             call.on("stream", (stream) => {
                 eventBus.publish("peer_receive_media_stream", {
@@ -59,19 +66,18 @@ class PeerJS extends Peer {
         });
 
         // when other player sends us a call request, initiate a peerjs connection
-        eventBus.subscribe("peer_receive_call_request", ({ userId }) => {
+        eventBus.subscribe("peer_initiate_call_request", ({ userIdReceiver }) => {
             if (!this.myStream) {
-                console.log("cannot call without video sharing");
-                return;
+                return console.log("cannot call without video sharing");
             }
 
-            const call = this.call(userId, this.myStream);
+            console.log("initiating call request...");
 
-            console.log("initiated call request");
+            const call = this.call(userIdReceiver, this.myStream);
 
             call.on("stream", (userStream) => {
                 eventBus.publish("peer_receive_media_stream", {
-                    userIdCaller: userId,
+                    userIdCaller: call.peer,
                     stream: userStream,
                 });
             });

@@ -76,6 +76,7 @@
  * @property {function():void} muteAudio - function used to mute/unmute my audio and share this muted data to all other players
  * @property {function():void} shareScreen - function used to initiate a screenshare
  * @property {function():Promise<void>} initializePersonalVideoStream - function used to initialize my video/audio capture
+ * @property {function():Promise<void>} initializeScreenCastStream - function used to initialize my video/audio capture
  * @property {function(string):void} cleanupPlayer - function used to remove reference to anothe rpalyer's remote stream
  * @property {function():void} init - function used to intialize teh component and its eent listeners
  */
