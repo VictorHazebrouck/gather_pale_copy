@@ -14,8 +14,7 @@ export default {
 
     muteVideo() {
         if (!this.myStream) {
-            this.initializePersonalVideoStream();
-            return;
+            return this.initializePersonalVideoStream();
         }
 
         this.isMyVideoEnabled = !this.isMyVideoEnabled;
@@ -24,8 +23,7 @@ export default {
     },
     muteAudio() {
         if (!this.myStream) {
-            this.initializePersonalVideoStream();
-            return;
+            return this.initializePersonalVideoStream();
         }
 
         this.isMySoundEnabled = !this.isMySoundEnabled;
@@ -69,7 +67,7 @@ export default {
             this._isInit = true;
         }
 
-        await this.initializePersonalVideoStream();
+        this.initializePersonalVideoStream();
 
         eventBus.subscribe("game_player_join_nearby_area", ({ userId }) => {
             console.log("player joining nearby area...");
