@@ -5,7 +5,9 @@
 import { io } from "socket.io-client";
 import eventBus from "./EventBus";
 
+//@ts-ignore
 const URL_SOCKETIO = import.meta.env.VITE_SOCKETIO_BACKEND_URL
+//@ts-ignore
 const PATH_SOCKETIO = import.meta.env.VITE_SOCKETIO_PATH
 
 /**

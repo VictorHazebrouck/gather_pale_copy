@@ -7,17 +7,14 @@
 import Peer from "peerjs";
 import eventBus from "../../EventBus";
 
+//@ts-ignore
 const URL_PEERJS = import.meta.env.VITE_PEERJS_BACKEND_URL;
+//@ts-ignore
 const PATH_PEERJS = import.meta.env.VITE_PEER_SERVER_PATH;
+//@ts-ignore
 const IS_SECURE_PEERJS = import.meta.env.VITE_PEER_SERVER_IS_SECURE == "true" ? true : false;
+//@ts-ignore
 const PORT_PEERJS = import.meta.env.VITE_PEER_SERVER_PORT;
-
-const localConfig = {
-    host: "localhost",
-    port: 3016,
-    path: "/",
-    secure: false,
-};
 
 /**
  * Class to handle peer to peer connections
