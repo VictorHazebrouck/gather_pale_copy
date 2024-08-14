@@ -1,20 +1,33 @@
 <ul id="nearby-main">
     <template x-for="player in $store.videoChat.nearbyPlayers">
-        <div class="nearby-player-card">
-            <p x-text="player.isSoundEnabled"></p>
-            <i
-                x-show="!player.isVideoEnabled"
-                class="fa-solid fa-video-slash"
-                style="color: red"
-            ></i>
-            <template x-if="player.stream">
-                <video
-                    x-show="player.isVideoEnabled"
-                    class="video"
-                    x-ref="video"
-                    x-init="$refs.video.srcObject = player.stream;"
-                    autoplay
-                ></video>
+        <div>
+            <div class="nearby-player-card">
+                <p x-text="player.isSoundEnabled"></p>
+                <i
+                    x-show="!player.isVideoEnabled"
+                    class="fa-solid fa-video-slash"
+                    style="color: red"
+                ></i>
+                <template x-if="player.stream">
+                    <video
+                        x-show="player.isVideoEnabled"
+                        class="video"
+                        x-ref="video"
+                        x-init="$refs.video.srcObject = player.stream;"
+                        autoplay
+                    ></video>
+                </template>
+            </div>
+            <template x-if="player.screenShare">
+                <div class="nearby-player-card">
+                    <video
+                        x-show="player.isVideoEnabled"
+                        class="video"
+                        x-ref="video"
+                        x-init="$refs.video.srcObject = player.screenShare;"
+                        autoplay
+                    ></video>
+                </div>
             </template>
         </div>
     </template>

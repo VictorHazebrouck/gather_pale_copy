@@ -139,16 +139,19 @@ export default {
         });
 
         eventBus.subscribe("peer_receive_media_stream", (data) => {
-            console.log("receiveing media stream: ", data.stream.getTracks());
+            console.log("receiveing media stream: ", data.stream.getVideoTracks());
             // don't destructure data.stream in order to keep to original referecence
+
+            const [video1, video2] = data.stream.getVideoTracks();
+            const [audio] = data.stream.getAudioTracks();
 
             const i = this.nearbyPlayers.findIndex((e) => e.userId === data.userIdCaller);
 
             if (i === -1) {
                 this.nearbyPlayers.push({
                     userId: data.userIdCaller,
-                    stream: data.stream,
-                    screenShare: null,
+                    stream: new MediaStream([video1, audio]),
+                    screenShare: video2 ? new MediaStream([video2]) : null,
                     isSoundEnabled: false,
                     isVideoEnabled: false,
                 });
@@ -159,7 +162,8 @@ export default {
             // if player does exist and does not already have a stream, only add a videostream to its existing obj
             temp[i] = {
                 ...this.nearbyPlayers[i],
-                stream: data.stream,
+                stream: new MediaStream([video1, audio]),
+                screenShare: video2 ? new MediaStream([video2]) : null,
             };
 
             setTimeout(() => {
