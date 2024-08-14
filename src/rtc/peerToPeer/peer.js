@@ -49,12 +49,13 @@ class PeerJS extends Peer {
         // start sharing screen
         eventBus.subscribe("screencast_media_stream_initialized", (stream) => {
             this.myScreenCast = stream;
+            console.log(this.myStream, stream)
         });
 
         // when a new user tries to call us, handle it
         this.on("call", (call) => {
             call.answer(this.myStream);
-            
+
             console.log("accepting call request...");
 
             call.on("stream", (stream) => {
