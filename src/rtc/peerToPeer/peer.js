@@ -35,6 +35,32 @@ class PeerJS extends Peer {
         this.init();
     }
 
+    resetConnections() {
+        Object.keys(this.connections).forEach((peerId) => {
+            //@ts-ignore
+            this.connections[peerId].forEach((conn) => {
+                conn.close();
+            });
+        });
+    }
+
+    /**
+     * @param {MediaStream} stream
+     * @param {string[]} userIds
+     */
+    connectToManyByIds(stream, userIds) {
+        for (let userId of userIds) {
+            const call = this.call(userId, stream);
+
+            call.on("stream", (userStream) => {
+                eventBus.publish("peer_receive_media_stream", {
+                    userIdCaller: call.peer,
+                    stream: userStream,
+                });
+            });
+        }
+    }
+
     init() {
         this.on("open", () => {
             eventBus.publish("peer_successfull_initialization", undefined);
@@ -45,48 +71,18 @@ class PeerJS extends Peer {
             this.myStream = stream;
 
             this.myStream.addEventListener("addtrack", (data) => {
-                const currentUsers = data.detail.map((e) => e.userId);
+                const currentUserIds = data.detail.map((e) => e.userId);
 
-                for (let userId of currentUsers) {
-                    this.connections[userId].forEach((conn) => {
-                        conn.close();
-                    });
-
-                    const call = this.call(userId, stream);
-
-                    call.on("stream", (userStream) => {
-                        eventBus.publish("peer_receive_media_stream", {
-                            userIdCaller: call.peer,
-                            stream: userStream,
-                        });
-                    });
-                }
+                this.resetConnections();
+                this.connectToManyByIds(stream, currentUserIds);
             });
 
             this.myStream.addEventListener("removetrack", (data) => {
-                const currentUsers = data.detail.map((e) => e.userId);
+                const currentUserIds = data.detail.map((e) => e.userId);
 
-                for (let userId of currentUsers) {
-                    this.connections[userId].forEach((conn) => {
-                        conn.close();
-                    });
-
-                    const call = this.call(userId, stream);
-
-                    call.on("stream", (userStream) => {
-                        eventBus.publish("peer_receive_media_stream", {
-                            userIdCaller: call.peer,
-                            stream: userStream,
-                        });
-                    });
-                }
+                this.resetConnections();
+                this.connectToManyByIds(stream, currentUserIds);
             });
-        });
-
-        // start sharing screen
-        eventBus.subscribe("screencast_media_stream_initialized", (stream) => {
-            this.myScreenCast = stream;
-            console.log(this.myStream?.getTracks(), stream.getTracks());
         });
 
         // when a new user tries to call us, handle it
