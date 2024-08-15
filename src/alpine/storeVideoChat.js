@@ -11,6 +11,7 @@ import {
 export default {
     nearbyPlayers: [],
     myStream: new MediaStream(),
+    myScreenCast: new MediaStream(),
     isMySoundEnabled: false,
     isMyVideoEnabled: false,
     isMyScreenshareEnabled: false,
@@ -32,7 +33,7 @@ export default {
                     detail: this.nearbyPlayers,
                 })
             );
-
+            this.myScreenCast = null;
             this.isMyScreenshareEnabled = false;
         }
     },
@@ -49,11 +50,13 @@ export default {
             this.myStream.dispatchEvent(
                 new CustomEvent("removetrack", { detail: this.nearbyPlayers })
             );
+            this.myScreenCast = null;
             this.isMyScreenshareEnabled = false;
         });
 
         this.myStream.addTrack(track);
         this.myStream.dispatchEvent(new CustomEvent("addtrack", { detail: this.nearbyPlayers }));
+        this.myScreenCast = new MediaStream([track]);
     },
 
     async initializePersonalVideoStream() {

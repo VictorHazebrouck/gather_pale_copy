@@ -1,5 +1,16 @@
 <ul id="nearby-main">
-    <template x-for="player in $store.videoChat.nearbyPlayers">
+    <template x-if="$store.videoChat.isMyScreenshareEnabled">
+        <div class="nearby-player-card">
+            <video
+                x-show="$store.videoChat.isMyScreenshareEnabled"
+                class="video"
+                x-ref="video"
+                x-init="$refs.video.srcObject = $store.videoChat.myScreenCast;"
+                autoplay
+            ></video>
+        </div>
+    </template>
+    <template x-for="player in $store.videoChat.nearbyPlayers.sort((a,b) => b.isVideoEnabled - a.isVideoEnabled)">
         <div>
             <div class="nearby-player-card">
                 <p x-text="player.isSoundEnabled"></p>
@@ -40,12 +51,18 @@
         display: flex;
         flex-direction: column;
         padding-left: var(--pad-small);
-        padding-bottom: 3px;
-        overflow: hidden;
+        padding-bottom: var(--pad-small);
+        overflow: scroll;
+
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        ::-webkit-scrollbar {
+            display: none;
+        }
 
         .nearby-player-card {
             margin-top: var(--pad-small);
-            border-radius: var(--rad-big);
+            border-radius: 12px;
             border: var(--border);
             width: 180px;
             height: 100px;
