@@ -11,7 +11,7 @@ import {
 export default {
     nearbyPlayers: [],
     myStream: new MediaStream(),
-    myScreenCast: new MediaStream(),
+    myScreenCast: null,
     isMySoundEnabled: false,
     isMyVideoEnabled: false,
     isMyScreenshareEnabled: false,

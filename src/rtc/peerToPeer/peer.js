@@ -71,6 +71,7 @@ class PeerJS extends Peer {
             this.myStream = stream;
 
             this.myStream.addEventListener("addtrack", (data) => {
+                //@ts-ignore
                 const currentUserIds = data.detail.map((e) => e.userId);
 
                 this.resetConnections();
@@ -78,6 +79,7 @@ class PeerJS extends Peer {
             });
 
             this.myStream.addEventListener("removetrack", (data) => {
+                //@ts-ignore
                 const currentUserIds = data.detail.map((e) => e.userId);
 
                 this.resetConnections();
