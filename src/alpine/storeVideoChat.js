@@ -18,24 +18,24 @@ export default {
 
     async shareScreen() {
         if (!this.isMyScreenshareEnabled) {
-            await this.initializeScreenCastStream();
-            this.isMyScreenshareEnabled = true;
-        } else {
-            const track = this.myStream.getTracks().find((track) => track.contentHint === "detail");
-
-            if (!track) {
-                return console.error("Couldt find screencast ");
-            }
-            track.stop();
-            this.myStream.removeTrack(track);
-            this.myStream.dispatchEvent(
-                new CustomEvent("removetrack", {
-                    detail: this.nearbyPlayers,
-                })
-            );
-            this.myScreenCast = null;
-            this.isMyScreenshareEnabled = false;
+            return this.initializeScreenCastStream();
         }
+
+        const track = this.myStream.getTracks().find((track) => track.contentHint === "detail");
+
+        if (!track) {
+            return console.error("Couldt find screencast ");
+        }
+
+        track.stop();
+        this.myStream.removeTrack(track);
+        this.myStream.dispatchEvent(
+            new CustomEvent("removetrack", {
+                detail: this.nearbyPlayers,
+            })
+        );
+        this.myScreenCast = null;
+        this.isMyScreenshareEnabled = false;
     },
 
     async initializeScreenCastStream() {
@@ -57,6 +57,7 @@ export default {
         this.myStream.addTrack(track);
         this.myStream.dispatchEvent(new CustomEvent("addtrack", { detail: this.nearbyPlayers }));
         this.myScreenCast = new MediaStream([track]);
+        this.isMyScreenshareEnabled = true;
     },
 
     async initializePersonalVideoStream() {
