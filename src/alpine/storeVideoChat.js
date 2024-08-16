@@ -170,6 +170,7 @@ export default {
                 screenShare: video2 ? new MediaStream([video2]) : null,
             };
 
+            // very suspicious way to force refresh camera streams
             setTimeout(() => {
                 this.nearbyPlayers = [];
                 setTimeout(() => {

@@ -1,74 +1,147 @@
-<ul id="nearby-main">
-    <template x-if="$store.videoChat.isMyScreenshareEnabled">
-        <div class="nearby-player-card">
-            <p>screenshare</p>
+<div
+    id="nearby-main"
+    x-data="{selected: null}"
+    :style="selected ? 'width: 100%; background-color: black;' : ''"
+>
+    <ul id="videos-list">
+        <template x-if="$store.videoChat.isMyScreenshareEnabled">
+            <div class="nearby-player-card">
+                <p>screenshare</p>
+                <video
+                    x-show="$store.videoChat.isMyScreenshareEnabled"
+                    class="video"
+                    x-ref="video"
+                    x-init="$refs.video.srcObject = $store.videoChat.myScreenCast;"
+                    autoplay
+                ></video>
+            </div>
+        </template>
+        <template
+            x-for="player in $store.videoChat.nearbyPlayers.sort((a,b) => b.isVideoEnabled - a.isVideoEnabled)"
+        >
+            <div>
+                <div
+                    class="nearby-player-card"
+                    @click="
+                        selected = null
+                        console.log('hahah')
+                        setTimeout(()=>{
+                            selected = {
+                                id: player.userId,
+                                type: 'vid',
+                                isVideoEnabled: player.isVideoEnabled,
+                                videoSource: player.stream,
+                            };
+                        },1)
+                    "
+                    x-init="
+                        $watch('player', (val)=> {
+                            if(val.userId == selected?.id && selected?.type == 'vid'){
+                                selected.isVideoEnabled = val.isVideoEnabled
+                                selected.videoSource = val.stream
+                            }
+                        });
+                        if(player.userId == selected?.id && selected?.type == 'vid'){
+                            _selected = {...selected}
+                            selected = null
+                            setTimeout(() => {
+                                selected = _selected
+                                selected.isVideoEnabled = player.isVideoEnabled
+                                selected.videoSource = player.stream
+                            }, 1);
+                        }
+                    "
+                >
+                    <p x-text="player.userId"></p>
+                    <i
+                        x-show="!player.isVideoEnabled"
+                        class="fa-solid fa-video-slash"
+                        style="color: red"
+                    ></i>
+                    <template x-if="player.stream">
+                        <video
+                            x-show="player.isVideoEnabled"
+                            class="video"
+                            x-ref="video"
+                            x-init="$refs.video.srcObject = player.stream;"
+                            autoplay
+                        ></video>
+                    </template>
+                </div>
+                <template x-if="player.screenShare">
+                    <div
+                        class="nearby-player-card"
+                        @click="
+                            selected = null
+                            setTimeout(()=>{
+                                selected = {
+                                    type: 'screen',
+                                    isVideoEnabled: true,
+                                    videoSource: player.screenShare,
+                                };
+                            },1)
+                        "
+                        x-init="
+                            if(player.userId == selected?.id && selected?.type == 'screen'){
+                                _selected = {...selected}
+                                selected = null
+                                setTimeout(() => {
+                                    selected = _selected
+                                    selected.videoSource = player.screenShare
+                                }, 1);
+                            }
+                        "
+                    >
+                        <video
+                            class="video"
+                            x-ref="video"
+                            x-init="$refs.video.srcObject = player.screenShare;"
+                            autoplay
+                        ></video>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </ul>
+    <template x-if="selected">
+        <div id="focused-player-card">
+            <p>test</p>
+            <button @click="selected = null">
+                <i class="fa-solid fa-x"></i>
+            </button>
+            <i
+                x-show="!selected?.isVideoEnabled"
+                class="fa-solid fa-video-slash"
+                style="color: red"
+            ></i>
             <video
-                x-show="$store.videoChat.isMyScreenshareEnabled"
+                x-show="selected?.isVideoEnabled"
                 class="video"
                 x-ref="video"
-                x-init="$refs.video.srcObject = $store.videoChat.myScreenCast;"
+                x-init="$refs.video.srcObject = selected?.videoSource;"
                 autoplay
             ></video>
         </div>
     </template>
-    <template x-for="player in $store.videoChat.nearbyPlayers.sort((a,b) => b.isVideoEnabled - a.isVideoEnabled)">
-        <div>
-            <div class="nearby-player-card">
-                <p x-text="player.isSoundEnabled"></p>
-                <i
-                    x-show="!player.isVideoEnabled"
-                    class="fa-solid fa-video-slash"
-                    style="color: red"
-                ></i>
-                <template x-if="player.stream">
-                    <video
-                        x-show="player.isVideoEnabled"
-                        class="video"
-                        x-ref="video"
-                        x-init="$refs.video.srcObject = player.stream;"
-                        autoplay
-                    ></video>
-                </template>
-            </div>
-            <template x-if="player.screenShare">
-                <div class="nearby-player-card">
-                    <video
-                        class="video"
-                        x-ref="video"
-                        x-init="$refs.video.srcObject = player.screenShare;"
-                        autoplay
-                    ></video>
-                </div>
-            </template>
-        </div>
-    </template>
-</ul>
+</div>
 <style>
     #nearby-main {
         position: absolute;
         height: 100%;
         color: var(--txt-color-dark-1);
         display: flex;
-        flex-direction: column;
-        padding-left: var(--pad-small);
+        flex-direction: row;
+        justify-content: space-between;
+        padding-inline: var(--pad-small);
         padding-bottom: var(--pad-small);
-        overflow: scroll;
 
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-        ::-webkit-scrollbar {
-            display: none;
-        }
-
-        .nearby-player-card {
+        #focused-player-card {
+            width: 100%;
             margin-top: var(--pad-small);
+
             border-radius: 12px;
             border: var(--border);
-            width: 180px;
-            height: 100px;
-            min-height: 100px;
-            background-color: var(--bg-color-dark-2);
-            cursor: pointer;
+            background-color: var(--bg-color-dark-1);
             overflow: hidden;
 
             display: flex;
@@ -87,6 +160,12 @@
                 color: var(--txt-color-dark-2);
             }
 
+            button {
+                position: absolute;
+                top: 4px;
+                right: 4px;
+            }
+
             i {
                 font-size: 22px;
             }
@@ -95,7 +174,62 @@
                 margin: 0;
                 height: 100%;
                 width: 100%;
-                object-fit: cover;
+                object-fit: contain;
+            }
+        }
+
+        #videos-list {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: scroll;
+            min-width: fit-content;
+
+            padding-right: var(--pad-small);
+
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            ::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nearby-player-card {
+                margin-top: var(--pad-small);
+                border-radius: 12px;
+                border: var(--border);
+                width: 180px;
+                height: 100px;
+                min-height: 100px;
+                background-color: var(--bg-color-dark-2);
+                cursor: pointer;
+                overflow: hidden;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+
+                p {
+                    position: absolute;
+                    top: 4px;
+                    left: 4px;
+                    padding: 1px 3px;
+                    background-color: var(--bg-color-dark-1);
+                    opacity: 0.7;
+                    border-radius: var(--rad-small);
+                    color: var(--txt-color-dark-2);
+                }
+
+                i {
+                    font-size: 22px;
+                }
+
+                .video {
+                    margin: 0;
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+                }
             }
         }
     }
