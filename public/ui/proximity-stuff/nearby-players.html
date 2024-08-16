@@ -23,32 +23,26 @@
                 <div
                     class="nearby-player-card"
                     @click="
-                        selected = null
-                        console.log('hahah')
-                        setTimeout(()=>{
+                        selected = {
+                            id: player.userId,
+                            type: 'vid',
+                            isVideoEnabled: player.isVideoEnabled,
+                            videoSource: player.stream,
+                        };
+                    "
+                    x-init="
+                        $watch('player', (val)=> {
+                            if(selected?.id == val.userId){
+                                selected.isVideoEnabled = val.isVideoEnabled
+                            }
+                        })
+                        if(selected?.id == player.userId && selected.type == 'vid'){
                             selected = {
                                 id: player.userId,
                                 type: 'vid',
                                 isVideoEnabled: player.isVideoEnabled,
                                 videoSource: player.stream,
-                            };
-                        },1)
-                    "
-                    x-init="
-                        $watch('player', (val)=> {
-                            if(val.userId == selected?.id && selected?.type == 'vid'){
-                                selected.isVideoEnabled = val.isVideoEnabled
-                                selected.videoSource = val.stream
                             }
-                        });
-                        if(player.userId == selected?.id && selected?.type == 'vid'){
-                            _selected = {...selected}
-                            selected = null
-                            setTimeout(() => {
-                                selected = _selected
-                                selected.isVideoEnabled = player.isVideoEnabled
-                                selected.videoSource = player.stream
-                            }, 1);
                         }
                     "
                 >
@@ -72,23 +66,21 @@
                     <div
                         class="nearby-player-card"
                         @click="
-                            selected = null
-                            setTimeout(()=>{
-                                selected = {
-                                    type: 'screen',
-                                    isVideoEnabled: true,
-                                    videoSource: player.screenShare,
-                                };
-                            },1)
-                        "
+                            selected = {
+                                id: player.userId,
+                                type: 'screen',
+                                isVideoEnabled: true,
+                                videoSource: player.screenShare,
+                            };
+                            "
                         x-init="
-                            if(player.userId == selected?.id && selected?.type == 'screen'){
-                                _selected = {...selected}
-                                selected = null
-                                setTimeout(() => {
-                                    selected = _selected
-                                    selected.videoSource = player.screenShare
-                                }, 1);
+                            if(selected?.id == player.userId && selected.type == 'screen'){
+                                selected = {
+                                    id: player.userId,
+                                    type: 'screen',
+                                    isVideoEnabled: player.isVideoEnabled,
+                                    videoSource: player.stream,
+                                }
                             }
                         "
                     >
@@ -114,13 +106,19 @@
                 class="fa-solid fa-video-slash"
                 style="color: red"
             ></i>
-            <video
-                x-show="selected?.isVideoEnabled"
-                class="video"
-                x-ref="video"
-                x-init="$refs.video.srcObject = selected?.videoSource;"
-                autoplay
-            ></video>
+            <template x-if="selected?.isVideoEnabled">
+                <video
+                    class="video"
+                    x-ref="videoLarge"
+                    x-init="
+                        $refs.videoLarge.srcObject = selected?.videoSource;
+                        $watch('selected', (val)=>{
+                            $refs.videoLarge.srcObject = selected?.videoSource
+                        })
+                    "
+                    autoplay
+                ></video>
+            </template>
         </div>
     </template>
 </div>

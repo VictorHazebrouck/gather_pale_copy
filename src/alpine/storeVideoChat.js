@@ -143,7 +143,7 @@ export default {
         });
 
         eventBus.subscribe("peer_receive_media_stream", (data) => {
-            console.log("receiveing media stream: ", data.stream.getVideoTracks());
+            console.log("receiveing media stream...");
             // don't destructure data.stream in order to keep to original referecence
 
             const [video1, video2] = data.stream.getVideoTracks();
