@@ -26,9 +26,6 @@ async function syncRoomPartner(dataBase, userId, newName) {
 /** @param {DB} dataBase */
 function registerSubscribers(dataBase) {
     //init db, proceed to sync names with ids, reset connection state and mak as connected
-    /**
-     * @listens receive_initial_gamestate
-     */
     eventBus.once("receive_initial_gamestate", async ({ Players }) => {
         const users = await dataBase.users.toArray();
 
@@ -46,7 +43,7 @@ function registerSubscribers(dataBase) {
 
             if (!user) {
                 dataBase.users.add({ _id: userId, userName: userName, isConnected: true });
-                return;
+                continue;
             }
 
             if (user.userName !== userName) {
@@ -108,7 +105,7 @@ function registerSubscribers(dataBase) {
     });
 
     eventBus.subscribe("initiate_chat_message", async (data) => {
-        const { userIdSender, userNameReceiver, userIdReceiver, value, time } = data;
+        const { userIdSender, userNameReceiver, userIdReceiver, value, time, roomId } = data;
         /** If room already exists, open current one */
         const room = await dataBase.chat_rooms.where("userId").equals(userIdReceiver).first();
 
@@ -123,7 +120,7 @@ function registerSubscribers(dataBase) {
         if (!room) {
             /** @type {Room} */
             const room = {
-                _id: uuidv4(),
+                _id: roomId,
                 userId: userIdReceiver,
                 userName: userNameReceiver,
                 messages: [message],

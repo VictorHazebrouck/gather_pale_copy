@@ -18,6 +18,16 @@ function registerPublishers(dataBase) {
         transaction.on.complete.subscribe(handleRefresh);
     });
 
+    dataBase.chat_rooms.hook("creating", ( primKey, obj, transaction) => {
+        // handler used to retrun refreshed collection after update
+        async function handleRefresh() {
+            const rooms = await dataBase.chat_rooms.toArray();
+            eventBus.publish("DB_rooms_has_changed", rooms);
+        }
+
+        transaction.on.complete.subscribe(handleRefresh);
+    });
+
     dataBase.users.hook("updating", async (modifications, primKey, obj, transaction) => {
         // handler used to retrun refreshed collection after update
         async function handleRefresh() {

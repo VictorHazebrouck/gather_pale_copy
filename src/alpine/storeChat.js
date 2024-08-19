@@ -38,8 +38,8 @@ export default {
             return;
         }
 
+        /** Send message to backend, will transmit it only to him by his userId */
         EventBus.publish("initiate_chat_message", {
-            /** Send message to backend, will transmit it only to him by his userId */
             roomId: this.rooms[this.selectedRoom]._id,
             userIdReceiver: this.rooms[this.selectedRoom].userId,
             userNameReceiver: this.rooms[this.selectedRoom].userName,
