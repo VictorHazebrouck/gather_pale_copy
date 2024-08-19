@@ -116,7 +116,7 @@ export default {
 
         this.initializePersonalVideoStream();
 
-        eventBus.subscribe("game_player_join_nearby_area", ({ userId }) => {
+        eventBus.subscribe("game_player_join_nearby_area", ({ userId, userName }) => {
             console.log("player joining nearby area...");
 
             const i = this.nearbyPlayers.findIndex((e) => e.userId === userId);
@@ -124,11 +124,17 @@ export default {
             if (i === -1) {
                 this.nearbyPlayers.push({
                     userId: userId,
+                    userName: userName,
                     stream: null,
                     screenShare: null,
                     isSoundEnabled: false,
                     isVideoEnabled: false,
                 });
+            } else {
+                this.nearbyPlayers[i] = {
+                    ...this.nearbyPlayers[i],
+                    userName: userName,
+                };
             }
 
             eventBus.publish("peer_initiate_call_request", {
@@ -154,6 +160,7 @@ export default {
             if (i === -1) {
                 this.nearbyPlayers.push({
                     userId: data.userIdCaller,
+                    userName: "___error___",
                     stream: new MediaStream([video1, audio]),
                     screenShare: video2 ? new MediaStream([video2]) : null,
                     isSoundEnabled: false,

@@ -66,4 +66,5 @@
  * @property {boolean} isSoundEnabled
  * @property {boolean} isVideoEnabled
  * @property {string} userId
+ * @property {string} userName
  */

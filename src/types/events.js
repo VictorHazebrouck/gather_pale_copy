@@ -233,6 +233,7 @@
 /**
  * @typedef {Object} GamePlayerJoinNearbyEventData
  * @property {string} userId
+ * @property {string} userName
  *
  * @event game_player_join_nearby_area
  * @type {GamePlayerJoinNearbyEventData}

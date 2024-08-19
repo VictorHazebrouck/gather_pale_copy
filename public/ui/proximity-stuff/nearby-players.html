@@ -6,7 +6,7 @@
     <ul id="videos-list">
         <template x-if="$store.videoChat.isMyScreenshareEnabled">
             <div class="nearby-player-card">
-                <p>screenshare</p>
+                <p>my screenshare</p>
                 <video
                     x-show="$store.videoChat.isMyScreenshareEnabled"
                     class="video"
@@ -25,6 +25,7 @@
                     @click="
                         selected = {
                             id: player.userId,
+                            name: player.userName,
                             type: 'vid',
                             isVideoEnabled: player.isVideoEnabled,
                             videoSource: player.stream,
@@ -39,6 +40,7 @@
                         if(selected?.id == player.userId && selected.type == 'vid'){
                             selected = {
                                 id: player.userId,
+                                name: player.userName,
                                 type: 'vid',
                                 isVideoEnabled: player.isVideoEnabled,
                                 videoSource: player.stream,
@@ -46,7 +48,7 @@
                         }
                     "
                 >
-                    <p x-text="player.userId"></p>
+                    <p x-text="player.userName"></p>
                     <i
                         x-show="!player.isVideoEnabled"
                         class="fa-solid fa-video-slash"
@@ -68,6 +70,7 @@
                         @click="
                             selected = {
                                 id: player.userId,
+                                name: player.userName,
                                 type: 'screen',
                                 isVideoEnabled: true,
                                 videoSource: player.screenShare,
@@ -77,6 +80,7 @@
                             if(selected?.id == player.userId && selected.type == 'screen'){
                                 selected = {
                                     id: player.userId,
+                                    name: player.userName,
                                     type: 'screen',
                                     isVideoEnabled: player.isVideoEnabled,
                                     videoSource: player.stream,
@@ -84,6 +88,7 @@
                             }
                         "
                     >
+                        <p x-text="player.userName"></p>
                         <video
                             class="video"
                             x-ref="video"
@@ -97,7 +102,7 @@
     </ul>
     <template x-if="selected">
         <div id="focused-player-card">
-            <p>test</p>
+            <p x-text="selected.name"></p>
             <button @click="selected = null">
                 <i class="fa-solid fa-x"></i>
             </button>

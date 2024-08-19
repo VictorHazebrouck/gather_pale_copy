@@ -25,8 +25,8 @@ class PlayerSelf extends PlayerBase {
     constructor(spriteSheet, playerData) {
         super(playerData, spriteSheet);
 
-        /**@type {Set<string>} */
-        this.nearbyPlayersIds = new Set();
+        /**@type {Map<string, string>} */
+        this.nearbyPlayers = new Map();
 
         Ticker.shared.add(this._playerMovement);
         this._checkNearbyPlayers();
@@ -49,7 +49,6 @@ class PlayerSelf extends PlayerBase {
      * @returns {void}
      */
     _playerMovement = (ticker) => {
-        /** Don't perform further calculations if player is stopped */
         if (this.moveDirection === "stop") {
             return;
         }
@@ -194,16 +193,16 @@ class PlayerSelf extends PlayerBase {
                 const b = Math.abs(this.y - y);
                 const distance = Math.sqrt(a * a + b * b);
 
-                const userId = player.playerInformation.userId;
+                const {userId, userName} = player.playerInformation;
 
                 if (distance < 100) {
-                    if (!this.nearbyPlayersIds.has(userId)) {
-                        this.nearbyPlayersIds.add(userId);
-                        eventBus.publish("game_player_join_nearby_area", { userId: userId });
+                    if (!this.nearbyPlayers.has(userId)) {
+                        this.nearbyPlayers.set(userId, userName);
+                        eventBus.publish("game_player_join_nearby_area", { userId: userId, userName: userName });
                     }
                 } else {
-                    if (this.nearbyPlayersIds.has(userId)) {
-                        this.nearbyPlayersIds.delete(userId);
+                    if (this.nearbyPlayers.has(userId)) {
+                        this.nearbyPlayers.delete(userId);
                         eventBus.publish("game_player_leave_nearby_area", { userId: userId });
                     }
                 }
@@ -211,7 +210,7 @@ class PlayerSelf extends PlayerBase {
         }, 500);
 
         eventBus.subscribe("player_disconnected", (data) =>
-            this.nearbyPlayersIds.delete(data.userId)
+            this.nearbyPlayers.delete(data.userId)
         );
     };
 
