@@ -103,8 +103,8 @@
     <template x-if="selected">
         <div id="focused-player-card">
             <p x-text="selected.name"></p>
-            <button @click="selected = null">
-                <i class="fa-solid fa-x"></i>
+            <button @click="selected = null; console.log('hahahah')">
+                <i class="fa-solid fa-xmark"></i>
             </button>
             <i
                 x-show="!selected?.isVideoEnabled"
