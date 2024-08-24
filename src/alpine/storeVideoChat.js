@@ -42,7 +42,7 @@ export default {
         const [track, err] = await requestScreencastVideoTrack();
 
         if (err !== null) {
-            return console.error("Error getting screencast", err);
+            return window.alert("Error accessing screenshare media");
         }
 
         track.addEventListener("ended", () => {
@@ -64,7 +64,7 @@ export default {
         const [videoTrack, audioTrack, err] = await requestWebcamAndAudioTracks();
 
         if (err) {
-            return console.error("Error getting stream", err);
+            return window.alert("Error getting webcam and audio.\nPlease make sure permissions are enabled");
         }
 
         this.myStream.addTrack(videoTrack);
@@ -160,7 +160,7 @@ export default {
             if (i === -1) {
                 this.nearbyPlayers.push({
                     userId: data.userIdCaller,
-                    userName: "___error___",
+                    userName: "",
                     stream: new MediaStream([video1, audio]),
                     screenShare: video2 ? new MediaStream([video2]) : null,
                     isSoundEnabled: false,
