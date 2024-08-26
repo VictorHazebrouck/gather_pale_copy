@@ -3,7 +3,7 @@
  * @ignore
  * */
 import { Spritesheet, Ticker } from "pixi.js";
-import { filterPlayers, loadPlayerSprite } from "../utils/utils";
+import { filterPlayers, loadPlayerSprite } from "./utils/utils";
 import PlayerBase from "./PlayerBase";
 import eventBus from "../../EventBus";
 

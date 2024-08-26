@@ -15,15 +15,15 @@ import spriteData from "../../assets/backgroundSpritesheet.json";
  * @subcategory LAYERS
  * @extends Container
  */
-class Background extends Container {
+class Walls extends Container {
     constructor() {
         super();
         this.spriteData = spriteData;
         this.tileMap = tilemap;
-        this.zIndex = 1;
+        this.zIndex = 2;
     }
 
-    async generateBackground() {
+    async generateWalls() {
         this.rawSpritesheet = await Assets.load("assets/Tiles/topDown_baseTiles.png");
 
         const spriteSheet = new Spritesheet(this.rawSpritesheet, this.spriteData);
@@ -38,9 +38,13 @@ class Background extends Container {
         //create the map from a matrix
         for (let i = 0; i < this.tileMap.length; i++) {
             for (let j = 0; j < this.tileMap[i].length; j++) {
+                if(!this.tileMap[i][j]) continue;
+                
+                console.log("hahah", this.tileMap[i][j]);
                 /** @todo find a proper way to handle this mess */
                 // @ts-ignore
                 const texture = spriteSheet.textures[`${this.tileMap[i][j]}.png`];
+
                 const sprite = new Sprite(texture);
                 sprite.position.set(j * TILE_SIZE, i * TILE_SIZE);
                 this.addChild(sprite);
@@ -49,4 +53,4 @@ class Background extends Container {
     }
 }
 
-export default Background;
+export default Walls;

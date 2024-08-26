@@ -5,7 +5,7 @@
 import { Ticker, Spritesheet } from "pixi.js";
 import PlayerBase from "./PlayerBase";
 import Alpine from "alpinejs";
-import { filterPlayerOthers, loadPlayerSprite } from "../utils/utils";
+import { filterPlayerOthers, loadPlayerSprite } from "./utils/utils";
 import eventBus from "../../EventBus";
 
 /**

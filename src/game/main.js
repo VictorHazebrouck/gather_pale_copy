@@ -5,7 +5,8 @@
 
 import { Application, Ticker } from "pixi.js";
 import Background from "./layers/background/Background";
-import Game from "./game/Game";
+import Walls from "./layers/walls/Walls"
+import Game from "./camera/Camera";
 import PlayersLayer from "./layers/players/PlayersLayer";
 import PlayerSelf from "./player/PlayerSelf";
 
@@ -36,6 +37,11 @@ async function initGame(playerSelfData) {
     const background = new Background();
     await background.generateBackground();
     game.addChild(background);
+
+    //init walls 
+    const walls = new Walls()
+    await walls.generateWalls()
+    game.addChild(walls)
 
     // init self
     const playerSelf = await PlayerSelf.createPlayer(playerSelfData);

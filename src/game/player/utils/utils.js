@@ -4,10 +4,10 @@
  */
 
 import { Spritesheet, Assets } from "pixi.js";
-import Player from "../player/PlayerBase";
-import PlayerOther from "../player/PlayerOther";
+import Player from "../PlayerBase";
+import PlayerOther from "../PlayerOther";
 
-import spriteData from "../assets/characterSpritesheet.json";
+import spriteData from "../../assets/characterSpritesheet.json";
 
 async function loadPlayerSprite() {
     const rawSpritesheet = await Assets.load("assets/Characters/spr_alex.png");

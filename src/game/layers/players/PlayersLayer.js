@@ -17,6 +17,7 @@ import PlayerOther from "../../player/PlayerOther";
 class PlayersLayer extends Container {
     constructor() {
         super();
+        this.zIndex = 2;
         this.init();
     }
 
