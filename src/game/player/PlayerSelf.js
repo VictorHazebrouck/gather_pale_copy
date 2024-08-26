@@ -63,7 +63,10 @@ class PlayerSelf extends PlayerBase {
             /**
              * If player has collided, stop his movement, share the stop event to other clients
              * used only in playerSelf to avoid each client collision checking each player on each frame
+             * 
+             * @todo create a Sprite type checker for walls
              */
+            //@ts-ignore 
             if (this.hasCollided(this.moveDirection, object)) {
                 /** @type {MoveInstructions} */
                 const obj = {
