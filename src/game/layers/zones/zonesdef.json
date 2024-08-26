@@ -3,15 +3,5 @@
         "name": "zone1",
         "isGlobalCommunication": true,
         "bounds": { "xMin": 32, "yMin": 32, "xMax": 64, "yMax": 80 }
-    },
-    {
-        "name": "zone2",
-        "isGlobalCommunication": false,
-        "bounds": { "xMin": 160, "yMin": 0, "xMax": 320, "yMax": 160 }
-    },
-    {
-        "name": "zone3",
-        "isGlobalCommunication": false,
-        "bounds": { "xMin": 0, "yMin": 160, "xMax": 160, "yMax": 320 }
     }
 ]

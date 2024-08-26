@@ -28,7 +28,7 @@ class PlayerBase extends AnimatedSprite {
         this.layers = layers;
 
         /** @type {import("../layers/zones/Zones").ZoneType} */
-        this.currentZone = layers.zones.default
+        this.currentZone = layers.zones.default;
 
         /** @type {PlayerData} */
         this.playerInformation = {
@@ -206,7 +206,10 @@ class PlayerBase extends AnimatedSprite {
 
     _startZoneDetectionLoop() {
         setInterval(() => {
-           this.currentZone = getZoneFromPosition(this.layers.zones, this.position);
+            if (this.position) {
+                const { x = 0, y = 0 } = this.position;
+                this.currentZone = getZoneFromPosition(this.layers.zones, { x, y });
+            }
         }, 500);
     }
 
