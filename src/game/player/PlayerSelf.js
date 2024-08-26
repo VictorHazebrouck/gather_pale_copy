@@ -7,6 +7,7 @@ import PlayerBase from "./PlayerBase";
 import Alpine from "alpinejs";
 import { filterPlayerOthers, loadPlayerSprite } from "./utils/utils";
 import eventBus from "../../EventBus";
+import Layers from "../layers/Layers";
 
 /**
  * PlayerSelf class that extends PlayerBase.
@@ -19,14 +20,16 @@ class PlayerSelf extends PlayerBase {
      * @constructor
      * @private
      * 
-     * @param {PlayerDataWithCoordinates} playerData - player data
      * @param {Spritesheet} spriteSheet - spritesheet
+     * @param {PlayerDataWithCoordinates} playerData - player data
+     * @param {Layers} layers 
      */
-    constructor(spriteSheet, playerData) {
+    constructor(spriteSheet, playerData, layers) {
         super(playerData, spriteSheet);
 
         /**@type {Map<string, string>} */
         this.nearbyPlayers = new Map();
+        this.layers = layers
 
         Ticker.shared.add(this._playerMovement);
         this._checkNearbyPlayers();
@@ -220,9 +223,10 @@ class PlayerSelf extends PlayerBase {
      * @method
      *
      * @param {UserStore} playerSelfData
+     * @param {Layers} layers
      * @returns {Promise<PlayerSelf>} - returns the player instance or false
      */
-    static createPlayer = async (playerSelfData) => {
+    static createPlayer = async (playerSelfData, layers) => {
         const spriteSheet = await loadPlayerSprite();
 
         /** @type {PlayerDataWithCoordinates} */
@@ -233,7 +237,7 @@ class PlayerSelf extends PlayerBase {
             y: playerSelfData.lastPositionY,
         };
 
-        return new PlayerSelf(spriteSheet, obj);
+        return new PlayerSelf(spriteSheet, obj, layers);
     };
 }
 

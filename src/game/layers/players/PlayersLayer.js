@@ -18,10 +18,10 @@ class PlayersLayer extends Container {
     constructor() {
         super();
         this.zIndex = 2;
-        this.init();
+        this.initListeners();
     }
 
-    init() {
+    initListeners() {
         //handle first connection, get current game state from server
         EventBus.subscribe("receive_initial_gamestate", async (data) => {
             for (let i = 0; i < data.Players.length; i++) {

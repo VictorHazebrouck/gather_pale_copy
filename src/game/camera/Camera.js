@@ -1,6 +1,6 @@
 import { Container, Ticker } from "pixi.js";
 
-class Game extends Container {
+class Camera extends Container {
     /**
      * Keep reference to the outter application state
      * @param {import("pixi.js").Application} app application object
@@ -65,4 +65,4 @@ class Game extends Container {
     };
 }
 
-export default Game;
+export default Camera;
