@@ -27,6 +27,9 @@ class PlayerBase extends AnimatedSprite {
         this.spriteSheet = spriteSheet;
         this.layers = layers;
 
+        /** @type {import("../layers/zones/Zones").ZoneType} */
+        this.currentZone = layers.zones.default
+
         /** @type {PlayerData} */
         this.playerInformation = {
             userId: userId,
@@ -203,8 +206,7 @@ class PlayerBase extends AnimatedSprite {
 
     _startZoneDetectionLoop() {
         setInterval(() => {
-           const zone =  getZoneFromPosition(this.layers.zones, this.position);
-           //console.log("player in zone: ", ha);
+           this.currentZone = getZoneFromPosition(this.layers.zones, this.position);
         }, 500);
     }
 

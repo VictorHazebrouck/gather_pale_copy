@@ -19,3 +19,14 @@ export function getZoneFromPosition(zones, position){
     }
     return zones.default
 }
+
+
+/**
+ * Returns in which zone a players belongs according to its current position
+ * 
+ * @param {import('../../layers/zones/Zones').ZoneType} zoneA 
+ * @param {import('../../layers/zones/Zones').ZoneType} zoneB 
+ */
+export function arePlayersInSameZone(zoneA, zoneB){
+    return zoneA.name === zoneB.name
+}

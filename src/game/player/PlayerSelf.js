@@ -8,6 +8,7 @@ import Alpine from "alpinejs";
 import { filterPlayerOthers, loadPlayerSprite } from "./utils/utils";
 import eventBus from "../../EventBus";
 import Layers from "../layers/Layers";
+import { arePlayersInSameZone } from "./utils/proximityStuff";
 
 /**
  * PlayerSelf class that extends PlayerBase.
@@ -26,9 +27,6 @@ class PlayerSelf extends PlayerBase {
      */
     constructor(spriteSheet, playerData, layers) {
         super(playerData, spriteSheet, layers);
-
-        /**@type {Map<string, string>} */
-        this.nearbyPlayers = new Map();
 
         Ticker.shared.add(this._playerMovement);
         this._checkNearbyPlayers();
@@ -56,8 +54,8 @@ class PlayerSelf extends PlayerBase {
         }
 
         const collidableObjects = [
-            ...filterPlayerOthers(this.layers.playersLayer?.children|| []),
-            ...this.layers.walls?.children || [],
+            ...filterPlayerOthers(this.layers.playersLayer?.children || []),
+            ...(this.layers.walls?.children || []),
         ];
 
         /** Check for collision with each sibling objects */
@@ -189,37 +187,62 @@ class PlayerSelf extends PlayerBase {
      * @returns {void}
      */
     _checkNearbyPlayers = () => {
-        setInterval(() => {
-            //this.currentZone = getZoneFromPosition(this.layers.zones, this.position)
+        /**@type {Map<string, string>} */
+        const nearbyPlayers = new Map();
 
+        setInterval(() => {
             const otherPlayers = filterPlayerOthers(this.parent.children);
 
+            const shouldProximityCheck = !this.currentZone.isGlobalCommunication;
+
             for (const player of otherPlayers) {
+                const { userId, userName } = player.playerInformation;
+                const _arePlayersInSameZone = arePlayersInSameZone(
+                    this.currentZone,
+                    player.currentZone
+                );
+
+                if (!shouldProximityCheck) {
+                    if (_arePlayersInSameZone) {
+                        addOneNearbyPlayer(userId, userName);
+                    } else {
+                        removeOneNearbyPlayer(userId);
+                    }
+                    continue;
+                }
+
                 const { x, y } = player.position;
                 const a = Math.abs(this.x - x);
                 const b = Math.abs(this.y - y);
                 const distance = Math.sqrt(a * a + b * b);
 
-                const { userId, userName } = player.playerInformation;
-
-                if (distance < 100) {
-                    if (!this.nearbyPlayers.has(userId)) {
-                        this.nearbyPlayers.set(userId, userName);
-                        eventBus.publish("game_player_join_nearby_area", {
-                            userId: userId,
-                            userName: userName,
-                        });
-                    }
+                if (distance < 100 && _arePlayersInSameZone) {
+                    addOneNearbyPlayer(userId, userName);
                 } else {
-                    if (this.nearbyPlayers.has(userId)) {
-                        this.nearbyPlayers.delete(userId);
-                        eventBus.publish("game_player_leave_nearby_area", { userId: userId });
-                    }
+                    removeOneNearbyPlayer(userId);
                 }
             }
         }, 500);
 
-        eventBus.subscribe("player_disconnected", (data) => this.nearbyPlayers.delete(data.userId));
+        eventBus.subscribe("player_disconnected", (data) => nearbyPlayers.delete(data.userId));
+
+        function addOneNearbyPlayer(userId = "", userName = "") {
+            if (!nearbyPlayers.has(userId)) {
+                nearbyPlayers.set(userId, userName);
+                eventBus.publish("game_player_join_nearby_area", {
+                    userId: userId,
+                    userName: userName,
+                });
+            }
+        }
+
+        function removeOneNearbyPlayer(userId = "") {
+            if (nearbyPlayers.has(userId)) {
+                nearbyPlayers.delete(userId);
+                eventBus.publish("game_player_leave_nearby_area", { userId: userId });
+            }
+        }
+
     };
 
     /**
