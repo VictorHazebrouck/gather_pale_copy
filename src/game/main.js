@@ -4,11 +4,6 @@
  */
 
 import { Application, Ticker } from "pixi.js";
-import Background from "./layers/background/Background";
-import Walls from "./layers/walls/Walls"
-import Camera from "./camera/Camera";
-import PlayersLayer from "./layers/players/PlayersLayer";
-import PlayerSelf from "./player/PlayerSelf";
 import Layers from "./layers/Layers";
 
 /**
@@ -30,8 +25,7 @@ async function initGame(playerSelfData) {
     gamecontainer.appendChild(app.canvas);
     Ticker.shared.autoStart = true;
 
-    const layers = new Layers()
-    await layers.createLayers(app, playerSelfData)
+    const layers = await Layers.createLayers(app, playerSelfData)
     
     if(!layers.camera) {
         throw new Error("couldn't get camera")

@@ -8,6 +8,7 @@ import Alpine from "alpinejs";
 import { filterPlayerOthers, loadPlayerSprite } from "./utils/utils";
 import eventBus from "../../EventBus";
 import Layers from "../layers/Layers";
+import { getZoneFromPosition } from "./utils/proximityStuff";
 
 /**
  * PlayerSelf class that extends PlayerBase.
@@ -25,11 +26,10 @@ class PlayerSelf extends PlayerBase {
      * @param {Layers} layers
      */
     constructor(spriteSheet, playerData, layers) {
-        super(playerData, spriteSheet);
+        super(playerData, spriteSheet, layers);
 
         /**@type {Map<string, string>} */
         this.nearbyPlayers = new Map();
-        this.layers = layers;
 
         Ticker.shared.add(this._playerMovement);
         this._checkNearbyPlayers();
@@ -48,7 +48,7 @@ class PlayerSelf extends PlayerBase {
      * @private
      * @method
      *
-     * @param {Ticker} ticker - time passed since last frame, used for consistent speed.
+     * @param {Ticker} ticker - time passed since last frame (deltatime), used for consistent speed.
      * @returns {void}
      */
     _playerMovement = (ticker) => {
@@ -191,6 +191,8 @@ class PlayerSelf extends PlayerBase {
      */
     _checkNearbyPlayers = () => {
         setInterval(() => {
+            //this.currentZone = getZoneFromPosition(this.layers.zones, this.position)
+
             const otherPlayers = filterPlayerOthers(this.parent.children);
 
             for (const player of otherPlayers) {
@@ -198,6 +200,8 @@ class PlayerSelf extends PlayerBase {
                 const a = Math.abs(this.x - x);
                 const b = Math.abs(this.y - y);
                 const distance = Math.sqrt(a * a + b * b);
+
+                console.log(player.currentZone);
 
                 const { userId, userName } = player.playerInformation;
 

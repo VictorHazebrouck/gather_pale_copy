@@ -1,10 +1,12 @@
+import Layers from "../Layers";
 import tileMap from "./zonesdef.json";
+import { Ticker } from "pixi.js";
 
 /**
- * @typedef {object} Zone
+ * @typedef {object} ZoneType
  * @property {string} name - name of the zone
  * @property {boolean} isGlobalCommunication - whether to disable proximity chat
- * @property {Bounds[]} bounds - the position definition of the zone, must always be a rectangle
+ * @property {Bounds} bounds - the position definition of the zone, must always be a rectangle
  */
 
 /**
@@ -16,11 +18,23 @@ import tileMap from "./zonesdef.json";
  */
 
 class Zones {
-    constructor() {
-        this.globalName = "global";
-        /** @type {Zone[]} */
+    /** @param {Layers} layers */
+    constructor(layers) {
+        /** @type {ZoneType} */
+        this.default = {
+            name: "global zone",
+            isGlobalCommunication: false,
+            bounds: {
+                xMin: 0,
+                yMin: 0,
+                xMax: 9999,
+                yMax: 9999,
+            }
+        };
+        /** @type {ZoneType[]} */
         this.zoneDefs = [];
         this.init();
+        this.layers = layers;
     }
     init() {
         this.zoneDefs = tileMap;

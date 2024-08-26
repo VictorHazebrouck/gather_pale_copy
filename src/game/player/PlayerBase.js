@@ -5,6 +5,7 @@
 import { Spritesheet, AnimatedSprite, Ticker, Point } from "pixi.js";
 import NameTag from "./NameTag";
 import eventBus from "../../EventBus";
+import Layers from "../layers/Layers";
 
 /**
  * Player class that extends AnimatedSprite.
@@ -18,10 +19,12 @@ class PlayerBase extends AnimatedSprite {
      *
      * @param {PlayerDataWithCoordinates} playerData - data required to initialize player
      * @param {Spritesheet} spriteSheet - data required to initialize player
+     * @param {Layers} layers
      */
-    constructor({ userId, userName, x, y }, spriteSheet) {
+    constructor({ userId, userName, x, y }, spriteSheet, layers) {
         super(spriteSheet.animations["idle"]);
         this.spriteSheet = spriteSheet;
+        this.layers = layers;
 
         /** @type {PlayerData} */
         this.playerInformation = {

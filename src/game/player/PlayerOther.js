@@ -6,6 +6,7 @@ import { Spritesheet, Ticker } from "pixi.js";
 import { filterPlayers, loadPlayerSprite } from "./utils/utils";
 import PlayerBase from "./PlayerBase";
 import eventBus from "../../EventBus";
+import Layers from "../layers/Layers";
 
 /**
  * Class
@@ -17,9 +18,10 @@ class PlayerOther extends PlayerBase {
     /**
      * @param {PlayerDataWithCoordinates} data - player data necessary to init the player
      * @param {Spritesheet} spriteSheet - spritesheet
+     * @param {Layers} layers
      */
-    constructor(data, spriteSheet) {
-        super(data, spriteSheet);
+    constructor(data, spriteSheet, layers) {
+        super(data, spriteSheet, layers);
 
         this.interactive = true;
         this._registerOnClickActions();
@@ -67,8 +69,8 @@ class PlayerOther extends PlayerBase {
 
         eventBus.subscribe("receive_move_instructions", handleMovement);
 
-        /** 
-         * If the broadcasted move is from the player himself, 
+        /**
+         * If the broadcasted move is from the player himself,
          * destroy his instance and remove his listeners
          * @param {PlayerDisconnectdEventData} data
          */
@@ -101,9 +103,10 @@ class PlayerOther extends PlayerBase {
      *
      * @param {PlayerDataWithCoordinates} playerData - data for the player we're trying ot pass in
      * @param {import("pixi.js").ContainerChild[]} siblings - data from all current players in the container
+     * @param {Layers} layers
      * @returns {Promise<PlayerOther | false>} - returns the player instance or false
      */
-    static createPlayer = async (playerData, siblings) => {
+    static createPlayer = async (playerData, siblings, layers) => {
         const players = filterPlayers(siblings);
 
         for (const player of players) {
@@ -113,7 +116,7 @@ class PlayerOther extends PlayerBase {
         }
         const spriteSheet = await loadPlayerSprite();
 
-        return new PlayerOther(playerData, spriteSheet);
+        return new PlayerOther(playerData, spriteSheet, layers);
     };
 }
 

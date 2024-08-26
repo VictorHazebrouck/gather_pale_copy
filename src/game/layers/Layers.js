@@ -7,43 +7,54 @@ import PlayerSelf from "../player/PlayerSelf";
 import Zones from "./zones/Zones";
 
 class Layers extends Container {
-    constructor() {
-        super();
-    }
     /**
-     * 
-     * @param {Application} app 
-     * @param {UserStore} playerSelfData 
+     *
+     * @param {Application} app
+     * @param {Background} background
+     * @param {Walls} walls
+     * @param {UserStore} playerSelfData
      */
-    async createLayers(app, playerSelfData) {
+    constructor(app, background, walls, playerSelfData) {
+        super();
+
         //init camera
         this.camera = new Camera(app);
 
-        //init background
-        this.background = new Background();
-        await this.background.generateBackground();
+        //artache baccjground to cameraa
+        this.background = background;
         this.camera.addChild(this.background);
 
-        //init walls
-        this.walls = new Walls();
-        await this.walls.generateWalls();
+        //attach walls to camera
+        this.walls = walls;
         this.camera.addChild(this.walls);
 
-        //init zones definitions
-        this.zones = new Zones();
-        
-        // inti players layer
-        this.playersLayer = new PlayersLayer();
-
-        // init self
-        this.playerSelf = await PlayerSelf.createPlayer(playerSelfData, this);
-        this.playerSelf.registerMovementInput();
-        this.playerSelf.registerMovementInput("KeyW", "KeyS", "KeyA", "KeyD");
-
-        this.playersLayer.addChild(this.playerSelf);
-
-        this.camera.attachCameraToObject(this.playerSelf);
+        //attach players
+        this.playersLayer = new PlayersLayer(this);
         this.camera.addChild(this.playersLayer);
+
+        //create self and bind camera position to it
+        this.playersLayer.createSelf(playerSelfData, this).then((self) => {
+            this.camera.attachCameraToObject(self);
+        });
+
+        //init zones definitions
+        this.zones = new Zones(this);
+    }
+    /**
+     *
+     * @param {Application} app
+     * @param {UserStore} playerSelfData
+     */
+    static async createLayers(app, playerSelfData) {
+        //init background
+        const background = new Background();
+        await background.generateBackground();
+
+        //init walls
+        const walls = new Walls();
+        await walls.generateWalls();
+
+        return new Layers(app, background, walls, playerSelfData);
     }
 }
 
