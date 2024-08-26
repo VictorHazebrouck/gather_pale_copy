@@ -51,7 +51,7 @@ class PlayerBase extends AnimatedSprite {
 
         Ticker.shared.add(this._spriteUpdate);
         this._createNameTag({ userId, userName });
-        this._startZoneDetectionLoop();
+        this.detectionLoopId = this._startZoneDetectionLoop();
     }
 
     /**
@@ -205,11 +205,14 @@ class PlayerBase extends AnimatedSprite {
     };
 
     _startZoneDetectionLoop() {
-        setInterval(() => {
-            if (this.position) {
-                const { x = 0, y = 0 } = this.position;
-                this.currentZone = getZoneFromPosition(this.layers.zones, { x, y });
+        const intervalId = setInterval(() => {
+            if (this.destroyed) {
+                clearInterval(intervalId);
+                return 
             }
+
+            const { x = 0, y = 0 } = this.position;
+            this.currentZone = getZoneFromPosition(this.layers.zones, { x, y });
         }, 500);
     }
 
