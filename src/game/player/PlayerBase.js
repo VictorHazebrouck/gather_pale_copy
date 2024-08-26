@@ -6,6 +6,7 @@ import { Spritesheet, AnimatedSprite, Ticker, Point } from "pixi.js";
 import NameTag from "./NameTag";
 import eventBus from "../../EventBus";
 import Layers from "../layers/Layers";
+import { getZoneFromPosition } from "./utils/proximityStuff";
 
 /**
  * Player class that extends AnimatedSprite.
@@ -47,6 +48,7 @@ class PlayerBase extends AnimatedSprite {
 
         Ticker.shared.add(this._spriteUpdate);
         this._createNameTag({ userId, userName });
+        this._startZoneDetectionLoop();
     }
 
     /**
@@ -198,6 +200,13 @@ class PlayerBase extends AnimatedSprite {
 
         return false;
     };
+
+    _startZoneDetectionLoop() {
+        setInterval(() => {
+           const zone =  getZoneFromPosition(this.layers.zones, this.position);
+           //console.log("player in zone: ", ha);
+        }, 500);
+    }
 
     /**
      * Function to get position of the player

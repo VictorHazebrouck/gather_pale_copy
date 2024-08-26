@@ -1,11 +1,8 @@
-import Zones from "../../layers/zones/Zones";
-import PlayerSelf from "../PlayerSelf";
-
 /**
  * Returns in which zone a players belongs according to its current position
  * 
- * @param {Zones} zones 
- * @param {PlayerSelf["position"]} position 
+ * @param {import('../../layers/Layers').default["zones"]} zones 
+ * @param {import('../PlayerSelf').default["position"]} position 
  */
 export function getZoneFromPosition(zones, position){
     for(const zone of zones.zoneDefs){

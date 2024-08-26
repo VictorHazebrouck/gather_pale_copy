@@ -8,7 +8,6 @@ import Alpine from "alpinejs";
 import { filterPlayerOthers, loadPlayerSprite } from "./utils/utils";
 import eventBus from "../../EventBus";
 import Layers from "../layers/Layers";
-import { getZoneFromPosition } from "./utils/proximityStuff";
 
 /**
  * PlayerSelf class that extends PlayerBase.
@@ -200,8 +199,6 @@ class PlayerSelf extends PlayerBase {
                 const a = Math.abs(this.x - x);
                 const b = Math.abs(this.y - y);
                 const distance = Math.sqrt(a * a + b * b);
-
-                console.log(player.currentZone);
 
                 const { userId, userName } = player.playerInformation;
 
