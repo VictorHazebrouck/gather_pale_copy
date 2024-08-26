@@ -1,5 +1,7 @@
 [
-    [null, null, null],
-    [null, "fence_horizontal", null],
-    [null, null, null]
+    [null, null, null, null, null],
+    [null, "fence_horizontal", "fence_horizontal", "fence_horizontal", "fence_horizontal"],
+    [null, "fence_horizontal", null, null, "fence_horizontal"],
+    [null, "fence_horizontal", null, null, "fence_horizontal"],
+    [null, "fence_horizontal", null, null, "fence_horizontal"]
 ]

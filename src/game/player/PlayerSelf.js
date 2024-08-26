@@ -19,17 +19,17 @@ class PlayerSelf extends PlayerBase {
     /**
      * @constructor
      * @private
-     * 
+     *
      * @param {Spritesheet} spriteSheet - spritesheet
      * @param {PlayerDataWithCoordinates} playerData - player data
-     * @param {Layers} layers 
+     * @param {Layers} layers
      */
     constructor(spriteSheet, playerData, layers) {
         super(playerData, spriteSheet);
 
         /**@type {Map<string, string>} */
         this.nearbyPlayers = new Map();
-        this.layers = layers
+        this.layers = layers;
 
         Ticker.shared.add(this._playerMovement);
         this._checkNearbyPlayers();
@@ -56,7 +56,10 @@ class PlayerSelf extends PlayerBase {
             return;
         }
 
-        const collidableObjects = filterPlayerOthers(this.parent.children);
+        const collidableObjects = [
+            ...filterPlayerOthers(this.layers.playersLayer?.children|| []),
+            ...this.layers.walls?.children || [],
+        ];
 
         /** Check for collision with each sibling objects */
         for (const object of collidableObjects) {
@@ -196,12 +199,15 @@ class PlayerSelf extends PlayerBase {
                 const b = Math.abs(this.y - y);
                 const distance = Math.sqrt(a * a + b * b);
 
-                const {userId, userName} = player.playerInformation;
+                const { userId, userName } = player.playerInformation;
 
                 if (distance < 100) {
                     if (!this.nearbyPlayers.has(userId)) {
                         this.nearbyPlayers.set(userId, userName);
-                        eventBus.publish("game_player_join_nearby_area", { userId: userId, userName: userName });
+                        eventBus.publish("game_player_join_nearby_area", {
+                            userId: userId,
+                            userName: userName,
+                        });
                     }
                 } else {
                     if (this.nearbyPlayers.has(userId)) {
@@ -212,9 +218,7 @@ class PlayerSelf extends PlayerBase {
             }
         }, 500);
 
-        eventBus.subscribe("player_disconnected", (data) =>
-            this.nearbyPlayers.delete(data.userId)
-        );
+        eventBus.subscribe("player_disconnected", (data) => this.nearbyPlayers.delete(data.userId));
     };
 
     /**

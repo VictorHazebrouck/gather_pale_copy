@@ -4,6 +4,7 @@ import Background from "./background/Background";
 import Walls from "./walls/Walls";
 import PlayersLayer from "./players/PlayersLayer";
 import PlayerSelf from "../player/PlayerSelf";
+import Zones from "./zones/Zones";
 
 class Layers extends Container {
     constructor() {
@@ -27,6 +28,9 @@ class Layers extends Container {
         this.walls = new Walls();
         await this.walls.generateWalls();
         this.camera.addChild(this.walls);
+
+        //init zones definitions
+        this.zones = new Zones();
         
         // inti players layer
         this.playersLayer = new PlayersLayer();
