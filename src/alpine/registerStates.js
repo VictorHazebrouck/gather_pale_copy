@@ -1,4 +1,4 @@
-import Alpine from "./registerPlugins";
+import Alpine from "./alpine-plugins/registerPlugins";
 import storeChat from "./storeChat";
 import storeUtils from "./storeUtils";
 import storePlayerCard from "./storePlayerCard";
