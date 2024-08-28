@@ -2,10 +2,9 @@
  * @module
  * @ignore
  */
-import { Spritesheet, AnimatedSprite, Ticker, Point } from "pixi.js";
+import { AnimatedSprite, Ticker, Point } from "pixi.js";
 import NameTag from "./NameTag";
 import eventBus from "../../EventBus";
-import Layers from "../layers/Layers";
 import { getZoneFromPosition } from "./utils/proximityStuff";
 
 /**
@@ -19,8 +18,8 @@ class PlayerBase extends AnimatedSprite {
      * @constructor
      *
      * @param {PlayerDataWithCoordinates} playerData - data required to initialize player
-     * @param {Spritesheet} spriteSheet - data required to initialize player
-     * @param {Layers} layers
+     * @param {import('pixi.js').Spritesheet} spriteSheet - data required to initialize player
+     * @param {import('../layers/Layers').default} layers
      */
     constructor({ userId, userName, x, y }, spriteSheet, layers) {
         super(spriteSheet.animations["idle"]);
@@ -208,7 +207,7 @@ class PlayerBase extends AnimatedSprite {
         const intervalId = setInterval(() => {
             if (this.destroyed) {
                 clearInterval(intervalId);
-                return 
+                return;
             }
 
             const { x = 0, y = 0 } = this.position;

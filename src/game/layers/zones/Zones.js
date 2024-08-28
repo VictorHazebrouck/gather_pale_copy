@@ -1,6 +1,4 @@
-import Layers from "../Layers";
 import tileMap from "./zonesdef.json";
-import { Ticker } from "pixi.js";
 
 /**
  * @typedef {object} ZoneType
@@ -18,7 +16,7 @@ import { Ticker } from "pixi.js";
  */
 
 class Zones {
-    /** @param {Layers} layers */
+    /** @param {import('../Layers').default} layers */
     constructor(layers) {
         /** @type {ZoneType} */
         this.default = {
@@ -29,7 +27,7 @@ class Zones {
                 yMin: 0,
                 xMax: 9999,
                 yMax: 9999,
-            }
+            },
         };
         /** @type {ZoneType[]} */
         this.zoneDefs = [];

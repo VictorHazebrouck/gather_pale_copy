@@ -6,7 +6,6 @@
 import { Container } from "pixi.js";
 import EventBus from "../../../EventBus";
 import PlayerOther from "../../player/PlayerOther";
-import Layers from "../Layers";
 import PlayerSelf from "../../player/PlayerSelf";
 
 /**
@@ -18,7 +17,7 @@ import PlayerSelf from "../../player/PlayerSelf";
  */
 class PlayersLayer extends Container {
     /**
-     * @param {Layers} layers
+     * @param {import('../Layers').default} layers
      */
     constructor(layers) {
         super();
@@ -27,7 +26,7 @@ class PlayersLayer extends Container {
     }
 
     /**
-     * @param {Layers} layers
+     * @param {import('../Layers').default} layers
      */
     initListeners(layers) {
         //handle first connection, get current game state from server
@@ -57,7 +56,7 @@ class PlayersLayer extends Container {
     /**
      *
      * @param {UserStore} playerSelfData
-     * @param {Layers} layers
+     * @param {import('../Layers').default} layers
      * @returns {Promise<PlayerSelf>}
      */
     async createSelf(playerSelfData, layers) {

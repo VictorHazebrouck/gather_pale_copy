@@ -4,9 +4,8 @@
  */
 
 import eventBus from "../EventBus";
-import DB from "./DB";
 
-/** @param {DB} dataBase */
+/** @param {import('./DB').default} dataBase */
 function registerPublishers(dataBase) {
     dataBase.chat_rooms.hook("updating", async (modifications, primKey, obj, transaction) => {
         // handler used to retrun refreshed collection after update
@@ -18,7 +17,7 @@ function registerPublishers(dataBase) {
         transaction.on.complete.subscribe(handleRefresh);
     });
 
-    dataBase.chat_rooms.hook("creating", ( primKey, obj, transaction) => {
+    dataBase.chat_rooms.hook("creating", (primKey, obj, transaction) => {
         // handler used to retrun refreshed collection after update
         async function handleRefresh() {
             const rooms = await dataBase.chat_rooms.toArray();

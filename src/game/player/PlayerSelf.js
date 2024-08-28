@@ -2,12 +2,11 @@
  * @module
  * @ignore
  */
-import { Ticker, Spritesheet } from "pixi.js";
+import { Ticker } from "pixi.js";
 import PlayerBase from "./PlayerBase";
 import Alpine from "alpinejs";
 import { filterPlayerOthers, loadPlayerSprite } from "./utils/utils";
 import eventBus from "../../EventBus";
-import Layers from "../layers/Layers";
 import { arePlayersInSameZone } from "./utils/proximityStuff";
 
 /**
@@ -21,9 +20,9 @@ class PlayerSelf extends PlayerBase {
      * @constructor
      * @private
      *
-     * @param {Spritesheet} spriteSheet - spritesheet
+     * @param {import('pixi.js').Spritesheet} spriteSheet - spritesheet
      * @param {PlayerDataWithCoordinates} playerData - player data
-     * @param {Layers} layers
+     * @param {import('../layers/Layers').default} layers
      */
     constructor(spriteSheet, playerData, layers) {
         super(playerData, spriteSheet, layers);
@@ -63,10 +62,10 @@ class PlayerSelf extends PlayerBase {
             /**
              * If player has collided, stop his movement, share the stop event to other clients
              * used only in playerSelf to avoid each client collision checking each player on each frame
-             * 
+             *
              * @todo create a Sprite type checker for walls
              */
-            //@ts-ignore 
+            //@ts-ignore
             if (this.hasCollided(this.moveDirection, object)) {
                 /** @type {MoveInstructions} */
                 const obj = {
@@ -245,7 +244,6 @@ class PlayerSelf extends PlayerBase {
                 eventBus.publish("game_player_leave_nearby_area", { userId: userId });
             }
         }
-
     };
 
     /**

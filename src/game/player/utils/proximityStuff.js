@@ -1,32 +1,31 @@
 /**
  * Returns in which zone a players belongs according to its current position
- * 
- * @param {import('../../layers/Layers').default["zones"]} zones 
- * @param {{x: number, y: number}} position 
+ *
+ * @param {import('../../layers/Layers').default["zones"]} zones
+ * @param {{x: number, y: number}} position
  */
-export function getZoneFromPosition(zones, position){
-    for(const zone of zones.zoneDefs){
-        const {x, y} = position
+export function getZoneFromPosition(zones, position) {
+    for (const zone of zones.zoneDefs) {
+        const { x, y } = position;
 
-        if(
+        if (
             x < zone.bounds.xMax &&
             x > zone.bounds.xMin &&
             y < zone.bounds.yMax &&
             y > zone.bounds.yMin
-         ){
-            return zone
-         }
+        ) {
+            return zone;
+        }
     }
-    return zones.default
+    return zones.default;
 }
-
 
 /**
  * Returns in which zone a players belongs according to its current position
- * 
- * @param {import('../../layers/zones/Zones').ZoneType} zoneA 
- * @param {import('../../layers/zones/Zones').ZoneType} zoneB 
+ *
+ * @param {import('../../layers/zones/Zones').ZoneType} zoneA
+ * @param {import('../../layers/zones/Zones').ZoneType} zoneB
  */
-export function arePlayersInSameZone(zoneA, zoneB){
-    return zoneA.name === zoneB.name
+export function arePlayersInSameZone(zoneA, zoneB) {
+    return zoneA.name === zoneB.name;
 }

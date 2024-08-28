@@ -64,7 +64,9 @@ export default {
         const [videoTrack, audioTrack, err] = await requestWebcamAndAudioTracks();
 
         if (err) {
-            return window.alert("Error getting webcam and audio.\nPlease make sure permissions are enabled");
+            return window.alert(
+                "Error getting webcam and audio.\nPlease make sure permissions are enabled"
+            );
         }
 
         this.myStream.addTrack(videoTrack);

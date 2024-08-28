@@ -4,11 +4,10 @@
  */
 
 import eventBus from "../EventBus";
-import DB from "./DB";
 import { v4 as uuidv4 } from "uuid";
 
 /**
- * @param {DB} dataBase
+ * @param {import('./DB').default} dataBase
  * @param {string} userId
  * @param {string} newName
  */
@@ -23,7 +22,7 @@ async function syncRoomPartner(dataBase, userId, newName) {
     dataBase.chat_rooms.put(correspondingroom);
 }
 
-/** @param {DB} dataBase */
+/** @param {import('./DB').default} dataBase */
 function registerSubscribers(dataBase) {
     //init db, proceed to sync names with ids, reset connection state and mak as connected
     eventBus.once("receive_initial_gamestate", async ({ Players }) => {

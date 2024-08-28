@@ -38,8 +38,8 @@ class Walls extends Container {
         //create the map from a matrix
         for (let i = 0; i < this.tileMap.length; i++) {
             for (let j = 0; j < this.tileMap[i].length; j++) {
-                if(!this.tileMap[i][j]) continue;
-                
+                if (!this.tileMap[i][j]) continue;
+
                 console.log("hahah", this.tileMap[i][j]);
                 /** @todo find a proper way to handle this mess */
                 // @ts-ignore

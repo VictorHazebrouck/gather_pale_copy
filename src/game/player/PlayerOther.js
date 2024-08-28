@@ -2,11 +2,10 @@
  * @module
  * @ignore
  * */
-import { Spritesheet, Ticker } from "pixi.js";
+import { Ticker } from "pixi.js";
 import { filterPlayers, loadPlayerSprite } from "./utils/utils";
 import PlayerBase from "./PlayerBase";
 import eventBus from "../../EventBus";
-import Layers from "../layers/Layers";
 
 /**
  * Class
@@ -17,8 +16,8 @@ import Layers from "../layers/Layers";
 class PlayerOther extends PlayerBase {
     /**
      * @param {PlayerDataWithCoordinates} data - player data necessary to init the player
-     * @param {Spritesheet} spriteSheet - spritesheet
-     * @param {Layers} layers
+     * @param {import('pixi.js').Spritesheet} spriteSheet - spritesheet
+     * @param {import('../layers/Layers').default} layers
      */
     constructor(data, spriteSheet, layers) {
         super(data, spriteSheet, layers);
@@ -103,7 +102,7 @@ class PlayerOther extends PlayerBase {
      *
      * @param {PlayerDataWithCoordinates} playerData - data for the player we're trying ot pass in
      * @param {import("pixi.js").ContainerChild[]} siblings - data from all current players in the container
-     * @param {Layers} layers
+     * @param {import('../layers/Layers').default} layers
      * @returns {Promise<PlayerOther | false>} - returns the player instance or false
      */
     static createPlayer = async (playerData, siblings, layers) => {

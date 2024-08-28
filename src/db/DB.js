@@ -45,8 +45,8 @@ class DB extends Dexie {
 
             const users = await this.users.toArray();
             eventBus.publish("DB_users_init", users);
-        } catch (error) {
-            throw new Error("Failed to initialize database");
+        } catch (err) {
+            throw new Error(String(err));
         }
     }
 

@@ -1,15 +1,14 @@
-import { Application, Container } from "pixi.js";
+import { Container } from "pixi.js";
 import Camera from "../camera/Camera";
 import Background from "./background/Background";
 import Walls from "./walls/Walls";
 import PlayersLayer from "./players/PlayersLayer";
-import PlayerSelf from "../player/PlayerSelf";
 import Zones from "./zones/Zones";
 
 class Layers extends Container {
     /**
      *
-     * @param {Application} app
+     * @param {import('pixi.js').Application} app
      * @param {Background} background
      * @param {Walls} walls
      * @param {UserStore} playerSelfData
@@ -42,7 +41,7 @@ class Layers extends Container {
     }
     /**
      *
-     * @param {Application} app
+     * @param {import('pixi.js').Application} app
      * @param {UserStore} playerSelfData
      */
     static async createLayers(app, playerSelfData) {

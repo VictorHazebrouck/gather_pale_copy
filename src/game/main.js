@@ -25,12 +25,12 @@ async function initGame(playerSelfData) {
     gamecontainer.appendChild(app.canvas);
     Ticker.shared.autoStart = true;
 
-    const layers = await Layers.createLayers(app, playerSelfData)
-    
-    if(!layers.camera) {
-        throw new Error("couldn't get camera")
+    const layers = await Layers.createLayers(app, playerSelfData);
+
+    if (!layers.camera) {
+        throw new Error("couldn't get camera");
     }
-    app.stage.addChild(layers.camera)
+    app.stage.addChild(layers.camera);
 }
 
 export default initGame;

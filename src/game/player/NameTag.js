@@ -1,10 +1,8 @@
 import { Graphics, Text } from "pixi.js";
 
-let bool = false;
-
 class NameTag extends Graphics {
     /** @param {PlayerData} data*/
-    constructor({ userId, userName }) {
+    constructor({ userName }) {
         super();
         this.init(userName);
     }
