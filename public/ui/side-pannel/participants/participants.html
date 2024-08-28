@@ -16,7 +16,7 @@
         </div>
         <ul class="accordion-content" x-show="isVisible" x-collapse>
             <template x-for="particiant in participants.filter(e => e.isConnected)">
-                <li class="participant-card" @click="clickPlayerCard(particiant)">
+                <li class="participant-card" @click="handleClickParticipant(particiant)">
                     <p x-text="particiant.userName"></p>
                 </li>
             </template>
@@ -30,7 +30,7 @@
         </div>
         <ul class="accordion-content" x-show="isVisible" x-collapse>
             <template x-for="particiant in participants.filter(e => !e.isConnected)">
-                <li class="participant-card">
+                <li @click="handleClickParticipant(particiant)" class="participant-card">
                     <p x-text="particiant.userName"></p>
                 </li>
             </template>

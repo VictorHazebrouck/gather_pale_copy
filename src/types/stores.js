@@ -7,7 +7,7 @@
  * Represents the participants data
  *
  * @typedef {object} ParticipantsStore
- * @property {function(User):void} clickPlayerCard
+ * @property {function(User):void} handleClickParticipant
  * @property {string} searchFilter - value of search input
  * @property {User[]} participants - list of participants filtered via search input
  * @property {User[]} participantsBase - base list of participants

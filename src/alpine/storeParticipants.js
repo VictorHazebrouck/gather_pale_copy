@@ -7,8 +7,22 @@ export default {
     searchFilter: "",
 
     /** @param {User} player */
-    clickPlayerCard(player) {
-        console.log("hahahahah");
+    handleClickParticipant(player) {
+        const element = /** @type {HTMLDivElement} */ (this.$el)
+        const position = element.getBoundingClientRect()
+
+        /** @type {PlayerClickEventData} */
+        const obj = {
+            playerInformation: {
+                userId: player._id,
+                userName: player.userName,
+            },
+            position: {
+                x: position.x,
+                y: position.y,
+            },
+        };
+        eventBus.publish("game_player_clicked", obj);
     },
     searchUser(input = "") {
         this.searchFilter = input;
