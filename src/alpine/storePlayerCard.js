@@ -41,7 +41,7 @@ export default {
             if (canvasRect.top > top) y = canvasRect.top + MARGIN;
 
             this.x = x;
-            this.y = position.y;
+            this.y = y;
             this.userId = playerInformation.userId;
             this.userName = playerInformation.userName;
             this.isCardVisible = true;
