@@ -14,7 +14,7 @@
             <h4>connected</h4>
             <p x-text="' (' + participants.filter(e => e.isConnected).length + ')'"></p>
         </div>
-        <ul x-show="isVisible" x-collapse>
+        <ul class="accordion-content" x-show="isVisible" x-collapse>
             <template x-for="particiant in participants.filter(e => e.isConnected)">
                 <li class="participant-card" @click="clickPlayerCard(particiant)">
                     <p x-text="particiant.userName"></p>
@@ -28,7 +28,7 @@
             <h4>disconnected</h4>
             <p x-text="' (' + participants.filter(e => !e.isConnected).length + ')'"></p>
         </div>
-        <ul x-show="isVisible" x-collapse>
+        <ul class="accordion-content" x-show="isVisible" x-collapse>
             <template x-for="particiant in participants.filter(e => !e.isConnected)">
                 <li class="participant-card">
                     <p x-text="particiant.userName"></p>
@@ -48,12 +48,17 @@
         padding: var(--pad-normal);
         padding-bottom: 3px;
 
+        .accordion-content {
+            display: flex;
+            gap: var(--pad-small);
+        }
+
         .participant-card {
-            padding-top: var(--pad-small);
             border-radius: var(--rad-normal);
             background-color: var(--bg-color-dark-2);
             padding: var(--pad-small);
             cursor: pointer;
+            width: 100%;
 
             &:hover {
                 background-color: var(--bg-color-dark-1-hover);
