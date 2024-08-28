@@ -9,8 +9,6 @@ import eventBus from "./src/EventBus";
 //inti Alpine state manager first
 Alpine.start();
 
-initGame(Alpine.store("user"));
-
 //inti db
 new DB().init();
 
@@ -37,6 +35,6 @@ eventBus.once("peer_successfull_initialization", () => {
 function checkInitialization() {
     if (isSocketInit && isPeerInit) {
         console.log("Socket and PeerJS initialization complete, starting game");
-        // initGame(Alpine.store("user"));
+        initGame(Alpine.store("user"));
     }
 }
