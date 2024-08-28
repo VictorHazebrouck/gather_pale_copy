@@ -37,7 +37,7 @@ export default {
             if (canvasRect.left > left) x = canvasRect.left + MARGIN;
 
             let y = position.y;
-            if (canvasRect.bottom < bottom) y = canvasRect.bottom + MARGIN;
+            if (canvasRect.bottom < bottom) y = canvasRect.bottom - HEIGHT - MARGIN;
             if (canvasRect.top > top) y = canvasRect.top + MARGIN;
 
             this.x = x;
