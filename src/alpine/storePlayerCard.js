@@ -27,6 +27,7 @@ export default {
     init() {
         eventBus.subscribe("game_player_clicked", ({ position, playerInformation }) => {
             const canvasRect = containingCanvas.getBoundingClientRect();
+            
             const top = position.y;
             const bottom = position.y + HEIGHT;
             const right = position.x + WIDTH;

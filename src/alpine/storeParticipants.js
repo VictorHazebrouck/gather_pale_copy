@@ -8,8 +8,9 @@ export default {
 
     /** @param {User} player */
     handleClickParticipant(player) {
-        const element = /** @type {HTMLDivElement} */ (this.$el)
-        const position = element.getBoundingClientRect()
+        //@ts-ignore represents the li node in which the function is being called
+        const element = this.$el;
+        const position = element.getBoundingClientRect();
 
         /** @type {PlayerClickEventData} */
         const obj = {
