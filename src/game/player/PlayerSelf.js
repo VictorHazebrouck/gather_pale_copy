@@ -252,7 +252,7 @@ class PlayerSelf extends PlayerBase {
      * @method
      *
      * @param {UserStore} playerSelfData
-     * @param {Layers} layers
+     * @param {import('../layers/Layers').default} layers
      * @returns {Promise<PlayerSelf>} - returns the player instance or false
      */
     static createPlayer = async (playerSelfData, layers) => {
