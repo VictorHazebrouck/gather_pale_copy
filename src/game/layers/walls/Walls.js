@@ -39,8 +39,7 @@ class Walls extends Container {
         for (let i = 0; i < this.tileMap.length; i++) {
             for (let j = 0; j < this.tileMap[i].length; j++) {
                 if (!this.tileMap[i][j]) continue;
-
-                console.log("hahah", this.tileMap[i][j]);
+                
                 /** @todo find a proper way to handle this mess */
                 // @ts-ignore
                 const texture = spriteSheet.textures[`${this.tileMap[i][j]}.png`];
